@@ -4,7 +4,6 @@ function map(height, nbRows, nbColumns) {
     for (let row=0; row < nbRows; row++) {
        y = 0;	     
     for (let column=0; column < nbColumns; column++) {
-         var f = Math.round(Math.random() * 100);
          let d = "";
          d += "Z";
          d3.select("svg")
@@ -15,12 +14,7 @@ function map(height, nbRows, nbColumns) {
             .attr("y", y)	      
             .attr("stroke", "black")
             .attr("fill", "white")
-            .attr("id", row+" "+column)
-            .on("click", function(d) {
-                console.log(d3.select(this).attr('id'));
-                let data = d3.select(this).attr('id').split(" ");
-                console.log(data[0]+","+data[1]);
-             });
+            .attr("id", row+" "+column);
                    y += height;
            }
            x += height;
