@@ -1,11 +1,16 @@
-var lapin = {
-    positionX : 0,
-    positionY : 0,
-    reproductivité : 5,
-    force : 5,
-    vitesse :5,
-    perception : 5,
-    besoin : {"energie" : 100,"hydratation":100,"faim":100},
-    deplacement: function(x,y){lapin.positionX=x;lapin.positionY=y;},
-    satisfactionBesoin: function(){}
+class Creature {
+  constructor(x, y, reproducibility, strenght, movespeed, perception) {
+    this.positionX = x;
+    this.positiony = y;
+    this.reproducibility = reproducibility;
+    this.strenght = strenght;
+    this.movespeed = movespeed;
+    this.perception = perception;
+    this.needs = { hunger: 100, thirst: 100, energy: 100 };
+  }
+  static deplacement([x, y]) {
+    this.positionX = x;
+    this.positionY = y;
+  }
+  static satisfactionBesoin() {}
 }
