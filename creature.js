@@ -8,9 +8,11 @@ class Creature {
     this.perception = perception;
     this.needs = { hunger: 100, thirst: 100, energy: 100 };
   }
-  static deplacement([x, y]) {
+  //pour l'instant la créature se téléporte à l'endroit voulu
+  static move([x, y]) {
     this.positionX = x;
     this.positionY = y;
   }
-  static satisfactionBesoin() {}
+  //on a besoin des données de la case pour implémenter la fonction 
+  static satisfyNeeds() {}
 }
