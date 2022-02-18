@@ -1,4 +1,4 @@
-function map(height) {
+function map(heightMap, heightTile) {
    var tile = {
       soil: "#a04000",
       water: "#aed6f1",
@@ -7,22 +7,19 @@ function map(height) {
       forest: "#0e6655"
   
   }
+  var svg = d3.select("body").append("svg").attr("width", heightMap).attr("height", heightMap);
+  for (let x = 0; x < 100; x++) {
+    for (let y = 0; y < 100; y++) {
+   let randomColor = Object.values(tile)[Math.floor(Math.random() * Object.values(tile).length)]
+    
 
-  var randomColor = Object.values(tile)[Math.floor(Math.random() * Object.values(tile).length)]
-  
-    var svg = d3.select("body").append("svg").attr("width", "500").attr("height", "500");
-    var x = 100, y = 100, height = 50;
-    svg.selectAll("rect")
-        .data(d3.range(x * y))
-        .enter()
-        .append("rect")
-        .attr("transform", translate)
-        .attr("width", height)
-        .attr("height", height)
+        svg.append("rect")
+        .attr("width", heightMap)
+        .attr("height", heightMap)
+        .attr("x", x*heightTile)
+        .attr("y", y*heightTile)
         .attr("stroke", "black")
         .attr("fill", randomColor);
+      }}
 
-function translate(d) {
-  return "translate(" + (d % x) * height + "," + Math.floor(d / x) * height + ")";
-}
-}
+    }
