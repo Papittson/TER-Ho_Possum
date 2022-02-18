@@ -9,7 +9,7 @@ function map(x, y, height) {
   }
   var svg = d3.select("body").append("svg").attr("width", "500").attr("height", "500");
   
-  function couleurAleatoire(d){
+  function randomColor(d){
    return Object.values(tile)[Math.floor(Math.random() * Object.values(tile).length)]
   }
 
@@ -21,7 +21,7 @@ function map(x, y, height) {
         .attr("width", height)
         .attr("height", height)
         .attr("stroke", "black")
-        .attr("fill", couleurAleatoire);
+        .attr("fill", randomColor);
 
 function translate(d) {
   return "translate(" + (d % x) * height + "," + Math.floor(d / x) * height + ")";

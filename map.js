@@ -11,8 +11,6 @@ function map(heightMap, heightTile) {
   for (let x = 0; x < 100; x++) {
     for (let y = 0; y < 100; y++) {
    let randomColor = Object.values(tile)[Math.floor(Math.random() * Object.values(tile).length)]
-    
-
         svg.append("rect")
         .attr("width", heightMap)
         .attr("height", heightMap)
