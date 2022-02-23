@@ -24,7 +24,7 @@ function map(x, y, height) {
         .attr("height", height)
         .attr("stroke", "black")
         .attr("id", randomID)
-        .attr("fill", randomColor); // pour l'instant la couleur générée peut être différente que l'ID généré :(
+        .attr("fill", randomColor); // pour l'instant la couleur générée est différente que l'ID
 
 function translate(d) {
   return "translate(" + (d % x) * height + "," + Math.floor(d / x) * height + ")";
