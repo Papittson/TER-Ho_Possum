@@ -11,13 +11,15 @@ function map(heightMap, heightTile) {
   for (let x = 0; x < 100; x++) {
     for (let y = 0; y < 100; y++) {
    let randomColor = Object.values(tile)[Math.floor(Math.random() * Object.values(tile).length)]
+   let randomID = Object.keys(tile)[Math.floor(Math.random() * Object.keys(tile).length)]
         svg.append("rect")
         .attr("width", heightMap)
         .attr("height", heightMap)
         .attr("x", x*heightTile)
         .attr("y", y*heightTile)
         .attr("stroke", "black")
-        .attr("fill", randomColor);
+        .attr("id", randomID)
+        .attr("fill", randomColor); // pour l'instant la couleur générée peut être différente que l'ID généré :(
       }}
 
     }
