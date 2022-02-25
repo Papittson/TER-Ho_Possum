@@ -6,7 +6,7 @@ class Creature {
     this.strenght = strenght;
     this.movespeed = movespeed;
     this.perception = perception;
-    this.needsLevel = { hunger: 50, thirst: 50, energy: 50 }; //faire une enumération à la place (voir needs.js) et mettre les contraintes
+    this.needsLevel = { hunger: 50, thirst: 50, energy: 50 }; 
   }
 
   
@@ -26,16 +26,16 @@ class Creature {
 
   }
 
-  //on a besoin des données de la case pour implémenter
+  
   static satisfyNeeds(tileType) {
     if (tileType == water) {
-      needs.thirst == 1.75 * needs.thirst;
+      needsLevel.thirst == 1.75 * needs.thirst;
     } else if (tileType == grass) {
-      needs.hunger == 1.35 * needs.hunger;
+      needsLevel.hunger == 1.35 * needs.hunger;
     } else if (tileType == forest) {
-      needs.hunger == 1.05 * needs.hunger;
+      needsLevel.hunger == 1.05 * needs.hunger;
     } else if (tileType == hole) {
-      needs.energy == 100;
+      needsLevel.energy == 100;
     }
   }
   //scan de l'environnement autour de la créature dans un rayon/rectangle dont la taille dépend de la valeur de perception
