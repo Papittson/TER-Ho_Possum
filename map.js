@@ -1,5 +1,30 @@
 function map(heightMap, heightTile) {
-  var tile = {
+  const soil = {
+    id: "soil",
+    color: "#a04000"
+    }
+
+  const grass = {
+      id: "grass",
+      frequency: 20,
+      color: "#81c784"
+  }
+
+  const forest = {
+      id: "forest",
+      color: "#0e6655"
+  }
+
+  const rock = {
+      id: "rock",
+      color: "#cacfd2"
+  }
+
+  const water = {
+      id: "water",
+      color: "#aed6f1"
+  }
+  var frequency = {
       soil: 20,
       grass: 20,
       rock: 7,
@@ -8,11 +33,10 @@ function map(heightMap, heightTile) {
     }
   var tileTotal = [];
   var n = 0;
-  while (n < Object.keys(tile).length) {
-    for (i = 0; i <  Object.values(tile)[n]; i++)
-        tileTotal[tileTotal.length] = Object.keys(tile)[n];
-        n++; }
-
+  while (n < Object.keys(frequency).length) {
+  for (i = 0; i <  Object.values(frequency)[n]; i++)
+      tileTotal[tileTotal.length] = Object.keys(frequency)[n];
+      n++; } 
 
   var svg = d3.select("body").append("svg").attr("width", heightMap).attr("height", heightMap);
   for (let x = 0; x < 100; x++) {
@@ -27,16 +51,16 @@ function map(heightMap, heightTile) {
           .attr("stroke", "black")
           .attr("id", randomID)
           .attr("fill", function(d) {
-              if (randomID === "rock") {
-              return "#cacfd2";
+            if (randomID === "rock") {
+              return rock["color"];
               } else if (randomID === "soil") {
-              return "#a04000";
+              return soil["color"];
               } else if (randomID === "grass") {
-              return "#81c784";
+              return grass["color"];
               } else if (randomID === "forest") {
-              return "#0e6655";
+              return forest["color"];
               } else if (randomID === "water") {
-              return "#aed6f1";
+              return water["color"];
               }
           });
       }
