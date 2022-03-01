@@ -1,42 +1,49 @@
 function map(heightMap, heightTile) {
   const soil = {
     id: "soil",
-    color: "#a04000"
+    color: "#a04000",
+    freq : 20
     }
 
   const grass = {
       id: "grass",
-      frequency: 20,
-      color: "#81c784"
+      color: "#81c784",
+      freq : 20
   }
 
   const forest = {
       id: "forest",
-      color: "#0e6655"
+      color: "#0e6655",
+      freq : 10
   }
 
   const rock = {
       id: "rock",
-      color: "#cacfd2"
+      color: "#cacfd2",
+      freq : 7
   }
 
   const water = {
       id: "water",
-      color: "#aed6f1"
+      color: "#aed6f1",
+      freq : 1
   }
-  var frequency = {
-      soil: 20,
-      grass: 20,
-      rock: 7,
-      forest: 10,
-      water: 1
+
+  var idFreq = {
+      soil: soil["freq"],
+      grass: grass["freq"],
+      rock: rock["freq"],
+      forest: forest["freq"],
+      water: water["freq"]
     }
   var tileTotal = [];
   var n = 0;
-  while (n < Object.keys(frequency).length) {
-  for (i = 0; i <  Object.values(frequency)[n]; i++)
-      tileTotal[tileTotal.length] = Object.keys(frequency)[n];
-      n++; } 
+  while (n < Object.keys(idFreq).length) {
+  for (i = 0; i <  Object.values(idFreq)[n]; i++)
+      tileTotal[tileTotal.length] = Object.keys(idFreq)[n];
+  n++;
+  }
+
 
   var svg = d3.select("body").append("svg").attr("width", heightMap).attr("height", heightMap);
   for (let x = 0; x < 100; x++) {
