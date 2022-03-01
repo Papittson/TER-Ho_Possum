@@ -1,9 +1,9 @@
 function map(heightMap, heightTile) {
   var tile = {
-      soil: 8,
-      grass: 6,
-      rock: 2,
-      forest: 3,
+      soil: 20,
+      grass: 20,
+      rock: 7,
+      forest: 10,
       water: 1
     }
   var tileTotal = [];
