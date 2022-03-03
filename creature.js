@@ -1,11 +1,8 @@
-class Creature {
+class Creature extends Species{
   constructor(x, y, reproducibility, strenght, movespeed, perception) {
+    super(reproducibility,strenght,movespeed,perception)
     this.x = x;
     this.y = y;
-    this.reproducibility = reproducibility;
-    this.strenght = strenght;
-    this.movespeed = movespeed;
-    this.perception = perception;
     this.needsLevel = { hunger: 50, thirst: 50, energy: 50 }; 
   }
 
@@ -39,5 +36,7 @@ class Creature {
     }
   }
   //scan de l'environnement autour de la créature dans un rayon/rectangle dont la taille dépend de la valeur de perception
-  static environmentAnalysis() {}
+  static environmentAnalysis() {
+
+  }
 }
