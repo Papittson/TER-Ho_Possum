@@ -9,7 +9,7 @@ localisationCase("eau", creature)) { hydratation(creature); return }
 creature); return }
         if (creature.tauxSatiete < seuilFaim &&
 localisationCase("herbe", creature)) { broutage(creature); return }
-        if (creature.tauxSatiete < seuilFaim ) { recherche("herbe"/*; creature*/); return }
+        if (creature.tauxSatiete < seuilFaim ) { recherche("herbe", creature); return }
        //....
 }
 
