@@ -1,3 +1,4 @@
+
 class Creature extends Species{
   constructor(x, y, reproducibility, strenght, movespeed, perception) {
     super(reproducibility,strenght,movespeed,perception)
@@ -6,6 +7,19 @@ class Creature extends Species{
     this.needsLevel = { hunger: 50, thirst: 50, energy: 50 }; 
   }
 
+  increaseNeedsLevel(need,rate){
+    if(rate<0){
+      throw RangeError;
+    }
+    this.needsLevel[need]+=rate;
+  }
+
+  decreaseNeedsLevel(need,rate){
+    if(rate<0){
+      throw RangeError;
+    }
+    this.needsLevel[need]-=rate;
+  }
   
   move(x, y) {
 
@@ -37,6 +51,6 @@ class Creature extends Species{
   }
   //scan de l'environnement autour de la créature dans un rayon/rectangle dont la taille dépend de la valeur de perception
   static environmentAnalysis() {
-
+      
   }
 }
