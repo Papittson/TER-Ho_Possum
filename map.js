@@ -7,7 +7,7 @@ function map(heightMap, heightTile) {
 
   const grass = {
       id: "grass",
-      color: "#81c784",
+      color: "#9bb945",
       freq : 20
   }
 
@@ -25,10 +25,14 @@ function map(heightMap, heightTile) {
 
   const water = {
       id: "water",
-      color: "#aed6f1",
+      color: "#6ccbfa",
       freq : 1
   }
 
+  const shed = {
+    id: "shed",
+    color: "#ff1313"
+  }
   var idFreq = {
       soil: soil["freq"],
       grass: grass["freq"],
@@ -72,4 +76,24 @@ function map(heightMap, heightTile) {
           });
       }
     }
+
+    svg.append("rect")
+    .attr("width", heightTile)
+    .attr("height", heightTile)
+    .attr("x", 250)
+    .attr("y", 20)
+    .attr("fill", function(d) {
+        return shed["color"];
+    })
+    .attr("stroke", "black")
+    .attr("id", function(d) {
+        return shed["id"];
+    }); 
+
+
+    // x = 250; y = 20    1           ??? dfjhkjds
+    // x = 20; y = 250    2
+    // x = 250; y = 480   3
+    // x = 480; y = 250   4
+
   }
