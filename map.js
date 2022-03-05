@@ -1,7 +1,7 @@
 function map(heightMap, heightTile) {
   const soil = {
     id: "soil",
-    color: "#a04000",
+    color: "#8e5e4d",
     freq : 20
     }
 
