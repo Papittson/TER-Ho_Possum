@@ -1,4 +1,4 @@
-function map(heightMap, heightTile) {
+function map(heightMap, heightTile, nbPlayers) {
   const soil = {
     id: "soil",
     color: "#8e5e4d",
@@ -90,10 +90,75 @@ function map(heightMap, heightTile) {
         return shed["id"];
     }); 
 
+    function shed1() {
+      svg.append("rect")
+      .attr("width", heightTile)
+      .attr("height", heightTile)
+      .attr("x", 250)
+      .attr("y", 20)
+      .attr("fill", function(d) {
+          return shed["color"];
+      })
+      .attr("stroke", "black")
+      .attr("id", function(d) {
+          return shed["id"];
+      }); }
 
-    // x = 250; y = 20    1           ??? dfjhkjds
-    // x = 20; y = 250    2
-    // x = 250; y = 480   3
-    // x = 480; y = 250   4
+      function shed2() {
+        svg.append("rect")
+        .attr("width", heightTile)
+        .attr("height", heightTile)
+        .attr("x", 20)
+        .attr("y", 250)
+        .attr("fill", function(d) {
+            return shed["color"];
+        })
+        .attr("stroke", "black")
+        .attr("id", function(d) {
+            return shed["id"];
+        }); }
 
+        function shed3() {
+            svg.append("rect")
+            .attr("width", heightTile)
+            .attr("height", heightTile)
+            .attr("x", 250)
+            .attr("y", 470)
+            .attr("fill", function(d) {
+                return shed["color"];
+            })
+            .attr("stroke", "black")
+            .attr("id", function(d) {
+                return shed["id"];
+            }); }
+        
+            function shed4() {
+                svg.append("rect")
+                .attr("width", heightTile)
+                .attr("height", heightTile)
+                .attr("x", 470)
+                .attr("y", 250)
+                .attr("fill", function(d) {
+                    return shed["color"];
+                })
+                .attr("stroke", "black")
+                .attr("id", function(d) {
+                    return shed["id"];
+                }); }
+
+        if (nbPlayers === 1) {
+            shed1();
+        } else if (nbPlayers === 2) {
+            shed1();
+            shed2();
+        } else if (nbPlayers === 3) {
+            shed1();
+            shed2();
+            shed3();
+        } else if (nbPlayers === 4) {
+            shed1();
+            shed2();
+            shed3();
+            shed4();
+        }
   }
