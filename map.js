@@ -7,7 +7,7 @@ function map(heightMap, heightTile, nbPlayers) {
 
   const grass = {
       id: "grass",
-      color: "#9bb945",
+      color: "#81c784",
       freq : 20
   }
 
@@ -76,89 +76,40 @@ function map(heightMap, heightTile, nbPlayers) {
           });
       }
     }
-
-    svg.append("rect")
-    .attr("width", heightTile)
-    .attr("height", heightTile)
-    .attr("x", 250)
-    .attr("y", 20)
-    .attr("fill", function(d) {
-        return shed["color"];
-    })
-    .attr("stroke", "black")
-    .attr("id", function(d) {
-        return shed["id"];
-    }); 
-
-    function shed1() {
-      svg.append("rect")
-      .attr("width", heightTile)
-      .attr("height", heightTile)
-      .attr("x", 250)
-      .attr("y", 20)
-      .attr("fill", function(d) {
-          return shed["color"];
-      })
-      .attr("stroke", "black")
-      .attr("id", function(d) {
-          return shed["id"];
-      }); }
-
-      function shed2() {
-        svg.append("rect")
-        .attr("width", heightTile)
-        .attr("height", heightTile)
-        .attr("x", 20)
-        .attr("y", 250)
-        .attr("fill", function(d) {
-            return shed["color"];
-        })
-        .attr("stroke", "black")
-        .attr("id", function(d) {
-            return shed["id"];
-        }); }
-
-        function shed3() {
-            svg.append("rect")
+    class Shed {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+        static nbShed(x, y) {
+          svg.append("rect")
             .attr("width", heightTile)
             .attr("height", heightTile)
-            .attr("x", 250)
-            .attr("y", 470)
+            .attr("x", x)
+            .attr("y", y)
             .attr("fill", function(d) {
                 return shed["color"];
             })
             .attr("stroke", "black")
             .attr("id", function(d) {
                 return shed["id"];
-            }); }
-        
-            function shed4() {
-                svg.append("rect")
-                .attr("width", heightTile)
-                .attr("height", heightTile)
-                .attr("x", 470)
-                .attr("y", 250)
-                .attr("fill", function(d) {
-                    return shed["color"];
-                })
-                .attr("stroke", "black")
-                .attr("id", function(d) {
-                    return shed["id"];
-                }); }
-
-        if (nbPlayers === 1) {
-            shed1();
-        } else if (nbPlayers === 2) {
-            shed1();
-            shed2();
-        } else if (nbPlayers === 3) {
-            shed1();
-            shed2();
-            shed3();
-        } else if (nbPlayers === 4) {
-            shed1();
-            shed2();
-            shed3();
-            shed4();
+            });
         }
+    }
+    
+    if (nbPlayers === 1) {
+        Shed.nbShed(250, 20);
+    } else if (nbPlayers === 2) {
+        Shed.nbShed(250, 20);
+        Shed.nbShed(20, 250);
+    } else if (nbPlayers === 3) {
+        Shed.nbShed(250, 20);
+        Shed.nbShed(20, 250);
+        Shed.nbShed(250, 470);
+    } else if (nbPlayers === 4) {
+        Shed.nbShed(250, 20);
+        Shed.nbShed(20, 250);
+        Shed.nbShed(250, 470);
+        Shed.nbShed(470, 250);
+    }
   }
