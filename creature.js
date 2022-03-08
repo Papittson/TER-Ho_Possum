@@ -1,9 +1,14 @@
-class Creature extends Species {
-  constructor(x, y, reproducibility, strenght, movespeed, perception) {
-    super(reproducibility, strenght, movespeed, perception);
+class Creature {
+  constructor(x, y, reproducibility, strenght, movespeed, perception,heightTile) {
+    this.reproducibility = reproducibility;
+    this.strenght = strenght;
+    this.movespeed = movespeed;
+    this.perception=perception;
     this.x = x;
     this.y = y;
+    this.id = Math.random()*100;
     this.needsLevel = { hunger: 50, thirst: 50, energy: 50 };
+    d3.select("#grid").append("circle").attr("cx",this.x).attr("cy",this.y).attr("r",heightTile/2-1).attr("fill","black").attr("class","top").attr("id",this.id);
   }
 //accesseurs
   getX() {
@@ -31,19 +36,11 @@ class Creature extends Species {
     }
   }
 
+  //à revoir (lier avec le svg)
   move(x, y) {
-    const moveOnAxis = (start, end) => {
-      const step = this.movespeed < 3 ? 1 : this.movespeed > 3 ? 3 : 2;
-      const direction = start < end ? 1 : -1;
-
-      while (start != end) {
-        start += direction * Math.min(Math.abs(start - end), step);
-      }
-      return start;
-    };
-
-    this.setX(moveOnAxis(this.x, x));
-    this.setY(moveOnAxis(this.y, y));
+    this.setX(x);
+    this.setY(y);
+    d3.select("#"+this.id).attr("cx",x).attr("cy",y);
   }
 
 
