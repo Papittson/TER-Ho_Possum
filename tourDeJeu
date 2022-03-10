@@ -4,9 +4,9 @@ var seuilFaim =  [[], [], [], []] ; // idem
 var seuilDodo = [[], [], [], []] ; 
 
 function action(creature) {
-        if (creature.needsLevel.thirst < seuilSoif && localisationCase("water", creature)) { thrist(creature); return } 
+        if (creature.needsLevel.thirst < seuilSoif && localisationCase("water", creature)) {drink(creature); return } 
         if (creature.needsLevel.thirst < seuilSoif ) { search("water",creature); return } //action recherche/search == environnementAnalysis
-        if (creature.needsLevel.hunger < seuilFaim && localisationCase("grass", creature)) { broutage(creature); return } //action broutage == satisfyneeds.hunger ? 
+        if (creature.needsLevel.hunger < seuilFaim && localisationCase("grass", creature)) {eat(creature); return } //action broutage == satisfyneeds.hunger ? 
         if (creature.needsLevel.hunger < seuilFaim ) { recherche("grass", creature); return }
         if (creature.needsLevel.sleep < seuilDodo && localisationCase("tanniere", creature)){sleep(creature); return}
         if (creature.needsLevel.sleep < seuilDodo){search("tanniere", creature); return}
