@@ -1,14 +1,14 @@
 class Creature {
-  constructor(x, y, reproducibility, strenght, movespeed, perception,heightTile) {
+  constructor(x, y, reproducibility, strenght, movespeed, perception,heightTile,id) {
     this.reproducibility = reproducibility;
     this.strenght = strenght;
     this.movespeed = movespeed;
     this.perception=perception;
     this.x = x;
     this.y = y;
-    this.id = Math.random()*100;
+    this.id = id;
     this.needsLevel = { hunger: 50, thirst: 50, energy: 50 };
-    d3.select("#grid").append("circle").attr("cx",this.x).attr("cy",this.y).attr("r",heightTile/2-1).attr("fill","black").attr("class","top").attr("id",this.id);
+    d3.select("#grid").append("circle").attr("cx",this.x*heightTile+heightTile/2).attr("cy",this.y*heightTile+heightTile/2).attr("r",heightTile/2-1).attr("fill","black").attr("class","top").attr("id",this.id);
   }
 //accesseurs
   getX() {
@@ -40,7 +40,7 @@ class Creature {
   move(x, y) {
     this.setX(x);
     this.setY(y);
-    d3.select("#"+this.id).attr("cx",x).attr("cy",y);
+    d3.select("#"+this.id).attr("cx",x*heightTile+heightTile/2).attr("cy",y*heightTile+heightTile/2);
   }
 
 
