@@ -1,14 +1,14 @@
 class Creature {
-  constructor(x, y, reproducibility, strenght, movespeed, perception,heightTile,id) {
+  constructor(x, y, reproducibility, strenght, movespeed, perception,heightTile) {
     this.reproducibility = reproducibility;
     this.strenght = strenght;
     this.movespeed = movespeed;
     this.perception=perception;
     this.x = x;
     this.y = y;
-    this.id = id;
+    this.id = Math.random()*100;
     this.needsLevel = { hunger: 50, thirst: 50, energy: 50 };
-    d3.select("#grid").append("circle").attr("cx",this.x*heightTile+heightTile/2).attr("cy",this.y*heightTile+heightTile/2).attr("r",heightTile/2-1).attr("fill","black").attr("class","top").attr("id",this.id);
+    d3.select("#grid").append("circle").attr("cx",this.x).attr("cy",this.y).attr("r",heightTile/2-1).attr("fill","black").attr("class","top").attr("id",this.id);
   }
 //accesseurs
   getX() {
@@ -23,6 +23,8 @@ class Creature {
   setY(y) {
     this.y = y;
   }
+
+
 
   
 //concernant le deplacement
@@ -40,7 +42,7 @@ class Creature {
   move(x, y) {
     this.setX(x);
     this.setY(y);
-    d3.select("#"+this.id).attr("cx",x*heightTile+heightTile/2).attr("cy",y*heightTile+heightTile/2);
+    d3.select("#"+this.id).attr("cx",x).attr("cy",y);
   }
 
 
@@ -68,6 +70,14 @@ class Creature {
     } else if (tileType == hole) {
       needsLevel.energy == 100;
     }
+  }
+
+  //pour la reproduction de la créature
+  static reproduce(creature, creature, tileType){
+    const babies = this.reproducibility < 3 ? 2 : this.reproducibility > 3 ? 6 : 4;
+    if (tileType == hole && (creature.needsLevel.thirst>35) && (creature.needsLevel.hunger>30) && (creature.needsLevel.sleep>20)) 
+    //ajout d'une nouvelle ou de plusieurs nouvelles créatures 
+    Map.addCreature(new Creature(x, y, reproducibility, strenght, movespeed, perception,heightTile));
   }
 
 
