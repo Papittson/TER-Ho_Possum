@@ -3,63 +3,63 @@ function map(heightMap, heightTile, nbPlayers) {
   for (let x = 0; x < 100; x++) {
       for (let y = 0; y < 100; y++) {
       
-          let randomID = (tileTotal[Math.floor(Math.random() * tileTotal.length)])
+          let tileType = (tileTotal[Math.floor(Math.random() * tileTotal.length)])
           svg.append("rect")
           .attr("width", heightMap)
           .attr("height", heightMap)
           .attr("x", x*heightTile)
           .attr("y", y*heightTile)
           .attr("stroke", "black")
-          .attr("id", randomID)
+          .attr("id", tileType)
           .attr("fill", function(d) {
-            if (randomID === "rock") {
+            if (tileType === "rock") {
               return rock["color"];
-              } else if (randomID === "soil") {
+              } else if (tileType === "soil") {
               return soil["color"];
-              } else if (randomID === "grass") {
+              } else if (tileType === "grass") {
               return grass["color"];
-              } else if (randomID === "forest") {
+              } else if (tileType === "forest") {
               return forest["color"];
-              } else if (randomID === "water") {
+              } else if (tileType === "water") {
               return water["color"];
               }
           });
       }
     }
-    class Shed {
+    class Hole {
         constructor(x, y) {
             this.x = x;
             this.y = y;
         }
-        static nbShed(x, y) {
+        static nbHole(x, y) {
           svg.append("rect")
-            .attr("width", heightTile)
+            .attr("width", 20)
             .attr("height", heightTile)
             .attr("x", x)
             .attr("y", y)
             .attr("fill", function(d) {
-                return shed["color"];
+                return hole["color"];
             })
             .attr("stroke", "black")
             .attr("id", function(d) {
-                return shed["id"];
+                return hole["id"];
             });
         }
     }
     
     if (nbPlayers === 1) {
-        Shed.nbShed(250, 20);
+        Hole.nbHole(250, 20);
     } else if (nbPlayers === 2) {
-        Shed.nbShed(250, 20);
-        Shed.nbShed(20, 250);
+        Hole.nbHole(250, 20);
+        Hole.nbHole(20, 250);
     } else if (nbPlayers === 3) {
-        Shed.nbShed(250, 20);
-        Shed.nbShed(20, 250);
-        Shed.nbShed(250, 470);
+        Hole.nbHole(250, 20);
+        Hole.nbHole(20, 250);
+        Hole.nbHole(250, 470);
     } else if (nbPlayers === 4) {
-        Shed.nbShed(250, 20);
-        Shed.nbShed(20, 250);
-        Shed.nbShed(250, 470);
-        Shed.nbShed(470, 250);
+        Hole.nbHole(250, 20);
+        Hole.nbHole(20, 250);
+        Hole.nbHole(250, 470);
+        Hole.nbHole(470, 250);
     }
   }

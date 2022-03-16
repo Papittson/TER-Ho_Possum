@@ -31,8 +31,8 @@ const soil = {
       thirst : 50
   }
 
-  const shed = {
-    id: "shed",
+  const hole = {
+    id: "hole",
     color: "#ff1313",
     sleep: 100
   }
