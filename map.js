@@ -48,14 +48,14 @@ function map(heightMap, heightTile, nbPlayers) {
     }
     
     if (nbPlayers === 1) {
-        Hole.nbHole(250, 20);
+        Hole.nbHole(140, 140);
     } else if (nbPlayers === 2) {
-        Hole.nbHole(250, 20);
-        Hole.nbHole(20, 250);
+        Hole.nbHole(190, 20);
+        Hole.nbHole(190, 370);
     } else if (nbPlayers === 3) {
         Hole.nbHole(250, 20);
-        Hole.nbHole(20, 250);
-        Hole.nbHole(250, 470);
+        Hole.nbHole(20, 470);
+        Hole.nbHole(460, 470);
     } else if (nbPlayers === 4) {
         Hole.nbHole(250, 20);
         Hole.nbHole(20, 250);
