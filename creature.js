@@ -1,12 +1,12 @@
 class Creature {
-  constructor(x, y, reproducibility, strenght, movespeed, perception,heightTile) {
+  constructor(id,x, y, reproducibility, strenght, movespeed, perception,heightTile) {
     this.reproducibility = reproducibility;
     this.strenght = strenght;
     this.movespeed = movespeed;
     this.perception=perception;
     this.x = x;
     this.y = y;
-    this.id = Math.random()*100;
+    this.id = id;
     this.needsLevel = { hunger: 50, thirst: 50, energy: 50 };
     d3.select("#grid").append("circle").attr("cx",this.x).attr("cy",this.y).attr("r",heightTile/2-1).attr("fill","black").attr("class","top").attr("id",this.id);
   }

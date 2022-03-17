@@ -1,4 +1,4 @@
-function start(heightMap, heightTile) {
+function start(nbOfPlayer,heightMap, heightTile) {
     const listTile = [];
     d3.select("body")
       .append("svg")
@@ -11,9 +11,15 @@ function start(heightMap, heightTile) {
         listTile.push(new Tile(x, y, heightTile, "dirt"));
       }
     }
-    let lapin = new Creature(2,2,1,1,1,1,heightTile,"L1");
-      console.log(lapin);
-      console.log(lapin.getX()+", "+lapin.getY());
-      lapin.move(3,3);
+    const listPlayer =[];
+    for(let i = 0 ; i<nbOfPlayer;i++ ){
+      //TO DO : recuperer les valeurs des input pour pouvoir créer le joueur
+      listPlayer.push(new Player(speciesName,rInput,sInput,mInput,pInput));
+      currentPlayer=listPlayer[i];
+      currentPlayer.addCreature(new Creature(currentPlayer.getSpeciesName()+1,xPosOfHome1,yPosOfHome1,currentPlayer.getReproductibilityInput(),currentPlayer.getStrengthInput(),currentPlayer.getMovespeedInput(),currentPlayer.getPerceptionInput(),heightTile));
+      currentPlayer.addCreature(new Creature((currentPlayer.getSpeciesName()+2,xPosOfHome2,yPosOfHome2,currentPlayer.getReproductibilityInput(),currentPlayer.getStrengthInput(),currentPlayer.getMovespeedInput(),currentPlayer.getPerceptionInput(),heightTile)));
+    }
+    
+    //commencer le tour de jeu sur la liste des joueurs
       
   }
