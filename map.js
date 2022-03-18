@@ -41,5 +41,43 @@ class Tile {
         listTile.push(new Tile(x, y, heightTile));
       }
     }
+
+      
+    class Hole {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+        static nbHole(x, y) {
+          svg.append("rect")
+            .attr("width", 20)
+            .attr("height", heightTile)
+            .attr("x", x)
+            .attr("y", y)
+            .attr("fill", function(d) {
+                return hole["color"];
+            })
+            .attr("stroke", "black")
+            .attr("id", function(d) {
+                return hole["id"];
+            });
+        }
+    }
+    
+     if (nbPlayers === 1) {
+        Hole.nbHole(140, 140);
+    } else if (nbPlayers === 2) {
+        Hole.nbHole(190, 20);
+        Hole.nbHole(190, 370);
+    } else if (nbPlayers === 3) {
+        Hole.nbHole(250, 20);
+        Hole.nbHole(20, 470);
+        Hole.nbHole(460, 470);
+    } else if (nbPlayers === 4) {
+        Hole.nbHole(250, 20);
+        Hole.nbHole(20, 250);
+        Hole.nbHole(250, 470);
+        Hole.nbHole(470, 250);
+    }
     
   }
