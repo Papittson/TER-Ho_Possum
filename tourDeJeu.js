@@ -54,7 +54,7 @@ function action(creature) {
     creature.needsLevel.sleep > seuilDodo &&
     creature.needsLevel.thrist > seuilSoif &&
     creature.needsLevel.hunger > seuilFaim &&
-    localisationCase("shed", creature) /* && creature (x2) ? */
+    localisationCase("shed", creature)
   ) {
     reproduce(creature);
     return;
