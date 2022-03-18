@@ -1,42 +1,14 @@
 class Player {
-  constructor(
-    speciesName,
-    reproducibilityInput,
-    strenghtInput,
-    movespeedInput,
-    perceptionInput
-  ) {
-    this.speciesName =speciesName;
+  constructor(speciesName, reproducibility, strenght, movespeed, perception) {
+    this.speciesName = speciesName;
     this.creatures = [];
-    this.reproducibilityInput = reproducibilityInput;
-    this.strenghtInput = strenghtInput;
-    this.movespeedInput = movespeedInput;
-    this.perceptionInput = perceptionInput;
+    this.reproducibility = reproducibility;
+    this.strenght = strenght;
+    this.movespeed = movespeed;
+    this.perception = perception;
   }
 
-  getSpeciesName(){
-      return this.speciesName;
-  }
-
-  getReproductibilityInput(){
-      return this.reproducibilityInput;
-  }
-  getStrengthInput(){
-      return this.strenghtInput;
-  }
-  getMovespeedInput(){
-      return this.movespeedInput;
-  }
-  getPerceptionInput(){
-      return this.perceptionInput;
-  }
-
-
-
-  getCreatures() {
-    return this.creatures;
-  }
   addCreature(creature) {
-    this.getCreatures().push(creature);
+    this.creatures.push(creature);
   }
 }
