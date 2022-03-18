@@ -3,7 +3,7 @@ class Tile {
       this.x = x;
       this.y = y;
       let tileType = (tileTotal[Math.floor(Math.random() * tileTotal.length)]);
-      d3.select(".grid")
+      d3.select("#grid")
         .append("rect")
         .attr("x", this.x)
         .attr("y", this.y)
@@ -12,6 +12,7 @@ class Tile {
         .attr("x", x * heightTile)
         .attr("y", y * heightTile)
         .attr("stroke", "black")
+        .attr("id", tileType)
         .attr("fill", function(d) {
             if (tileType === "rock") {
               return rock["color"];
@@ -34,8 +35,7 @@ class Tile {
       .append("svg")
       .attr("width", heightMap)
       .attr("height", heightMap)
-      .attr("class", "grid")
-      .attr("id", tileType)
+      .attr("id", "grid")
     for (let x = 0; x < 100; x++) {
       for (let y = 0; y < 100; y++) {
         listTile.push(new Tile(x, y, heightTile));
