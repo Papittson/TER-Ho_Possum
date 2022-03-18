@@ -24,5 +24,13 @@ function start(nbOfPlayer, heightMap, heightTile) {
     );
   }
 
-  //commencer le tour de jeu sur la liste des
+  //commencer le tour de jeu sur la liste des joueurs
+}
+
+function reproduce() {
+  //TODO
+}
+
+function currentTile(creature, listTile) {
+  //TODO
 }

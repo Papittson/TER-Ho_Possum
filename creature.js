@@ -79,7 +79,9 @@ class Creature {
         break;
     }
   }
-
+  searchTile(tileType) {
+    //TODO
+  }
   environmentAnalysis(listTile) {
     const radius = this.perception < 3 ? 2 : this.perception > 3 ? 6 : 4;
     const tileOk = [];
