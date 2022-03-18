@@ -11,7 +11,11 @@ function start(nbOfPlayer, heightMap, heightTile) {
       listTile.push(new Tile(x, y, heightTile, "dirt"));
     }
   }
-  const listPlayer = [];
+  const p1 = new Player("lapin", 1, 1, 1, 1);
+  p1.creatures.push(new Creature(2, 2, p1, heightTile));
+  const creaturesP1 = p1.creatures;
+
+  /*const listPlayer = [];
   for (let i = 0; i < nbOfPlayer; i++) {
     //TO DO : recuperer les valeurs des input pour pouvoir créer le joueur
     listPlayer.push(new Player(speciesName, rInput, sInput, mInput, pInput));
@@ -22,7 +26,7 @@ function start(nbOfPlayer, heightMap, heightTile) {
     currentPlayer.addCreature(
       new Creature(xPosOfHome2, yPosOfHome2, currentPlayer, heightTile)
     );
-  }
+  }*/
 
   //commencer le tour de jeu sur la liste des joueurs
 }

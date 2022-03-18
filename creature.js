@@ -6,24 +6,24 @@ class Creature {
       speciesName,
       creatures,
       reproducibility,
-      strenght,
+      strength,
       movespeed,
       perception,
     },
     heightTile
   ) {
     this.reproducibility = reproducibility;
-    this.strenght = strenght;
+    this.strength = strength;
     this.movespeed = movespeed;
     this.perception = perception;
     this.x = x;
     this.y = y;
-    this.id = speciesName + creatures.size();
+    this.id = speciesName + creatures.length;
     this.needsLevel = { hunger: 50, thirst: 50, energy: 50 };
     d3.select("#grid")
       .append("circle")
-      .attr("cx", this.x)
-      .attr("cy", this.y)
+      .attr("cx", this.x * heightTile + heightTile / 2)
+      .attr("cy", this.y * heightTile + heightTile / 2)
       .attr("r", heightTile / 2 - 1)
       .attr("fill", "black")
       .attr("class", "top")
@@ -84,17 +84,17 @@ class Creature {
     //TODO
   }
 
-  environmentAnalysis(listTile) {
+  environmentAnalysis(listTile, heightMap) {
     const radius = this.perception < 3 ? 2 : this.perception > 3 ? 6 : 4;
     const tileOk = [];
     for (
-      let x = min(0, this.x - radius);
-      x <= min(heightMap, x + radius);
+      let x = Math.min(0, this.x - radius);
+      x <= Math.min(heightMap, x + radius);
       x++
     ) {
       for (
-        let y = min(0, this.y - radius);
-        x <= min(heightMap, y + radius);
+        let y = Math.min(0, this.y - radius);
+        x <= Math.min(heightMap, y + radius);
         y++
       ) {
         for (let tile in listTile) {
@@ -104,6 +104,15 @@ class Creature {
         }
       }
     }
+    tileOk.sort((tile1, tile2) => {
+      let dist1 = Math.sqrt(
+        Math.pow(Math.abs(tile1.x - x), 2) + Math.pow(Math.abs(tile1.y - y), 2)
+      );
+      let dist2 = Math.sqrt(
+        Math.pow(Math.abs(tile2.x - x), 2) + Math.pow(Math.abs(tile2.y - y), 2)
+      );
+      return Math.min(dist1, dist2);
+    });
     return tileOk;
   }
 }

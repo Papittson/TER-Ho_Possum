@@ -1,9 +1,9 @@
 class Player {
-  constructor(speciesName, reproducibility, strenght, movespeed, perception) {
+  constructor(speciesName, reproducibility, strength, movespeed, perception) {
     this.speciesName = speciesName;
     this.creatures = [];
     this.reproducibility = reproducibility;
-    this.strenght = strenght;
+    this.strength = strength;
     this.movespeed = movespeed;
     this.perception = perception;
   }
