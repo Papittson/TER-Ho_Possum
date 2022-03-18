@@ -9,7 +9,7 @@ function action(creature) {
     creature.needsLevel.thirst < criticalLevels.thirst &&
     currentTile(creature, listTile) == "water"
   ) {
-    satisfyNeeds(water);
+    satisfyNeeds("water");
     return;
   }
   if (creature.needsLevel.thirst < criticalLevels.thirst) {
