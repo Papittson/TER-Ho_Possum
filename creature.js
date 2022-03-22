@@ -45,8 +45,8 @@ class Creature {
     this.x = x;
     this.y = y;
     d3.select("#" + this.id)
-      .attr("cx", x)
-      .attr("cy", y);
+      .attr("cx", x * heightTile + heightTile / 2)
+      .attr("cy", y * heightTile + heightTile / 2);
   }
 
   //actions sur les besoins

@@ -11,9 +11,15 @@ function start(nbOfPlayer, heightMap, heightTile) {
       listTile.push(new Tile(x, y, heightTile, "dirt"));
     }
   }
+
   const p1 = new Player("lapin", 1, 1, 1, 1);
   p1.creatures.push(new Creature(2, 2, p1, heightTile));
   const creaturesP1 = p1.creatures;
+  const creature1 = creaturesP1[0];
+  console.log(currentTile(creature1, listTile));
+
+
+
 
   /*const listPlayer = [];
   for (let i = 0; i < nbOfPlayer; i++) {
@@ -35,6 +41,12 @@ function reproduce() {
   //TODO
 }
 
+
+
 function currentTile(creature, listTile) {
-  //TODO
+  for (let tile of listTile) {
+    if (creature.x == tile.x && creature.y == tile.y) {
+      return tile.tileType;
+    }
+  }
 }
