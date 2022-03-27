@@ -8,15 +8,22 @@ function start(nbOfPlayer, heightMap, heightTile) {
     .attr("fill", "red");
   for (let x = 0; x < 10; x++) {
     for (let y = 0; y < 10; y++) {
-      listTile.push(new Tile(x, y, heightTile, "dirt"));
+      listTile.push(new Tile(x, y, heightTile, "hole"));
     }
   }
 
   const p1 = new Player("lapin", 1, 1, 1, 1);
   p1.creatures.push(new Creature(2, 2, p1, heightTile));
+  p1.creatures.push(new Creature(2, 2, p1, heightTile));
   const creaturesP1 = p1.creatures;
   const creature1 = creaturesP1[0];
-  console.log(currentTile(creature1, listTile));
+  const creature2 = creaturesP1[1];
+  const t1 = new Tile(2, 2, heightTile, "hole");
+
+
+  // console.log(currentTile(creature1, listTile));
+  // console.log(creaturesP1);
+  console.log(reproduce(creaturesP1, t1));
 
 
 
@@ -37,8 +44,17 @@ function start(nbOfPlayer, heightMap, heightTile) {
   //commencer le tour de jeu sur la liste des joueurs
 }
 
-function reproduce() {
-  //TODO
+function reproduce(creatures, tile) {
+  var sameCre = [];
+  for (let creature of creatures) {
+    if (tile.tileType == "hole" && creature.x == tile.x && creature.y == tile.y) {
+      sameCre.push(creature);
+    }
+  }
+  if (sameCre.length >= 2) {
+    creatures.push("newCreature");
+  }
+  return creatures;
 }
 
 
