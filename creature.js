@@ -10,12 +10,14 @@ class Creature {
       movespeed,
       perception,
     },
+    shed,
     heightTile
   ) {
     this.reproducibility = reproducibility;
     this.strength = strength;
     this.movespeed = movespeed;
     this.perception = perception;
+    this.shed = shed;
     this.x = x;
     this.y = y;
     this.id = speciesName + creatures.length;
@@ -32,10 +34,10 @@ class Creature {
 
   //concernant le deplacement
   goToTileByNeed(need) {
-    for (let tile in this.environmentAnalysis()) {
-      if (need == thirst && tile.tileType == water) {
+    for (let tile in this.scanArea()) {
+      if (need == "thirst" && tile.tileType == "water") {
         this.move(tile.x, tile.y);
-      } else if (need == hunger && tile.TileType == grass) {
+      } else if (need == "hunger" && tile.TileType == "grass") {
         this.move(tile.x, tile.y);
       }
     }
@@ -80,39 +82,55 @@ class Creature {
     }
   }
 
-  searchTile(tileType) {
-    //TODO
+  searchTile(tileType, listTile, heightMap) {
+    let i = 0;
+    let environment = this.scanArea(listTile, heightMap);
+    while (i < environment.length && environment[i].tileType != tileType) {
+      i++;
+    }
+    if (i != environment.length) {
+      return environment[i];
+    } else {
+      return null; //à voir
+    }
   }
 
-  environmentAnalysis(listTile, heightMap) {
+  scanArea(listTile, heightMap) {
     const radius = this.perception < 3 ? 2 : this.perception > 3 ? 6 : 4;
-    const tileOk = [];
-    for (
-      let x = Math.min(0, this.x - radius);
-      x <= Math.min(heightMap, x + radius);
-      x++
-    ) {
-      for (
-        let y = Math.min(0, this.y - radius);
-        x <= Math.min(heightMap, y + radius);
-        y++
+    const tilesSorted = [];
+    let minX = Math.max(this.x - radius, 0);
+    let maxX = Math.min(this.x + radius, heightMap);
+    let minY = Math.max(this.y - radius, 0);
+    let maxY = Math.min(this.y + radius, heightMap);
+    let distanceToTile = {};
+    for (let i = 0; i < listTile.length; i++) {
+      if (
+        listTile[i].x >= minX &&
+        listTile[i].x <= maxX &&
+        listTile[i].y >= minY &&
+        listTile[i].y <= maxY
       ) {
-        for (let tile in listTile) {
-          if (tile.x == x && tile.y == y) {
-            tileOk.push(tile);
-          }
-        }
+        distanceToTile[i] =
+          Math.abs(listTile[i].x - this.x) + Math.abs(listTile[i].y - this.y);
+        //tile.draw.attr("fill", "red");
       }
     }
-    tileOk.sort((tile1, tile2) => {
-      let dist1 = Math.sqrt(
-        Math.pow(Math.abs(tile1.x - x), 2) + Math.pow(Math.abs(tile1.y - y), 2)
-      );
-      let dist2 = Math.sqrt(
-        Math.pow(Math.abs(tile2.x - x), 2) + Math.pow(Math.abs(tile2.y - y), 2)
-      );
-      return Math.min(dist1, dist2);
+
+    var listKeyDistance = Object.keys(distanceToTile).map((key) => {
+      return [key, distanceToTile[key]];
     });
-    return tileOk;
+
+    listKeyDistance.sort((first, second) => {
+      return first[1] - second[1];
+    });
+
+    var listeTileSortedIndex = listKeyDistance.map((e) => {
+      return e[0];
+    });
+
+    for (let index of listeTileSortedIndex) {
+      tilesSorted.push(listTile[index]);
+    }
+    return tilesSorted;
   }
 }

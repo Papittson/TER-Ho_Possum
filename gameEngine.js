@@ -5,7 +5,8 @@ function start(nbOfPlayer, heightMap, heightTile) {
     .attr("width", heightMap)
     .attr("height", heightMap)
     .attr("id", "grid")
-    .attr("fill", "red");
+    .attr("fill", "none");
+  const shed = { x: 2, y: 2 };
   for (let x = 0; x < 10; x++) {
     for (let y = 0; y < 10; y++) {
       listTile.push(new Tile(x, y, heightTile, "dirt"));
@@ -13,13 +14,13 @@ function start(nbOfPlayer, heightMap, heightTile) {
   }
 
   const p1 = new Player("lapin", 1, 1, 1, 1);
-  p1.creatures.push(new Creature(2, 2, p1, heightTile));
+
+  p1.creatures.push(new Creature(5, 4, p1, shed, heightTile));
   const creaturesP1 = p1.creatures;
   const creature1 = creaturesP1[0];
-  console.log(currentTile(creature1, listTile));
-
-
-
+  console.log(creature1);
+  console.log(listTile);
+  console.log(creature1.scanArea(listTile, heightMap));
 
   /*const listPlayer = [];
   for (let i = 0; i < nbOfPlayer; i++) {
@@ -41,9 +42,8 @@ function reproduce() {
   //TODO
 }
 
-
-
 function currentTile(creature, listTile) {
+  //return creature.scanArea[0];
   for (let tile of listTile) {
     if (creature.x == tile.x && creature.y == tile.y) {
       return tile.tileType;

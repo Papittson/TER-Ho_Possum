@@ -14,7 +14,7 @@ function action(creature) {
   }
   if (creature.needsLevel.thirst < criticalLevels.thirst) {
     creature.searchTile("water");
-    creature.goToTileByNeed(state.thristy);
+    creature.goToTileByNeed("thirst");
     return;
   }
   if (
@@ -28,7 +28,7 @@ function action(creature) {
     creature.searchTile("grass");
     creature.goToTileByNeed(state.hungry);
     return;
-  } 
+  }
   if (
     creature.needsLevel.hunger < criticalLevels.hunger &&
     currentTile(creature, listTile) == "forest"
@@ -40,7 +40,7 @@ function action(creature) {
     creature.searchTile("forest");
     creature.goToTileByNeed(state.hungry);
     return;
-  } 
+  }
   if (
     creature.needsLevel.sleep < criticalLevels.sleep &&
     currentTile(creature, listTile) == "shed"
@@ -52,7 +52,7 @@ function action(creature) {
     creature.searchTile("shed");
     creature.goToTileByNeed(state.sleepy);
     return;
-  } 
+  }
   if (
     creature.needsLevel.sleep > criticalLevels.sleep &&
     creature.needsLevel.thrist > criticalLevels.thirst &&
@@ -70,7 +70,7 @@ function action(creature) {
     creature.searchTile("shed");
     creature.move();
     return;
-  } 
+  }
 }
 
 setInterval(tourDeJeu, 1000); // 1000 millisecondes ou autre intervalle de temps

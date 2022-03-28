@@ -3,7 +3,8 @@ class Tile {
     this.x = x;
     this.y = y;
     this.tileType = tileType;
-    d3.select("#grid")
+    this.draw = d3
+      .select("#grid")
       .append("rect")
       .attr("x", this.x)
       .attr("y", this.y)
@@ -14,5 +15,3 @@ class Tile {
       .attr("stroke", "black");
   }
 }
-
-
