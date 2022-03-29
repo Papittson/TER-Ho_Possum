@@ -1,7 +1,4 @@
 var creatures = [[], [], [], []]; // Les sous-listes seront remplies des objets correspondant aux créatures des joueurs
-//var seuilSoif = [[], [], [], []]; // pour expliciter l'exemple
-//var seuilFaim = [[], [], [], []]; // idem
-//var seuilDodo = [[], [], [], []];
 
 function action(creature) {
   //faire un switch?
@@ -71,6 +68,16 @@ function action(creature) {
     creature.move();
     return;
   }
+}
+
+
+function nextCrea(creatures)
+{
+  for(let i=0; i< creatures; i++)
+  if(creature[i].action)
+    {
+      creature[i+1];
+    }
 }
 
 setInterval(tourDeJeu, 1000); // 1000 millisecondes ou autre intervalle de temps
