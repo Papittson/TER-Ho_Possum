@@ -16,10 +16,10 @@ function start(nbOfPlayer, heightMap, heightTile) {
   const p1 = new Player("lapin", 1, 1, 1, 1);
 
   p1.creatures.push(new Creature(2, 2, p1, shed, heightTile));
-  p1.creatures.push(new Creature(2, 3, p1, shed, heightTile));
+
   const creaturesP1 = p1.creatures;
   const creature1 = creaturesP1[0];
-  const creature2 = creaturesP1[1];
+
   const t1 = new Tile(2, 2, heightTile, "hole");
   console.log(creature1.scanArea(listTile, heightMap));
 
