@@ -1,26 +1,19 @@
 var creatures = [[], [], [], []]; // Les sous-listes seront remplies des objets correspondant aux créatures des joueurs
 
-<<<<<<< Updated upstream
 function action(creature, listTile, heightMap) {
   const movespeed = creature.movespeed < 3 ? 1 : creature.movespeed > 3 ? 3 : 2;
 
-=======
-<<<<<<< HEAD
-function tourDeJeu(){
+/*function tourDeJeu(){
   for (player in listPlayer){
     for (creature in player.creature){
       action(creature);
     }
   }
-}
+}*/
 
 function action(creature) {
-=======
 function action(creature, listTile, heightMap) {
   const movespeed = creature.movespeed < 3 ? 1 : creature.movespeed > 3 ? 3 : 2;
-
->>>>>>> 5cf8e666e27648e61156c194d26fff67cb5b310b
->>>>>>> Stashed changes
   //faire un switch?
   /* if (
     creature.needsLevel.thirst < criticalLevels.thirst &&
@@ -90,17 +83,5 @@ function action(creature, listTile, heightMap) {
   }*/
 }
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
-function nextCrea(creatures) {
-  for (let i = 0; i < creatures; i++)
-    if (creature[i].action) {
-      creature[i + 1];
-    }
-}
->>>>>>> 5cf8e666e27648e61156c194d26fff67cb5b310b
 
 setInterval(tourDeJeu, 1000); // 1000 millisecondes ou autre intervalle de temps
