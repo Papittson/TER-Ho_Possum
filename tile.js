@@ -14,4 +14,12 @@ class Tile {
       .attr("y", y * heightTile)
       .attr("stroke", "black");
   }
+
+  isNeighbour(tile) {
+    distanceToTile = Math.abs(tile - this.x) + Math.abs(tile.y - this.y);
+    if (distanceToTile == 1) {
+      return true;
+    }
+    return false;
+  }
 }

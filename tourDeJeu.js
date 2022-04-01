@@ -1,8 +1,10 @@
 var creatures = [[], [], [], []]; // Les sous-listes seront remplies des objets correspondant aux créatures des joueurs
 
-function action(creature) {
+function action(creature, listTile, heightMap) {
+  const movespeed = creature.movespeed < 3 ? 1 : creature.movespeed > 3 ? 3 : 2;
+
   //faire un switch?
-  if (
+  /* if (
     creature.needsLevel.thirst < criticalLevels.thirst &&
     currentTile(creature, listTile) == "water"
   ) {
@@ -67,16 +69,13 @@ function action(creature) {
     creature.searchTile("shed");
     creature.move();
     return;
-  }
+  }*/
 }
 
-
-function nextCrea(creatures)
-{
-  for(let i=0; i< creatures; i++)
-  if(creature[i].action)
-    {
-      creature[i+1];
+function nextCrea(creatures) {
+  for (let i = 0; i < creatures; i++)
+    if (creature[i].action) {
+      creature[i + 1];
     }
 }
 
