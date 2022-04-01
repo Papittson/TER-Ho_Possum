@@ -112,4 +112,5 @@ function map(heightMap, heightTile, nbPlayers) {
       }
     }
   }
+  console.log(listTile[0].tileType);
 }
