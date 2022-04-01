@@ -112,7 +112,7 @@ class Creature {
       ) {
         distanceToTile[i] =
           Math.abs(listTile[i].x - this.x) + Math.abs(listTile[i].y - this.y);
-        //tile.draw.attr("fill", "red");
+        listTile[i].draw.attr("fill", "red");
       }
     }
 
