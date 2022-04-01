@@ -42,13 +42,13 @@ function action(creature, listTile, heightMap) {
   }
   if (
     creature.needsLevel.sleep < criticalLevels.sleep &&
-    currentTile(creature, listTile) == "shed"
+    currentTile(creature, listTile) == "hole"
   ) {
-    satisfyNeeds("shed");
+    satisfyNeeds("hole");
     return;
   }
   if (creature.needsLevel.sleep < criticalLevels.sleep) {
-    creature.searchTile("shed");
+    creature.searchTile("hole");
     creature.goToTileByNeed(state.sleepy);
     return;
   }
@@ -56,7 +56,7 @@ function action(creature, listTile, heightMap) {
     creature.needsLevel.sleep > criticalLevels.sleep &&
     creature.needsLevel.thrist > criticalLevels.thirst &&
     creature.needsLevel.hunger > scriticalLevels.hunger &&
-    currentTile(creature, listTile) == "shed"
+    currentTile(creature, listTile) == "hole"
   ) {
     reproduce(creature);
     return;
@@ -66,7 +66,7 @@ function action(creature, listTile, heightMap) {
     creature.needsLevel.thrist > criticalLevels.thirst &&
     creature.needsLevel.hunger > scriticalLevels.hunger
   ) {
-    creature.searchTile("shed");
+    creature.searchTile("hole");
     creature.move();
     return;
   }*/
