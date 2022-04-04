@@ -2,6 +2,7 @@ var creatures = [[], [], [], []]; // Les sous-listes seront remplies des objets 
 
 function action(creature, listTile, heightMap) {
   const movespeed = creature.movespeed < 3 ? 1 : creature.movespeed > 3 ? 3 : 2;
+}
 
 /*function tourDeJeu(){
   for (player in listPlayer){
@@ -15,13 +16,14 @@ function action(creature) {
 function action(creature, listTile, heightMap) {
   const movespeed = creature.movespeed < 3 ? 1 : creature.movespeed > 3 ? 3 : 2;
   //faire un switch?
-  /* if (
+   if (
     creature.needsLevel.thirst < criticalLevels.thirst &&
     currentTile(creature, listTile) == "water"
   ) {
     satisfyNeeds("water");
     return;
   }
+   /*
   if (creature.needsLevel.thirst < criticalLevels.thirst) {
     creature.searchTile("water");
     creature.goToTileByNeed("thirst");
@@ -82,6 +84,6 @@ function action(creature, listTile, heightMap) {
     return;
   }*/
 }
+}
 
-
-setInterval(tourDeJeu, 1000); // 1000 millisecondes ou autre intervalle de temps
+//setInterval(tourDeJeu, 1000); // 1000 millisecondes ou autre intervalle de temps
