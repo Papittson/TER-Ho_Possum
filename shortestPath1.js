@@ -8,9 +8,10 @@
     return []*/
 
 function route(listTile, currentTile, targetedTile, path) {
+  const listPath = [];
   path.push(currentTile);
   if (currentTile == targetedTile) {
-    return path;
+    listPath.push(path);
   }
   let neighbours = [];
   for (let tile of listTile) {

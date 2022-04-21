@@ -1,5 +1,5 @@
 function start(nbOfPlayer, heightMap, heightTile) {
-  const listTile = [];
+  const listTile = new Map();
   d3.select("body")
     .append("svg")
     .attr("width", heightMap)
@@ -9,10 +9,11 @@ function start(nbOfPlayer, heightMap, heightTile) {
   const shed = { x: 2, y: 2 };
   for (let x = 0; x < 10; x++) {
     for (let y = 0; y < 10; y++) {
-      listTile.push(new Tile(x, y, heightTile, "hole"));
+      let keyId = x.toString() + ";" + y.toString();
+      listTile.set(keyId, new Tile(x, y, heightTile, "hole"));
     }
   }
-
+  console.log(listTile);
   const p1 = new Player("lapin", 1, 1, 1, 1);
 
   p1.creatures.push(new Creature(2, 2, p1, shed, heightTile));
@@ -23,9 +24,7 @@ function start(nbOfPlayer, heightMap, heightTile) {
   const t1 = new Tile(2, 2, heightTile, "hole");
   console.log(creature1.scanArea(listTile, heightMap));
 
-  // console.log(currentTile(creature1, listTile));
-  // console.log(creaturesP1);
-  console.log(reproduce(creaturesP1, t1));
+  const path = path([], creature1.currentTile);
 
   /*const listPlayer = [];
   for (let i = 0; i < nbOfPlayer; i++) {
