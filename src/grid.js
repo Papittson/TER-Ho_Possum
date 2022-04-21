@@ -2,9 +2,9 @@ const { TILE_TYPES } = require("./utils/constants.js");
 const Tile = require("./tile.js");
 
 class Grid {
-  constructor(players, tileHeight = 30) {
+  constructor(players, tileHeight = 15) {
     this.players = players;
-    this.height = players.length < 3 ? 900 : 1500;
+    this.height = players.length < 3 ? 450 : 750;
     this.tileHeight = tileHeight;
     this.tilesPerSide = Math.trunc(this.height / tileHeight);
     this.nbOfTiles = Math.pow(this.tilesPerSide, 2);

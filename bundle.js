@@ -1,15 +1,15 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const Grid = require("./src/grid.js");
-new Grid([{ species: "Pouet" }]);
+new Grid([{ species: "Pouet" }, { species: "chien" }]);
 
 },{"./src/grid.js":2}],2:[function(require,module,exports){
 const { TILE_TYPES } = require("./utils/constants.js");
 const Tile = require("./tile.js");
 
 class Grid {
-  constructor(players, tileHeight = 30) {
+  constructor(players, tileHeight = 15) {
     this.players = players;
-    this.height = players.length < 3 ? 900 : 1500;
+    this.height = players.length < 3 ? 450 : 750;
     this.tileHeight = tileHeight;
     this.tilesPerSide = Math.trunc(this.height / tileHeight);
     this.nbOfTiles = Math.pow(this.tilesPerSide, 2);
@@ -19,6 +19,7 @@ class Grid {
   }
 
   draw() {
+    // eslint-disable-next-line no-undef
     d3.select("#map")
       .append("svg")
       .attr("width", this.height)
@@ -175,6 +176,7 @@ class Tile {
   }
 
   draw(height) {
+    // eslint-disable-next-line no-undef
     this.tile = d3
       .select("#grid")
       .append("rect")
