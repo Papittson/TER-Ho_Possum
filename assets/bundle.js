@@ -364,9 +364,16 @@ function gameEngine() {
   player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
   //player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
   const creature1 = player1.creatures[0];
-  console.log(
-    path([], [creature1.currentTile(tiles)], tiles.get("10;21"), tiles)
-  );
+  const startId = creature1.currentTile(tiles).id;
+  const goal = "10;21";
+  const allPath = path({}, { [startId]: null }, goal, tiles);
+  let key = goal;
+  const route = [key];
+  while (allPath[key] != null) {
+    route.push(allPath[key]);
+    key = allPath[key];
+  }
+  console.log(route.reverse());
 }
 
 document.getElementById("inputs").addEventListener("submit", function (event) {
@@ -400,29 +407,26 @@ module.exports = Player;
 
 // eslint-disable-next-line no-unused-vars
 function path(tilesExplored, tilesToExplore, targetedTile, tiles) {
-  let cpt = 0;
-  while (tilesToExplore.length != 0) {
-    cpt++;
-    if (cpt == 4) {
-      debugger;
-    }
-    const tile = tilesToExplore.shift();
-    tilesExplored.push(tile);
-    const neighbours = tile.neighbours(tiles);
+  while (Object.keys(tilesToExplore).length > 0) {
+    const tile = Object.keys(tilesToExplore)[0];
+    tilesExplored[tile] = tilesToExplore[tile];
+    delete tilesToExplore[tile];
+
+    const neighbours = tiles.get(tile).neighbours(tiles);
     for (let i = 0; i < neighbours.length; i++) {
       if (
-        tilesExplored.includes({ parent: tile, child: neighbours[i] }) ||
-        tilesExplored.includes(neighbours[i])
+        neighbours[i].id in tilesExplored ||
+        neighbours[i].id in tilesToExplore ||
+        neighbours[i].isObstacle()
       ) {
         continue;
       } else {
-        tilesExplored.push();
+        tilesToExplore[neighbours[i].id] = tile;
       }
     }
     if (tile == targetedTile) {
       return tilesExplored;
     }
-    tilesToExplore = tilesToExplore.concat(neighbours);
   }
   return [];
 }
@@ -433,6 +437,7 @@ const { TILE_TYPES } = require("./utils/constants.js");
 
 class Tile {
   constructor(x, y, height, type, species) {
+    this.id = `${x};${y}`;
     this.x = x;
     this.y = y;
     this.height = height;
@@ -446,7 +451,7 @@ class Tile {
     this.tile = d3
       .select("#grid")
       .append("rect")
-      .attr("id", `${this.x};${this.y}`)
+      .attr("id", this.id)
       .attr("width", height)
       .attr("height", height)
       .attr("x", this.x * height)
@@ -455,6 +460,11 @@ class Tile {
       //.on("click", console.log(this.tileType))
       .attr("fill", this.type.color);
   }
+
+  isObstacle() {
+    return this.type.obstacle;
+  }
+
   neighbours(tiles) {
     const neighbours = [
       tiles.get(`${this.x - 1};${this.y}`),
@@ -479,12 +489,12 @@ module.exports = Tile;
 
 },{"./utils/constants.js":7}],7:[function(require,module,exports){
 const TILE_TYPES = Object.freeze({
-  DIRT: { color: "#57392a", freq: 0.28 },
-  GRASS: { color: "#57a63d", freq: 0.3, hunger: 30 },
-  FOREST: { color: "#2e5935", freq: 0.15, hunger: 20 },
-  ROCK: { color: "#252526", freq: 0.12 },
-  WATER: { color: "#375e87", freq: 0.15, thirst: 50 },
-  HOLE: { color: "#fc9e3a", sleep: 100 },
+  DIRT: { color: "#57392a", freq: 0.28, obstacle: false },
+  GRASS: { color: "#57a63d", freq: 0.3, hunger: 30, obstacle: false },
+  FOREST: { color: "#2e5935", freq: 0.15, hunger: 20, obstacle: false },
+  ROCK: { color: "#252526", freq: 0.12, obstacle: true },
+  WATER: { color: "#375e87", freq: 0.15, thirst: 50, obstacle: true },
+  HOLE: { color: "#fc9e3a", sleep: 100, obstacle: false },
 });
 
 module.exports = {

@@ -40,9 +40,16 @@ function gameEngine() {
   player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
   //player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
   const creature1 = player1.creatures[0];
-  console.log(
-    path([], [creature1.currentTile(tiles)], tiles.get("10;21"), tiles)
-  );
+  const startId = creature1.currentTile(tiles).id;
+  const goal = "10;21";
+  const allPath = path({}, { [startId]: null }, goal, tiles);
+  let key = goal;
+  const route = [key];
+  while (allPath[key] != null) {
+    route.push(allPath[key]);
+    key = allPath[key];
+  }
+  console.log(route.reverse());
 }
 
 document.getElementById("inputs").addEventListener("submit", function (event) {

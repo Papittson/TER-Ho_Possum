@@ -2,29 +2,26 @@
 
 // eslint-disable-next-line no-unused-vars
 function path(tilesExplored, tilesToExplore, targetedTile, tiles) {
-  let cpt = 0;
-  while (tilesToExplore.length != 0) {
-    cpt++;
-    if (cpt == 4) {
-      debugger;
-    }
-    const tile = tilesToExplore.shift();
-    tilesExplored.push(tile);
-    const neighbours = tile.neighbours(tiles);
+  while (Object.keys(tilesToExplore).length > 0) {
+    const tile = Object.keys(tilesToExplore)[0];
+    tilesExplored[tile] = tilesToExplore[tile];
+    delete tilesToExplore[tile];
+
+    const neighbours = tiles.get(tile).neighbours(tiles);
     for (let i = 0; i < neighbours.length; i++) {
       if (
-        tilesExplored.includes({ parent: tile, child: neighbours[i] }) ||
-        tilesExplored.includes(neighbours[i])
+        neighbours[i].id in tilesExplored ||
+        neighbours[i].id in tilesToExplore ||
+        neighbours[i].isObstacle()
       ) {
         continue;
       } else {
-        tilesExplored.push();
+        tilesToExplore[neighbours[i].id] = tile;
       }
     }
     if (tile == targetedTile) {
       return tilesExplored;
     }
-    tilesToExplore = tilesToExplore.concat(neighbours);
   }
   return [];
 }

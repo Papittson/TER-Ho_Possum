@@ -2,6 +2,7 @@ const { TILE_TYPES } = require("./utils/constants.js");
 
 class Tile {
   constructor(x, y, height, type, species) {
+    this.id = `${x};${y}`;
     this.x = x;
     this.y = y;
     this.height = height;
@@ -15,7 +16,7 @@ class Tile {
     this.tile = d3
       .select("#grid")
       .append("rect")
-      .attr("id", `${this.x};${this.y}`)
+      .attr("id", this.id)
       .attr("width", height)
       .attr("height", height)
       .attr("x", this.x * height)
@@ -24,6 +25,11 @@ class Tile {
       //.on("click", console.log(this.tileType))
       .attr("fill", this.type.color);
   }
+
+  isObstacle() {
+    return this.type.obstacle;
+  }
+
   neighbours(tiles) {
     const neighbours = [
       tiles.get(`${this.x - 1};${this.y}`),
