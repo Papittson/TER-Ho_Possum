@@ -75,6 +75,7 @@ class Grid {
           const middle = Math.trunc(this.tilesPerSide / 2);
           const tile = this.tiles.get(`${middle};${middle}`);
           holes.push(tile);
+          this.players[0].shed = tile;
         }
         break;
       case 2:
@@ -83,6 +84,8 @@ class Grid {
           const tile2 = this.tiles.get(`${threeQuarter};${threeQuarter}`);
           holes.push(tile1);
           holes.push(tile2);
+          this.players[0].shed = tile1;
+          this.players[1].shed = tile2;
         }
         break;
       case 3:
@@ -93,6 +96,9 @@ class Grid {
           holes.push(tile1);
           holes.push(tile2);
           holes.push(tile3);
+          this.players[0].shed = tile1;
+          this.players[1].shed = tile2;
+          this.players[2].shed = tile2;
         }
         break;
       case 4:
@@ -105,12 +111,18 @@ class Grid {
           holes.push(tile2);
           holes.push(tile3);
           holes.push(tile4);
+          this.players[0].shed = tile1;
+          this.players[1].shed = tile2;
+          this.players[2].shed = tile3;
+          this.players[3].shed = tile4;
         }
         break;
       default:
         throw Error("You need to have 1 to 4 players!");
     }
-    holes.forEach((hole) => hole.toHole(this.players[0].species));
+    for (let i = 0; i < this.players.length; i++) {
+      holes[i].toHole(this.players[i].species);
+    }
   }
 
   getWaterShape(tile, remainingWaterSize) {

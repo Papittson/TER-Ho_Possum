@@ -1,11 +1,210 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="stylesheet.css" />
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-    <script <script async defer src="../bundle.js"></script>
+    <script async defer src="bundle.js"></script>
   </head>
   <h3>Jeu de la vie</h3>
   <body>
+    <form id="inputs">
+      <label for="nbOfPlayer">Nombre de Joueurs</label
+      ><input
+        type="number"
+        id="nbOfPlayer"
+        name="nbOfPlayer"
+        step="1"
+        min="1"
+        max="4"
+        value="1"
+      />
+      <div id="sliders">
+        <div id="player1" class="">
+          <input
+            type="text"
+            id="speciePlayer1"
+            name="speciePlayer2"
+            placeholder="Espèce du joueur 1"
+          />
+          <label for="moveSpeed">Vitesse de déplacement</label>
+          <input
+            type="number"
+            id="moveSpeed1"
+            name="moveSpeed"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          /><label for="reproducibility">Reproduction</label
+          ><input
+            type="number"
+            id="reproducibility1"
+            name="reproducibility"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          /><label for="perception">Perception</label>
+          <input
+            type="number"
+            id="perception1"
+            name="perception"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          /><label for="strength">Force</label>
+          <input
+            type="number"
+            id="strength1"
+            name="strength"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          />
+        </div>
+
+        <!--INPUTS PLAYER 2-->
+        <div id="player2" class="">
+          <input
+            type="text"
+            id="speciePlayer2"
+            name="speciePlayer2"
+            placeholder="Espèce du joueur 2"
+          /><label for="moveSpeed">Vitesse de déplacement</label
+          ><input
+            type="number"
+            id="moveSpeed2"
+            name="moveSpeed"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          /><label for="reproducibility">Reproduction</label
+          ><input
+            type="number"
+            id="reproducibility2"
+            name="reproducibility"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          /><label for="perception">Perception</label>
+          <input
+            type="number"
+            id="perception2"
+            name="perception"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          /><label for="strength">Force</label>
+          <input
+            type="number"
+            id="strength2"
+            name="strength"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          />
+        </div>
+
+        <!--INPUTS PLAYER 3-->
+        <div id="player3" class="">
+          <input
+            type="text"
+            id="speciePlayer3"
+            name="speciePlayer3"
+            placeholder="Espèce du joueur 3"
+          /><label for="moveSpeed">Vitesse de déplacement</label
+          ><input
+            type="number"
+            id="moveSpeed3"
+            name="moveSpeed"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          /><label for="reproducibility">Reproduction</label
+          ><input
+            type="number"
+            id="reproducibility3"
+            name="reproducibility"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          /><label for="perception">Perception</label>
+          <input
+            type="number"
+            id="perception3"
+            name="perception"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          /><label for="strength">Force</label>
+          <input
+            type="number"
+            id="strength3"
+            name="strength"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          />
+        </div>
+
+        <!--INPUT PLAYER 4-->
+        <div id="player4" class="">
+          <input
+            type="text"
+            id="speciePlayer4"
+            name="speciePlayer4"
+            placeholder="Espèce du joueur 4"
+          /><label for="moveSpeed">Vitesse de déplacement</label
+          ><input
+            type="number"
+            id="moveSpeed4"
+            name="moveSpeed"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          /><label for="reproducibility">Reproduction</label
+          ><input
+            type="number"
+            id="reproducibility4"
+            name="reproducibility"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          /><label for="perception">Perception</label>
+          <input
+            type="number"
+            id="perception4"
+            name="perception"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          /><label for="strength">Force</label>
+          <input
+            type="number"
+            id="strength4"
+            name="strength"
+            step="1"
+            min="1"
+            max="5"
+            value="1"
+          />
+        </div>
+      </div>
+      <button id="startButton" type="submit">START</button>
+    </form>
     <div id="map"></div>
   </body>
 </html>

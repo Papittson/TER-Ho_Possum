@@ -1,0 +1,17 @@
+.top {
+  z-index: 100;
+}
+
+body {
+  background-color: #1b1b1b;
+  color: #ffffff;
+}
+.visible {
+  visibility: visible;
+}
+.hidden {
+  visibility: hidden;
+}
+.non_display {
+  display: none;
+}

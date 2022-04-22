@@ -1,17 +1,17 @@
+// eslint-disable-next-line no-unused-vars
 class Creature {
   constructor(
     x,
     y,
     {
-      speciesName,
+      species,
       creatures,
       reproducibility,
       strength,
       movespeed,
       perception,
-    },
-    shed,
-    heightTile
+      shed,
+    }
   ) {
     this.reproducibility = reproducibility;
     this.strength = strength;
@@ -20,16 +20,26 @@ class Creature {
     this.shed = shed;
     this.x = x;
     this.y = y;
-    this.id = speciesName + creatures.length;
+    this.id = species + creatures.length;
     this.needsLevel = { hunger: 50, thirst: 50, energy: 50 };
+    this.draw();
+    // eslint-disable-next-line no-undef
+  }
+
+  draw() {
+    // eslint-disable-next-line no-undef
     d3.select("#grid")
       .append("circle")
-      .attr("cx", this.x * heightTile + heightTile / 2)
-      .attr("cy", this.y * heightTile + heightTile / 2)
-      .attr("r", heightTile / 2 - 1)
-      .attr("fill", "black")
+      .attr("cx", this.x * this.shed.height + this.shed.height / 2)
+      .attr("cy", this.y * this.shed.height + this.shed.height / 2)
+      .attr("r", this.shed.height / 2 - 3)
+      .attr("fill", "#ff0015")
       .attr("class", "top")
       .attr("id", this.id);
+  }
+
+  currentTile(tiles) {
+    return tiles[`${this.x};${this.y}`];
   }
 
   //concernant le deplacement
@@ -46,9 +56,10 @@ class Creature {
   move(x, y) {
     this.x = x;
     this.y = y;
+    // eslint-disable-next-line no-undef
     d3.select("#" + this.id)
-      .attr("cx", x * heightTile + heightTile / 2)
-      .attr("cy", y * heightTile + heightTile / 2);
+      .attr("cx", x * this.shed.height + this.shed.height / 2)
+      .attr("cy", y * this.shed.height + this.shed.height / 2);
   }
 
   //actions sur les besoins
@@ -68,16 +79,16 @@ class Creature {
   satisfyNeeds(tileType) {
     switch (tileType) {
       case "water":
-        needsLevel.thirst = 1.75 * needs.thirst;
+        this.needsLevel.thirst = 1.75 * this.needsLevel.thirst;
         break;
       case "grass":
-        needsLevel.hunger = 1.35 * needs.hunger;
+        this.needsLevel.hunger = 1.35 * this.needsLevel.hunger;
         break;
       case "forest":
-        needsLevel.hunger = 1.05 * needs.hunger;
+        this.needsLevel.hunger = 1.05 * this.needsLevel.hunger;
         break;
       case "shed":
-        needsLevel.energy = 100;
+        this.needsLevel.energy = 100;
         break;
     }
   }
@@ -134,3 +145,4 @@ class Creature {
     return tilesSorted;
   }
 }
+module.exports = Creature;

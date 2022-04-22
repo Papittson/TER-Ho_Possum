@@ -4,6 +4,7 @@ class Tile {
   constructor(x, y, height, type, species) {
     this.x = x;
     this.y = y;
+    this.height = height;
     this.type = type;
     this.species = species;
     this.draw(height);
@@ -23,7 +24,15 @@ class Tile {
       //.on("click", console.log(this.tileType))
       .attr("fill", this.type.color);
   }
-
+  neighbours(tiles) {
+    const neighbours = [
+      tiles[`${this.x - 1};${this.y}`],
+      tiles[`${this.x + 1};${this.y}`],
+      tiles[`${this.x};${this.y - 1}`],
+      tiles[`${this.x};${this.y + 1}`],
+    ];
+    return neighbours;
+  }
   setType(type) {
     this.type = type;
     this.tile.attr("fill", this.type.color);

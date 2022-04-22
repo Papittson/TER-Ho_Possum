@@ -4,7 +4,7 @@ const TILE_TYPES = Object.freeze({
   FOREST: { color: "#2e5935", freq: 0.15, hunger: 20 },
   ROCK: { color: "#252526", freq: 0.12 },
   WATER: { color: "#375e87", freq: 0.15, thirst: 50 },
-  HOLE: { color: "#ff1313", sleep: 100 },
+  HOLE: { color: "#fc9e3a", sleep: 100 },
 });
 
 module.exports = {

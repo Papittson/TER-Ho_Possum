@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "browserify main.js > bundle.js && open-cli assets/index.html"
+    "start": "browserify src/main.js > assets/bundle.js && open-cli assets/index.html",
+    "restart": "browserify src/main.js > assets/bundle.js && echo [INFO] The project has been restarted!"
   },
   "author": "",
   "license": "ISC",
