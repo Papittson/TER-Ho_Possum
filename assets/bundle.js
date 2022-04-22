@@ -40,7 +40,7 @@ class Creature {
   }
 
   currentTile(tiles) {
-    return tiles[`${this.x};${this.y}`];
+    return tiles.get(`${this.x};${this.y}`);
   }
 
   //concernant le deplacement
@@ -359,13 +359,14 @@ function gameEngine() {
 
   const grid = new Grid(players);
   const tiles = grid.tiles;
-  console.log(players);
   document.getElementById("inputs").classList.add("non_display");
   const player1 = players[0];
   player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
   //player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
   const creature1 = player1.creatures[0];
-  console.log(path([], [creature1.currentTile(tiles)], tiles["10;21"], tiles));
+  console.log(
+    path([], [creature1.currentTile(tiles)], tiles.get("10;21"), tiles)
+  );
 }
 
 document.getElementById("inputs").addEventListener("submit", function (event) {
@@ -399,16 +400,29 @@ module.exports = Player;
 
 // eslint-disable-next-line no-unused-vars
 function path(tilesExplored, tilesToExplore, targetedTile, tiles) {
+  let cpt = 0;
   while (tilesToExplore.length != 0) {
+    cpt++;
+    if (cpt == 4) {
+      debugger;
+    }
     const tile = tilesToExplore.shift();
+    tilesExplored.push(tile);
     const neighbours = tile.neighbours(tiles);
     for (let i = 0; i < neighbours.length; i++) {
-      tilesExplored.push({ parent: tile, child: neighbours[i] });
+      if (
+        tilesExplored.includes({ parent: tile, child: neighbours[i] }) ||
+        tilesExplored.includes(neighbours[i])
+      ) {
+        continue;
+      } else {
+        tilesExplored.push();
+      }
     }
     if (tile == targetedTile) {
       return tilesExplored;
     }
-    tilesToExplore = tilesToExplore.concat(tile.neighbours(tiles));
+    tilesToExplore = tilesToExplore.concat(neighbours);
   }
   return [];
 }
@@ -443,10 +457,10 @@ class Tile {
   }
   neighbours(tiles) {
     const neighbours = [
-      tiles[`${this.x - 1};${this.y}`],
-      tiles[`${this.x + 1};${this.y}`],
-      tiles[`${this.x};${this.y - 1}`],
-      tiles[`${this.x};${this.y + 1}`],
+      tiles.get(`${this.x - 1};${this.y}`),
+      tiles.get(`${this.x + 1};${this.y}`),
+      tiles.get(`${this.x};${this.y - 1}`),
+      tiles.get(`${this.x};${this.y + 1}`),
     ];
     return neighbours;
   }

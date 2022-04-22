@@ -35,13 +35,14 @@ function gameEngine() {
 
   const grid = new Grid(players);
   const tiles = grid.tiles;
-  console.log(players);
   document.getElementById("inputs").classList.add("non_display");
   const player1 = players[0];
   player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
   //player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
   const creature1 = player1.creatures[0];
-  console.log(path([], [creature1.currentTile(tiles)], tiles["10;21"], tiles));
+  console.log(
+    path([], [creature1.currentTile(tiles)], tiles.get("10;21"), tiles)
+  );
 }
 
 document.getElementById("inputs").addEventListener("submit", function (event) {

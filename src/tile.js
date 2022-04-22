@@ -26,10 +26,10 @@ class Tile {
   }
   neighbours(tiles) {
     const neighbours = [
-      tiles[`${this.x - 1};${this.y}`],
-      tiles[`${this.x + 1};${this.y}`],
-      tiles[`${this.x};${this.y - 1}`],
-      tiles[`${this.x};${this.y + 1}`],
+      tiles.get(`${this.x - 1};${this.y}`),
+      tiles.get(`${this.x + 1};${this.y}`),
+      tiles.get(`${this.x};${this.y - 1}`),
+      tiles.get(`${this.x};${this.y + 1}`),
     ];
     return neighbours;
   }

@@ -39,7 +39,7 @@ class Creature {
   }
 
   currentTile(tiles) {
-    return tiles[`${this.x};${this.y}`];
+    return tiles.get(`${this.x};${this.y}`);
   }
 
   //concernant le deplacement
