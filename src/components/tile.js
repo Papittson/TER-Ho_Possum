@@ -1,4 +1,4 @@
-const { TILE_TYPES } = require("./utils/constants.js");
+const { TILE_TYPES } = require("../utils/constants.js");
 
 class Tile {
   constructor(x, y, height, type, species) {
@@ -37,8 +37,9 @@ class Tile {
       tiles.get(`${this.x};${this.y - 1}`),
       tiles.get(`${this.x};${this.y + 1}`),
     ];
-    return neighbours;
+    return neighbours.filter((tile) => tile != null);
   }
+
   setType(type) {
     this.type = type;
     this.tile.attr("fill", this.type.color);

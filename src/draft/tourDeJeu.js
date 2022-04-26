@@ -13,17 +13,18 @@ function action(creature, listTile, heightMap) {
 }*/
 
 function action(creature) {
-function action(creature, listTile, heightMap) {
-  const movespeed = creature.movespeed < 3 ? 1 : creature.movespeed > 3 ? 3 : 2;
-  //faire un switch?
-   if (
-    creature.needsLevel.thirst < criticalLevels.thirst &&
-    currentTile(creature, listTile) == "water"
-  ) {
-    satisfyNeeds("water");
-    return;
-  }
-   /*
+  function action(creature, listTile, heightMap) {
+    const movespeed =
+      creature.movespeed < 3 ? 1 : creature.movespeed > 3 ? 3 : 2;
+    //faire un switch?
+    if (
+      creature.needsLevel.thirst < criticalLevels.thirst &&
+      currentTile(creature, listTile) == "water"
+    ) {
+      satisfyNeeds("water");
+      return;
+    }
+    /*
   if (creature.needsLevel.thirst < criticalLevels.thirst) {
     creature.searchTile("water");
     creature.goToTileByNeed("thirst");
@@ -83,7 +84,7 @@ function action(creature, listTile, heightMap) {
     creature.move();
     return;
   }*/
-}
+  }
 }
 
 //setInterval(tourDeJeu, 1000); // 1000 millisecondes ou autre intervalle de temps

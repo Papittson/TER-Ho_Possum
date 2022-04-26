@@ -1,4 +1,4 @@
-const { TILE_TYPES } = require("./utils/constants.js");
+const { TILE_TYPES } = require("../utils/constants.js");
 const Tile = require("./tile.js");
 
 class Grid {

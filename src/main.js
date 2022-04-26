@@ -1,19 +1,12 @@
-const Player = require("./player.js");
-const Grid = require("./grid.js");
-const Creature = require("./creature.js");
-const path = require("./shortestPath2");
-function displaySliders() {
-  for (let i = 2; i < 5; i++) {
-    document.getElementById(`player${i}`).classList.remove("hidden");
-  }
-  const nbOfPlayer = document.getElementById("nbOfPlayer").value;
-  for (let i = 4; i > nbOfPlayer; i--) {
-    document.getElementById(`player${i}`).setAttribute("class", "hidden");
-  }
-}
-document
-  .getElementById("nbOfPlayer")
-  .addEventListener("change", displaySliders);
+const Player = require("./components/player.js");
+const Grid = require("./components/grid.js");
+const Creature = require("./components/creature.js");
+const path = require("./utils/shortestPathAlgo");
+// eslint-disable-next-line no-unused-vars
+const { TILE_TYPES } = require("./utils/constants.js");
+const { changeListener } = require("./views/menu.js");
+
+changeListener();
 
 function gameEngine() {
   const nbOfPlayer = parseInt(document.getElementById("nbOfPlayer").value);
@@ -37,19 +30,47 @@ function gameEngine() {
   const tiles = grid.tiles;
   document.getElementById("inputs").classList.add("non_display");
   const player1 = players[0];
+  let player2;
+  if (players.length > 1) {
+    player2 = players[1];
+  }
   player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
   //player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
   const creature1 = player1.creatures[0];
-  const startId = creature1.currentTile(tiles).id;
-  const goal = "10;21";
-  const allPath = path({}, { [startId]: null }, goal, tiles);
-  let key = goal;
-  const route = [key];
-  while (allPath[key] != null) {
-    route.push(allPath[key]);
-    key = allPath[key];
+  let arrivee;
+  if (players.length > 1) {
+    arrivee = player2.shed.id;
+  } else {
+    arrivee = "10;10";
   }
-  console.log(route.reverse());
+
+  const depart = new Map();
+  const departKey = creature1.shed.id;
+  depart.set(departKey, null);
+  //map de string : string
+  const allPath = path(new Map(), depart, arrivee, tiles);
+  console.log("Allpath vaut :");
+  console.log(allPath);
+  //remonte de la fin jusqua larrivée
+  let key = arrivee;
+  let finalRoute = [tiles.get(key)];
+
+  while (key != null) {
+    finalRoute.push(tiles.get(key));
+    key = allPath.get(key);
+  }
+  const orderedFinalRoute = finalRoute.reverse();
+  console.log(orderedFinalRoute);
+
+  for (let i = 0; i < orderedFinalRoute.length; i++) {
+    if (i == 0) {
+      orderedFinalRoute[i].setType(TILE_TYPES.DEPART);
+    } else if (i == orderedFinalRoute.length - 1) {
+      orderedFinalRoute[i].setType(TILE_TYPES.ARRIVEE);
+    } else {
+      orderedFinalRoute[i].setType(TILE_TYPES.CHEMIN);
+    }
+  }
 }
 
 document.getElementById("inputs").addEventListener("submit", function (event) {

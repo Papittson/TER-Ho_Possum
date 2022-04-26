@@ -149,7 +149,7 @@ class Creature {
 module.exports = Creature;
 
 },{}],2:[function(require,module,exports){
-const { TILE_TYPES } = require("./utils/constants.js");
+const { TILE_TYPES } = require("../utils/constants.js");
 const Tile = require("./tile.js");
 
 class Grid {
@@ -321,69 +321,7 @@ function isInjective(list) {
 }
 */
 
-},{"./tile.js":6,"./utils/constants.js":7}],3:[function(require,module,exports){
-const Player = require("./player.js");
-const Grid = require("./grid.js");
-const Creature = require("./creature.js");
-const path = require("./shortestPath2");
-function displaySliders() {
-  for (let i = 2; i < 5; i++) {
-    document.getElementById(`player${i}`).classList.remove("hidden");
-  }
-  const nbOfPlayer = document.getElementById("nbOfPlayer").value;
-  for (let i = 4; i > nbOfPlayer; i--) {
-    document.getElementById(`player${i}`).setAttribute("class", "hidden");
-  }
-}
-document
-  .getElementById("nbOfPlayer")
-  .addEventListener("change", displaySliders);
-
-function gameEngine() {
-  const nbOfPlayer = parseInt(document.getElementById("nbOfPlayer").value);
-  const players = [];
-  for (let i = 1; i < nbOfPlayer + 1; i++) {
-    if (!document.getElementById(`player${i}`).classList.contains("hidden")) {
-      const species = document.getElementById(`speciePlayer${i}`).value;
-      const reproducibility = document.getElementById(
-        `reproducibility${i}`
-      ).value;
-      const strength = document.getElementById(`strength${i}`).value;
-      const movespeed = document.getElementById(`moveSpeed${i}`).value;
-      const perception = document.getElementById(`perception${i}`).value;
-      players.push(
-        new Player(species, reproducibility, strength, movespeed, perception)
-      );
-    }
-  }
-
-  const grid = new Grid(players);
-  const tiles = grid.tiles;
-  document.getElementById("inputs").classList.add("non_display");
-  const player1 = players[0];
-  player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
-  //player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
-  const creature1 = player1.creatures[0];
-  const startId = creature1.currentTile(tiles).id;
-  const goal = "10;21";
-  const allPath = path({}, { [startId]: null }, goal, tiles);
-  let key = goal;
-  const route = [key];
-  while (allPath[key] != null) {
-    route.push(allPath[key]);
-    key = allPath[key];
-  }
-  console.log(route.reverse());
-}
-
-document.getElementById("inputs").addEventListener("submit", function (event) {
-  event.preventDefault();
-  gameEngine();
-});
-//const Grid = require("./grid.js");
-//
-
-},{"./creature.js":1,"./grid.js":2,"./player.js":4,"./shortestPath2":5}],4:[function(require,module,exports){
+},{"../utils/constants.js":6,"./tile.js":4}],3:[function(require,module,exports){
 // eslint-disable-next-line no-unused-vars
 class Player {
   constructor(species, reproducibility, strength, movespeed, perception, shed) {
@@ -402,38 +340,8 @@ class Player {
 }
 module.exports = Player;
 
-},{}],5:[function(require,module,exports){
-//il faut lier les cases à leur parent, récuperer le chemin le plus court
-
-// eslint-disable-next-line no-unused-vars
-function path(tilesExplored, tilesToExplore, targetedTile, tiles) {
-  while (Object.keys(tilesToExplore).length > 0) {
-    const tile = Object.keys(tilesToExplore)[0];
-    tilesExplored[tile] = tilesToExplore[tile];
-    delete tilesToExplore[tile];
-
-    const neighbours = tiles.get(tile).neighbours(tiles);
-    for (let i = 0; i < neighbours.length; i++) {
-      if (
-        neighbours[i].id in tilesExplored ||
-        neighbours[i].id in tilesToExplore ||
-        neighbours[i].isObstacle()
-      ) {
-        continue;
-      } else {
-        tilesToExplore[neighbours[i].id] = tile;
-      }
-    }
-    if (tile == targetedTile) {
-      return tilesExplored;
-    }
-  }
-  return [];
-}
-module.exports = path;
-
-},{}],6:[function(require,module,exports){
-const { TILE_TYPES } = require("./utils/constants.js");
+},{}],4:[function(require,module,exports){
+const { TILE_TYPES } = require("../utils/constants.js");
 
 class Tile {
   constructor(x, y, height, type, species) {
@@ -472,8 +380,9 @@ class Tile {
       tiles.get(`${this.x};${this.y - 1}`),
       tiles.get(`${this.x};${this.y + 1}`),
     ];
-    return neighbours;
+    return neighbours.filter((tile) => tile != null);
   }
+
   setType(type) {
     this.type = type;
     this.tile.attr("fill", this.type.color);
@@ -487,18 +396,174 @@ class Tile {
 
 module.exports = Tile;
 
-},{"./utils/constants.js":7}],7:[function(require,module,exports){
+},{"../utils/constants.js":6}],5:[function(require,module,exports){
+const Player = require("./components/player.js");
+const Grid = require("./components/grid.js");
+const Creature = require("./components/creature.js");
+const path = require("./utils/shortestPathAlgo");
+// eslint-disable-next-line no-unused-vars
+const { TILE_TYPES } = require("./utils/constants.js");
+const { changeListener } = require("./views/menu.js");
+
+changeListener();
+
+function gameEngine() {
+  const nbOfPlayer = parseInt(document.getElementById("nbOfPlayer").value);
+  const players = [];
+  for (let i = 1; i < nbOfPlayer + 1; i++) {
+    if (!document.getElementById(`player${i}`).classList.contains("hidden")) {
+      const species = document.getElementById(`speciePlayer${i}`).value;
+      const reproducibility = document.getElementById(
+        `reproducibility${i}`
+      ).value;
+      const strength = document.getElementById(`strength${i}`).value;
+      const movespeed = document.getElementById(`moveSpeed${i}`).value;
+      const perception = document.getElementById(`perception${i}`).value;
+      players.push(
+        new Player(species, reproducibility, strength, movespeed, perception)
+      );
+    }
+  }
+
+  const grid = new Grid(players);
+  const tiles = grid.tiles;
+  document.getElementById("inputs").classList.add("non_display");
+  const player1 = players[0];
+  let player2;
+  if (players.length > 1) {
+    player2 = players[1];
+  }
+  player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
+  //player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
+  const creature1 = player1.creatures[0];
+  let arrivee;
+  if (players.length > 1) {
+    arrivee = player2.shed.id;
+  } else {
+    arrivee = "10;10";
+  }
+
+  const depart = new Map();
+  const departKey = creature1.shed.id;
+  depart.set(departKey, null);
+  //map de string : string
+  const allPath = path(new Map(), depart, arrivee, tiles);
+  console.log("Allpath vaut :");
+  console.log(allPath);
+  //remonte de la fin jusqua larrivée
+  let key = arrivee;
+  let finalRoute = [tiles.get(key)];
+
+  while (key != null) {
+    finalRoute.push(tiles.get(key));
+    key = allPath.get(key);
+  }
+  const orderedFinalRoute = finalRoute.reverse();
+  console.log(orderedFinalRoute);
+
+  for (let i = 0; i < orderedFinalRoute.length; i++) {
+    if (i == 0) {
+      orderedFinalRoute[i].setType(TILE_TYPES.DEPART);
+    } else if (i == orderedFinalRoute.length - 1) {
+      orderedFinalRoute[i].setType(TILE_TYPES.ARRIVEE);
+    } else {
+      orderedFinalRoute[i].setType(TILE_TYPES.CHEMIN);
+    }
+  }
+}
+
+document.getElementById("inputs").addEventListener("submit", function (event) {
+  event.preventDefault();
+  gameEngine();
+});
+//const Grid = require("./grid.js");
+//
+
+},{"./components/creature.js":1,"./components/grid.js":2,"./components/player.js":3,"./utils/constants.js":6,"./utils/shortestPathAlgo":7,"./views/menu.js":8}],6:[function(require,module,exports){
 const TILE_TYPES = Object.freeze({
-  DIRT: { color: "#57392a", freq: 0.28, obstacle: false },
-  GRASS: { color: "#57a63d", freq: 0.3, hunger: 30, obstacle: false },
-  FOREST: { color: "#2e5935", freq: 0.15, hunger: 20, obstacle: false },
-  ROCK: { color: "#252526", freq: 0.12, obstacle: true },
-  WATER: { color: "#375e87", freq: 0.15, thirst: 50, obstacle: true },
-  HOLE: { color: "#fc9e3a", sleep: 100, obstacle: false },
+  DIRT: { color: "#ffffff", freq: 0.28, obstacle: false },
+  GRASS: { color: "#ffffff", freq: 0.3, hunger: 30, obstacle: false },
+  FOREST: { color: "#ffffff", freq: 0.15, hunger: 20, obstacle: false },
+  ROCK: { color: "#000000", freq: 0.12, obstacle: true },
+  WATER: { color: "#000000", freq: 0.15, thirst: 50, obstacle: true },
+  HOLE: { color: "#ffffff", sleep: 100, obstacle: false },
+  CHEMIN: { color: "#ff0000" },
+  DEPART: { color: "#00ff00" },
+  ARRIVEE: { color: "#0000ff" },
+});
+
+// eslint-disable-next-line no-unused-vars
+const state = Object.freeze({
+  hungry: "hungry",
+  sleepy: "sleepy",
+  thristy: "thirsty",
+  normal: "normal",
+});
+
+// eslint-disable-next-line no-unused-vars
+const criticalLevels = Object.freeze({
+  hunger: 30,
+  sleep: 20,
+  thrist: 35,
 });
 
 module.exports = {
   TILE_TYPES,
+  state,
+  criticalLevels,
 };
 
-},{}]},{},[3]);
+},{}],7:[function(require,module,exports){
+//il faut lier les cases à leur parent, récuperer le chemin le plus court
+
+// eslint-disable-next-line no-unused-vars
+function path(tilesExplored, tilesToExplore, targetedTile, tiles) {
+  if (!tiles.get(targetedTile).isObstacle()) {
+    while (tilesToExplore.size > 0) {
+      const tile = Array.from(tilesToExplore.keys(tilesToExplore))[0];
+      tilesExplored.set(tile, tilesToExplore.get(tile));
+      tilesToExplore.delete(tile);
+
+      if (tile == targetedTile) {
+        return tilesExplored;
+      }
+
+      const neighbours = tiles.get(tile).neighbours(tiles);
+      for (let i = 0; i < neighbours.length; i++) {
+        if (
+          tilesExplored.has(neighbours[i].id) ||
+          tilesToExplore.has(neighbours[i].id) ||
+          neighbours[i].isObstacle()
+        ) {
+          continue;
+        } else {
+          tilesToExplore.set(neighbours[i].id, tile);
+        }
+      }
+    }
+    return [];
+  } else {
+    console.log("Erreur la case cible est un obstacle");
+  }
+}
+module.exports = path;
+
+},{}],8:[function(require,module,exports){
+function displaySliders() {
+  for (let i = 2; i < 5; i++) {
+    document.getElementById(`player${i}`).classList.remove("hidden");
+  }
+  const nbOfPlayer = document.getElementById("nbOfPlayer").value;
+  for (let i = 4; i > nbOfPlayer; i--) {
+    document.getElementById(`player${i}`).setAttribute("class", "hidden");
+  }
+}
+function changeListener() {
+  document
+    .getElementById("nbOfPlayer")
+    .addEventListener("change", displaySliders);
+}
+
+module.exports = { changeListener };
+
+},{}]},{},[5]);
