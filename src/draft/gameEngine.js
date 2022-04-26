@@ -11,7 +11,7 @@ function reproduce(creatures, tile) {
     }
   }
   if (sameCre.length >= 2) {
-    creatures.push("newCreature");
+    creatures.push(sameCre[0]);
   }
   return creatures;
 }
