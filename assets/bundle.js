@@ -1,5 +1,4 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-// eslint-disable-next-line no-unused-vars
 class Creature {
   constructor(
     x,
@@ -11,30 +10,31 @@ class Creature {
       strength,
       movespeed,
       perception,
-      shed,
+      hole,
+      color,
     }
   ) {
     this.reproducibility = reproducibility;
     this.strength = strength;
     this.movespeed = movespeed;
     this.perception = perception;
-    this.shed = shed;
+    this.hole = hole;
     this.x = x;
     this.y = y;
+    this.color = color;
     this.id = species + creatures.length;
     this.needsLevel = { hunger: 50, thirst: 50, energy: 50 };
     this.draw();
-    // eslint-disable-next-line no-undef
   }
 
   draw() {
     // eslint-disable-next-line no-undef
     d3.select("#grid")
       .append("circle")
-      .attr("cx", this.x * this.shed.height + this.shed.height / 2)
-      .attr("cy", this.y * this.shed.height + this.shed.height / 2)
-      .attr("r", this.shed.height / 2 - 3)
-      .attr("fill", "#ff0015")
+      .attr("cx", this.x * this.hole.height + this.hole.height / 2)
+      .attr("cy", this.y * this.hole.height + this.hole.height / 2)
+      .attr("r", this.hole.height / 2 - 3)
+      .attr("fill", "color")
       .attr("class", "top")
       .attr("id", this.id);
   }
@@ -43,7 +43,6 @@ class Creature {
     return tiles.get(`${this.x};${this.y}`);
   }
 
-  //concernant le deplacement
   goToTileByNeed(need) {
     for (let tile in this.scanArea()) {
       if (need == "thirst" && tile.tileType == "water") {
@@ -59,8 +58,8 @@ class Creature {
     this.y = y;
     // eslint-disable-next-line no-undef
     d3.select("#" + this.id)
-      .attr("cx", x * this.shed.height + this.shed.height / 2)
-      .attr("cy", y * this.shed.height + this.shed.height / 2);
+      .attr("cx", x * this.hole.height + this.hole.height / 2)
+      .attr("cy", y * this.hole.height + this.hole.height / 2);
   }
 
   //actions sur les besoins
@@ -88,7 +87,7 @@ class Creature {
       case "forest":
         this.needsLevel.hunger = 1.05 * this.needsLevel.hunger;
         break;
-      case "shed":
+      case "hole":
         this.needsLevel.energy = 100;
         break;
     }
@@ -149,6 +148,66 @@ class Creature {
 module.exports = Creature;
 
 },{}],2:[function(require,module,exports){
+const Grid = require("./grid.js");
+const { COLORS } = require("../utils/constants.js");
+const Creature = require("./creature.js");
+
+class GameEngine {
+  setPlayers(players) {
+    for (let i = 0; i < players.length; i++) {
+      players[i].setColor(COLORS[i]);
+    }
+    this.players = players;
+  }
+
+  start() {
+    if (this.players == null || !Array.isArray(this.players)) {
+      throw new Error("Vous devez mettre une liste de joueurs !!!");
+    }
+
+    if (this.players.length < 1 || this.players.length > 4) {
+      throw new Error("Vous devez mettre une liste de 1 à 4 joueurs !!!");
+    }
+
+    this.grid = new Grid(this.players);
+
+    for (let player of this.players) {
+      const { x, y } = player.hole;
+      player.addCreature(new Creature(x, y, player));
+      player.addCreature(new Creature(x, y, player));
+    }
+  }
+}
+
+module.exports = GameEngine;
+
+/*function reproduce(creatures, tile) {
+  var sameCre = [];
+  for (let creature of creatures) {
+    if (
+      tile.tileType == "hole" &&
+      creature.x == tile.x &&
+      creature.y == tile.y
+    ) {
+      sameCre.push(creature);
+    }
+  }
+  if (sameCre.length >= 2) {
+    creatures.push(sameCre[0]);
+  }
+  return creatures;
+}
+
+function currentTile(creature, listTile) {
+  //return creature.scanArea[0];
+  for (let tile of listTile) {
+    if (creature.x == tile.x && creature.y == tile.y) {
+      return tile.tileType;
+    }
+  }
+}*/
+
+},{"../utils/constants.js":7,"./creature.js":1,"./grid.js":3}],3:[function(require,module,exports){
 const { TILE_TYPES } = require("../utils/constants.js");
 const Tile = require("./tile.js");
 
@@ -226,7 +285,7 @@ class Grid {
           const middle = Math.trunc(this.tilesPerSide / 2);
           const tile = this.tiles.get(`${middle};${middle}`);
           holes.push(tile);
-          this.players[0].shed = tile;
+          this.players[0].setHole(tile);
         }
         break;
       case 2:
@@ -235,8 +294,8 @@ class Grid {
           const tile2 = this.tiles.get(`${threeQuarter};${threeQuarter}`);
           holes.push(tile1);
           holes.push(tile2);
-          this.players[0].shed = tile1;
-          this.players[1].shed = tile2;
+          this.players[0].setHole(tile1);
+          this.players[1].setHole(tile2);
         }
         break;
       case 3:
@@ -247,9 +306,9 @@ class Grid {
           holes.push(tile1);
           holes.push(tile2);
           holes.push(tile3);
-          this.players[0].shed = tile1;
-          this.players[1].shed = tile2;
-          this.players[2].shed = tile2;
+          this.players[0].setHole(tile1);
+          this.players[1].setHole(tile2);
+          this.players[2].setHole(tile3);
         }
         break;
       case 4:
@@ -262,10 +321,10 @@ class Grid {
           holes.push(tile2);
           holes.push(tile3);
           holes.push(tile4);
-          this.players[0].shed = tile1;
-          this.players[1].shed = tile2;
-          this.players[2].shed = tile3;
-          this.players[3].shed = tile4;
+          this.players[0].setHole(tile1);
+          this.players[1].setHole(tile2);
+          this.players[2].setHole(tile3);
+          this.players[3].setHole(tile4);
         }
         break;
       default:
@@ -321,17 +380,24 @@ function isInjective(list) {
 }
 */
 
-},{"../utils/constants.js":6,"./tile.js":4}],3:[function(require,module,exports){
-// eslint-disable-next-line no-unused-vars
+},{"../utils/constants.js":7,"./tile.js":5}],4:[function(require,module,exports){
 class Player {
-  constructor(species, reproducibility, strength, movespeed, perception, shed) {
+  constructor(species, reproducibility, strength, movespeed, perception) {
     this.species = species;
     this.creatures = [];
     this.reproducibility = reproducibility;
     this.strength = strength;
     this.movespeed = movespeed;
     this.perception = perception;
-    this.shed = shed;
+  }
+
+  setHole(hole) {
+    this.hole = hole;
+    hole.setBorder(this.color);
+  }
+
+  setColor(color) {
+    this.color = color;
   }
 
   addCreature(creature) {
@@ -340,7 +406,7 @@ class Player {
 }
 module.exports = Player;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 const { TILE_TYPES } = require("../utils/constants.js");
 
 class Tile {
@@ -352,6 +418,11 @@ class Tile {
     this.type = type;
     this.species = species;
     this.draw(height);
+    this.ticks = 0;
+  }
+
+  setBorder(color) {
+    this.tile.attr("stroke", color);
   }
 
   draw(height) {
@@ -367,6 +438,21 @@ class Tile {
       .attr("stroke", "black")
       //.on("click", console.log(this.tileType))
       .attr("fill", this.type.color);
+  }
+
+  grow() {
+    if (!this.isGrowable()) {
+      return;
+    }
+    if (this.ticks > 1) {
+      this.setType(TILE_TYPES.GRASS);
+      this.ticks = 0;
+    }
+    this.ticks++;
+  }
+
+  isGrowable() {
+    return this.type.growable;
   }
 
   isObstacle() {
@@ -396,17 +482,101 @@ class Tile {
 
 module.exports = Tile;
 
-},{"../utils/constants.js":6}],5:[function(require,module,exports){
+},{"../utils/constants.js":7}],6:[function(require,module,exports){
 const Player = require("./components/player.js");
-const Grid = require("./components/grid.js");
-const Creature = require("./components/creature.js");
-const path = require("./utils/shortestPathAlgo");
-const { TILE_TYPES } = require("./utils/constants.js");
 const { changeListener } = require("./views/menu.js");
+const fetchData = require("./utils/fetchData.js");
+const GameEngine = require("./components/gameEngine.js");
 
 changeListener();
+const playersData = fetchData();
+const players = playersData.map(
+  (data) =>
+    new Player(
+      data.species,
+      data.reproducibility,
+      data.strength,
+      data.movespeed,
+      data.perception
+    )
+);
 
-function gameEngine() {
+function launch() {
+  const gameEngine = new GameEngine();
+  gameEngine.setPlayers(players);
+  gameEngine.start();
+}
+
+document.getElementById("inputs").addEventListener("submit", function (event) {
+  event.preventDefault();
+  launch();
+});
+
+/*function gameEnginehl() {
+  const grid = new Grid(players);
+  const tiles = grid.tiles;
+  document.getElementById("inputs").classList.add("non_display");
+}
+
+document.getElementById("inputs").addEventListener("submit", function (event) {
+  event.preventDefault();
+  gameEngine();
+});
+const Grid = require("./grid.js");
+*/
+
+},{"./components/gameEngine.js":2,"./components/player.js":4,"./utils/fetchData.js":8,"./views/menu.js":9}],7:[function(require,module,exports){
+const TILE_TYPES = Object.freeze({
+  DIRT: { color: "#45302b", freq: 0.28, obstacle: false, growable: true },
+  GRASS: {
+    color: "#679629",
+    freq: 0.3,
+    hunger: 30,
+    obstacle: false,
+    growable: false,
+  },
+  FOREST: {
+    color: "#155e2f",
+    freq: 0.15,
+    hunger: 20,
+    obstacle: false,
+    growable: false,
+  },
+  ROCK: { color: "#8a8a8a", freq: 0.12, obstacle: true, growable: false },
+  WATER: {
+    color: "#3184a8",
+    freq: 0.15,
+    thirst: 50,
+    obstacle: true,
+    growable: false,
+  },
+  HOLE: { color: "#000000", sleep: 100, obstacle: false, growable: false },
+});
+
+const COLORS = ["#fcba03", "#cc0000", "#b83f18", "#7a2d9c"];
+
+const state = Object.freeze({
+  hungry: "hungry",
+  sleepy: "sleepy",
+  thristy: "thirsty",
+  normal: "normal",
+});
+
+const criticalLevels = Object.freeze({
+  hunger: 30,
+  sleep: 20,
+  thrist: 35,
+});
+
+module.exports = {
+  TILE_TYPES,
+  state,
+  criticalLevels,
+  COLORS,
+};
+
+},{}],8:[function(require,module,exports){
+function fetchData() {
   const nbOfPlayer = parseInt(document.getElementById("nbOfPlayer").value);
   const players = [];
   for (let i = 1; i < nbOfPlayer + 1; i++) {
@@ -418,94 +588,21 @@ function gameEngine() {
       const strength = document.getElementById(`strength${i}`).value;
       const movespeed = document.getElementById(`moveSpeed${i}`).value;
       const perception = document.getElementById(`perception${i}`).value;
-      players.push(
-        new Player(species, reproducibility, strength, movespeed, perception)
-      );
+      players.push({
+        species,
+        reproducibility,
+        strength,
+        movespeed,
+        perception,
+      });
     }
   }
-
-  const grid = new Grid(players);
-  const tiles = grid.tiles;
-  document.getElementById("inputs").classList.add("non_display");
+  return players;
 }
 
-document.getElementById("inputs").addEventListener("submit", function (event) {
-  event.preventDefault();
-  gameEngine();
-});
-//const Grid = require("./grid.js");
-//
+module.exports = fetchData;
 
-},{"./components/creature.js":1,"./components/grid.js":2,"./components/player.js":3,"./utils/constants.js":6,"./utils/shortestPathAlgo":7,"./views/menu.js":8}],6:[function(require,module,exports){
-const TILE_TYPES = Object.freeze({
-  DIRT: { color: "#45302b", freq: 0.28, obstacle: false },
-  GRASS: { color: "#679629", freq: 0.3, hunger: 30, obstacle: false },
-  FOREST: { color: "#155e2f", freq: 0.15, hunger: 20, obstacle: false },
-  ROCK: { color: "#8a8a8a", freq: 0.12, obstacle: true },
-  WATER: { color: "#3184a8", freq: 0.15, thirst: 50, obstacle: true },
-  HOLE: { color: "#b83f18", sleep: 100, obstacle: false },
-  CHEMIN: { color: "#ff0000" },
-  DEPART: { color: "#00ff00" },
-  ARRIVEE: { color: "#0000ff" },
-});
-
-// eslint-disable-next-line no-unused-vars
-const state = Object.freeze({
-  hungry: "hungry",
-  sleepy: "sleepy",
-  thristy: "thirsty",
-  normal: "normal",
-});
-
-// eslint-disable-next-line no-unused-vars
-const criticalLevels = Object.freeze({
-  hunger: 30,
-  sleep: 20,
-  thrist: 35,
-});
-
-module.exports = {
-  TILE_TYPES,
-  state,
-  criticalLevels,
-};
-
-},{}],7:[function(require,module,exports){
-//il faut lier les cases à leur parent, récuperer le chemin le plus court
-
-// eslint-disable-next-line no-unused-vars
-function path(tilesExplored, tilesToExplore, targetedTile, tiles) {
-  if (!tiles.get(targetedTile).isObstacle()) {
-    while (tilesToExplore.size > 0) {
-      const tile = Array.from(tilesToExplore.keys(tilesToExplore))[0];
-      tilesExplored.set(tile, tilesToExplore.get(tile));
-      tilesToExplore.delete(tile);
-
-      if (tile == targetedTile) {
-        return tilesExplored;
-      }
-
-      const neighbours = tiles.get(tile).neighbours(tiles);
-      for (let i = 0; i < neighbours.length; i++) {
-        if (
-          tilesExplored.has(neighbours[i].id) ||
-          tilesToExplore.has(neighbours[i].id) ||
-          neighbours[i].isObstacle()
-        ) {
-          continue;
-        } else {
-          tilesToExplore.set(neighbours[i].id, tile);
-        }
-      }
-    }
-    return [];
-  } else {
-    console.log("Erreur la case cible est un obstacle");
-  }
-}
-module.exports = path;
-
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 function displaySliders() {
   for (let i = 2; i < 5; i++) {
     document.getElementById(`player${i}`).classList.remove("hidden");
@@ -523,4 +620,4 @@ function changeListener() {
 
 module.exports = { changeListener };
 
-},{}]},{},[5]);
+},{}]},{},[6]);
