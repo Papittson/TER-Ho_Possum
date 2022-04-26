@@ -1,0 +1,74 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: rgb(27, 27, 27);
+}
+
+p {
+    color: aliceblue;
+    font-size: 14px;  
+}
+
+.Joueur {
+    color: aliceblue;
+}
+
+.slider {
+    margin: 0;
+    width: 25%;
+    display: flex;
+    align-items: center;
+}
+
+input[type="range"]{
+    -webkit-appearance: none;
+    background: linear-gradient(75deg, rgb(120, 200, 107), rgb(174, 230, 165));
+    border-radius: 4px;
+    width: 100%;
+    height: 8px;
+    outline: none;
+    box-shadow: 0 0 3px rgb(108, 239, 167);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+    background: rgb(48, 215, 165);
+    box-shadow: 0 0 0 2px rgb(221, 236, 227);
+
+}
+
+.selected {
+    margin-right: 16px;
+    width: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 4px;
+    color: rgb(241, 245, 241);
+    position: relative;
+}
+
+input[type="button"]{
+    margin-top: 400px;
+    background-color:  rgb(232, 249, 230);
+    border-radius: 4px;
+    width: 80px;
+    height: 30px;
+    position: absolute;
+}
