@@ -9,6 +9,11 @@ class Tile {
     this.type = type;
     this.species = species;
     this.draw(height);
+    this.ticks = 0;
+  }
+
+  setBorder(color) {
+    this.tile.attr("stroke", color);
   }
 
   draw(height) {
@@ -24,6 +29,21 @@ class Tile {
       .attr("stroke", "black")
       //.on("click", console.log(this.tileType))
       .attr("fill", this.type.color);
+  }
+
+  grow() {
+    if (!this.isGrowable()) {
+      return;
+    }
+    if (this.ticks > 1) {
+      this.setType(TILE_TYPES.GRASS);
+      this.ticks = 0;
+    }
+    this.ticks++;
+  }
+
+  isGrowable() {
+    return this.type.growable;
   }
 
   isObstacle() {

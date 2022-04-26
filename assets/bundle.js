@@ -401,7 +401,6 @@ const Player = require("./components/player.js");
 const Grid = require("./components/grid.js");
 const Creature = require("./components/creature.js");
 const path = require("./utils/shortestPathAlgo");
-// eslint-disable-next-line no-unused-vars
 const { TILE_TYPES } = require("./utils/constants.js");
 const { changeListener } = require("./views/menu.js");
 
@@ -428,48 +427,6 @@ function gameEngine() {
   const grid = new Grid(players);
   const tiles = grid.tiles;
   document.getElementById("inputs").classList.add("non_display");
-  const player1 = players[0];
-  let player2;
-  if (players.length > 1) {
-    player2 = players[1];
-  }
-  player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
-  //player1.addCreature(new Creature(player1.shed.x, player1.shed.y, player1));
-  const creature1 = player1.creatures[0];
-  let arrivee;
-  if (players.length > 1) {
-    arrivee = player2.shed.id;
-  } else {
-    arrivee = "10;10";
-  }
-
-  const depart = new Map();
-  const departKey = creature1.shed.id;
-  depart.set(departKey, null);
-  //map de string : string
-  const allPath = path(new Map(), depart, arrivee, tiles);
-  console.log("Allpath vaut :");
-  console.log(allPath);
-  //remonte de la fin jusqua larrivée
-  let key = arrivee;
-  let finalRoute = [tiles.get(key)];
-
-  while (key != null) {
-    finalRoute.push(tiles.get(key));
-    key = allPath.get(key);
-  }
-  const orderedFinalRoute = finalRoute.reverse();
-  console.log(orderedFinalRoute);
-
-  for (let i = 0; i < orderedFinalRoute.length; i++) {
-    if (i == 0) {
-      orderedFinalRoute[i].setType(TILE_TYPES.DEPART);
-    } else if (i == orderedFinalRoute.length - 1) {
-      orderedFinalRoute[i].setType(TILE_TYPES.ARRIVEE);
-    } else {
-      orderedFinalRoute[i].setType(TILE_TYPES.CHEMIN);
-    }
-  }
 }
 
 document.getElementById("inputs").addEventListener("submit", function (event) {
@@ -481,12 +438,12 @@ document.getElementById("inputs").addEventListener("submit", function (event) {
 
 },{"./components/creature.js":1,"./components/grid.js":2,"./components/player.js":3,"./utils/constants.js":6,"./utils/shortestPathAlgo":7,"./views/menu.js":8}],6:[function(require,module,exports){
 const TILE_TYPES = Object.freeze({
-  DIRT: { color: "#ffffff", freq: 0.28, obstacle: false },
-  GRASS: { color: "#ffffff", freq: 0.3, hunger: 30, obstacle: false },
-  FOREST: { color: "#ffffff", freq: 0.15, hunger: 20, obstacle: false },
-  ROCK: { color: "#000000", freq: 0.12, obstacle: true },
-  WATER: { color: "#000000", freq: 0.15, thirst: 50, obstacle: true },
-  HOLE: { color: "#ffffff", sleep: 100, obstacle: false },
+  DIRT: { color: "#45302b", freq: 0.28, obstacle: false },
+  GRASS: { color: "#679629", freq: 0.3, hunger: 30, obstacle: false },
+  FOREST: { color: "#155e2f", freq: 0.15, hunger: 20, obstacle: false },
+  ROCK: { color: "#8a8a8a", freq: 0.12, obstacle: true },
+  WATER: { color: "#3184a8", freq: 0.15, thirst: 50, obstacle: true },
+  HOLE: { color: "#b83f18", sleep: 100, obstacle: false },
   CHEMIN: { color: "#ff0000" },
   DEPART: { color: "#00ff00" },
   ARRIVEE: { color: "#0000ff" },

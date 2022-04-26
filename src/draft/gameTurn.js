@@ -5,7 +5,7 @@ function gameTurn(players) {
   for (let player of players) {
     //randomize player.creature list
     for (let creature of players.creature) {
-      creature.action();
+      action(creature);
     }
   }
 }
