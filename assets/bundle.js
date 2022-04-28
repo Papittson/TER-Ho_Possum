@@ -1,4 +1,7 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+const { NEEDS, TILE_TYPES } = require("../utils/constants.js");
+const findPath = require("../utils/shortestPathAlgo.js");
+
 class Creature {
   constructor(
     x,
@@ -23,7 +26,11 @@ class Creature {
     this.y = y;
     this.color = color;
     this.id = species + creatures.length;
-    this.needsLevel = { hunger: 50, thirst: 50, energy: 50 };
+    this.needs = {
+      HUNGER: NEEDS.HUNGER.default,
+      THIRST: NEEDS.THIRST.default,
+      SLEEP: NEEDS.SLEEP.default,
+    };
     this.draw();
   }
 
@@ -39,115 +46,93 @@ class Creature {
       .attr("id", this.id);
   }
 
-  currentTile(tiles) {
-    return tiles.get(`${this.x};${this.y}`);
-  }
-
-  goToTileByNeed(need) {
-    for (let tile in this.scanArea()) {
-      if (need == "thirst" && tile.tileType == "water") {
-        this.move(tile.x, tile.y);
-      } else if (need == "hunger" && tile.TileType == "grass") {
-        this.move(tile.x, tile.y);
-      }
-    }
-  }
-
   move(x, y) {
     this.x = x;
     this.y = y;
     // eslint-disable-next-line no-undef
-    d3.select("#" + this.id)
+    d3.select(`#${this.id}`)
       .attr("cx", x * this.hole.height + this.hole.height / 2)
       .attr("cy", y * this.hole.height + this.hole.height / 2);
   }
 
-  //actions sur les besoins
-  increaseNeedsLevel(need, rate) {
-    if (rate < 0) {
-      throw new RangeError();
-    }
-    this.needsLevel[need] += rate;
-  }
-
-  decreaseNeedsLevel(need, rate) {
-    if (rate < 0) {
-      throw new RangeError();
-    }
-    this.needsLevel[need] -= rate;
-  }
-  satisfyNeeds(tileType) {
-    switch (tileType) {
-      case "water":
-        this.needsLevel.thirst = 1.75 * this.needsLevel.thirst;
-        break;
-      case "grass":
-        this.needsLevel.hunger = 1.35 * this.needsLevel.hunger;
-        break;
-      case "forest":
-        this.needsLevel.hunger = 1.05 * this.needsLevel.hunger;
-        break;
-      case "hole":
-        this.needsLevel.energy = 100;
-        break;
+  decreaseNeeds() {
+    for (const need of Object.keys(this.needs)) {
+      const decreaseAmount = this.needs[need] - NEEDS[need].decreaseAmount;
+      this.needs[need] = Math.max(0, decreaseAmount);
     }
   }
 
-  searchTile(tileType, listTile, heightMap) {
-    let i = 0;
-    let environment = this.scanArea(listTile, heightMap);
-    while (i < environment.length && environment[i].tileType != tileType) {
-      i++;
+  increaseNeed(need) {
+    if (need != null) {
+      const increaseAmount = this.needs[need] + NEEDS[need].increaseAmount;
+      this.needs[need] = Math.min(100, increaseAmount);
     }
-    if (i != environment.length) {
-      return environment[i];
+  }
+
+  getCriticalNeed() {
+    const sortedNeeds = Object.keys(this.needs);
+    sortedNeeds.sort((a, b) => NEEDS[a].priority - NEEDS[b].priority);
+    for (const need of sortedNeeds) {
+      if (this.needs[need] < NEEDS[need].critical) {
+        return need;
+      }
+    }
+    return null;
+  }
+
+  doAction(tilesInArea) {
+    const criticalNeed = this.getCriticalNeed();
+    let targetType;
+    switch (criticalNeed) {
+      case "THIRST":
+        targetType = TILE_TYPES.WATER;
+        break;
+    }
+    const tilesToExplore = new Map();
+    tilesToExplore.set(`${this.x};${this.y}`, null);
+    const path = findPath(
+      new Map(),
+      tilesToExplore,
+      tilesInArea,
+      undefined,
+      targetType
+    );
+    if (path.length === 0) {
+      // TODO Direction au hasard
+      const currentTile = tilesInArea.get(`${this.x};${this.y}`);
+      for (let step = 0; step < this.movespeed; step++) {
+        let neighbours;
+        // TODO Continuer ici
+      }
+      return true;
     } else {
-      return null; //à voir
-    }
-  }
-
-  scanArea(listTile, heightMap) {
-    const radius = this.perception < 3 ? 2 : this.perception > 3 ? 6 : 4;
-    const tilesSorted = [];
-    let minX = Math.max(this.x - radius, 0);
-    let maxX = Math.min(this.x + radius, heightMap);
-    let minY = Math.max(this.y - radius, 0);
-    let maxY = Math.min(this.y + radius, heightMap);
-    let distanceToTile = {};
-    for (let i = 0; i < listTile.length; i++) {
-      if (
-        listTile[i].x >= minX &&
-        listTile[i].x <= maxX &&
-        listTile[i].y >= minY &&
-        listTile[i].y <= maxY
-      ) {
-        distanceToTile[i] =
-          Math.abs(listTile[i].x - this.x) + Math.abs(listTile[i].y - this.y);
-        listTile[i].draw.attr("fill", "red");
+      // Prevent creature from stepping into water (no drowning)
+      if (criticalNeed == "THIRST") {
+        path.pop();
+      }
+      for (let step = 0; step < this.movespeed; step++) {
+        // TODO Utiliser setTimeout avec await
+        const nextStep = path.shift();
+        if (nextStep == null) {
+          break;
+        }
+        const { x, y } = tilesInArea.get(nextStep);
+        this.move(x, y);
+      }
+      // The creature arrived to its goal
+      if (path.length === 0) {
+        this.increaseNeed(criticalNeed);
+        return true;
       }
     }
 
-    var listKeyDistance = Object.keys(distanceToTile).map((key) => {
-      return [key, distanceToTile[key]];
-    });
-
-    listKeyDistance.sort((first, second) => {
-      return first[1] - second[1];
-    });
-
-    var listeTileSortedIndex = listKeyDistance.map((e) => {
-      return e[0];
-    });
-
-    for (let index of listeTileSortedIndex) {
-      tilesSorted.push(listTile[index]);
-    }
-    return tilesSorted;
+    return false;
   }
 }
+
 module.exports = Creature;
 
-},{}],2:[function(require,module,exports){
+},{"../utils/constants.js":7,"../utils/shortestPathAlgo.js":9}],2:[function(require,module,exports){
 const Grid = require("./grid.js");
 const { COLORS } = require("../utils/constants.js");
 const Creature = require("./creature.js");
@@ -169,12 +154,28 @@ class GameEngine {
       throw new Error("Vous devez mettre une liste de 1 à 4 joueurs !!!");
     }
 
-    this.grid = new Grid(this.players);
+    this.grid = new grid(this.players);
 
     for (let player of this.players) {
       const { x, y } = player.hole;
       player.addCreature(new Creature(x, y, player));
       player.addCreature(new Creature(x, y, player));
+    }
+
+    setInterval(this.startRound, 3000);
+  }
+
+  startRound() {
+    // Grow dirt to grass
+    this.grid.grow();
+    // Do creatures' action
+    for (const player of this.players) {
+      for (const creature of player.creatures) {
+        creature.decreaseNeeds();
+        const { x, y, perception } = creature;
+        const tilesInArea = this.grid.getTilesInArea(x, y, perception);
+        creature.doAction(tilesInArea);
+      }
     }
   }
 }
@@ -221,6 +222,27 @@ class Grid {
     this.tiles = new Map();
     this.draw();
     this.createTiles();
+  }
+
+  getTilesInArea(posX, posY, radius) {
+    const minX = Math.max(posX - radius, 0);
+    const maxX = Math.min(posX + radius, this.tilesPerSide - 1);
+    const minY = Math.max(posY - radius, 0);
+    const maxY = Math.min(posY + radius, this.tilesPerSide - 1);
+    const tiles = new Map();
+    for (let x = minX; x <= maxX; x++) {
+      for (let y = minY; y <= maxY; y++) {
+        if (!this.tiles.has(`${x};${y}`)) {
+          throw Error(`The tile ${x};${y} doesn't exist!`);
+        }
+        tiles.set(`${x};${y}`, this.tiles.get(`${x};${y}`));
+      }
+    }
+    return tiles;
+  }
+
+  grow() {
+    this.tiles.forEach((tile) => tile.grow());
   }
 
   draw() {
@@ -451,11 +473,15 @@ class Tile {
   }
 
   isGrowable() {
-    return this.type.growable;
+    return this.type == TILE_TYPES.DIRT;
   }
 
   isObstacle() {
-    return this.type.obstacle;
+    return this.type == TILE_TYPES.ROCK;
+  }
+
+  isSteppable() {
+    return this.type != TILE_TYPES.WATER && !this.isObstacle();
   }
 
   neighbours(tiles) {
@@ -525,54 +551,55 @@ document.getElementById("inputs").addEventListener("submit", function (event) {
 const Grid = require("./grid.js");
 */
 
-},{"./components/gameEngine.js":2,"./components/player.js":4,"./utils/fetchData.js":8,"./views/menu.js":9}],7:[function(require,module,exports){
+},{"./components/gameEngine.js":2,"./components/player.js":4,"./utils/fetchData.js":8,"./views/menu.js":10}],7:[function(require,module,exports){
 const TILE_TYPES = Object.freeze({
-  DIRT: { color: "#45302b", freq: 0.28, obstacle: false, growable: true },
+  DIRT: { color: "#45302b", freq: 0.28 },
   GRASS: {
     color: "#679629",
     freq: 0.3,
     hunger: 30,
-    obstacle: false,
-    growable: false,
   },
   FOREST: {
     color: "#155e2f",
     freq: 0.15,
     hunger: 20,
-    obstacle: false,
-    growable: false,
   },
-  ROCK: { color: "#8a8a8a", freq: 0.12, obstacle: true, growable: false },
+  ROCK: { color: "#8a8a8a", freq: 0.12 },
   WATER: {
     color: "#3184a8",
     freq: 0.15,
     thirst: 50,
-    obstacle: true,
-    growable: false,
   },
   HOLE: { color: "#000000", sleep: 100, obstacle: false, growable: false },
 });
 
 const COLORS = ["#fcba03", "#cc0000", "#b83f18", "#7a2d9c"];
 
-const state = Object.freeze({
-  hungry: "hungry",
-  sleepy: "sleepy",
-  thristy: "thirsty",
-  normal: "normal",
-});
-
-const criticalLevels = Object.freeze({
-  hunger: 30,
-  sleep: 20,
-  thrist: 35,
+const NEEDS = Object.freeze({
+  HUNGER: {
+    default: 50,
+    decreaseAmount: 0.2,
+    critical: 30,
+    priority: 50,
+  },
+  THIRST: {
+    default: 50,
+    decreaseAmount: 0.25,
+    critical: 35,
+    priority: 100,
+  },
+  SLEEP: {
+    default: 50,
+    decreaseAmount: 0.2,
+    critical: 20,
+    priority: 20,
+  },
 });
 
 module.exports = {
   TILE_TYPES,
-  state,
-  criticalLevels,
   COLORS,
+  NEEDS,
 };
 
 },{}],8:[function(require,module,exports){
@@ -587,7 +614,8 @@ function fetchData() {
       ).value;
       const strength = document.getElementById(`strength${i}`).value;
       const movespeed = document.getElementById(`moveSpeed${i}`).value;
-      const perception = document.getElementById(`perception${i}`).value;
+      let perception = document.getElementById(`perception${i}`).value;
+      perception = perception < 3 ? 2 : perception > 3 ? 6 : 4;
       players.push({
         species,
         reproducibility,
@@ -603,6 +631,56 @@ function fetchData() {
 module.exports = fetchData;
 
 },{}],9:[function(require,module,exports){
+// When you call this function, you can either pass a targetId (String) OR a targetType (TILE_TYPES)
+function findPath(tilesExplored, tilesToExplore, tiles, targetId, targetType) {
+  let stopCondition;
+  if (targetId != null) {
+    stopCondition = (tileId) => tileId == targetId;
+    if (tiles.get(targetId).isObstacle()) {
+      console.error("The target tile is an obstacle...");
+      return [];
+    }
+  } else if (targetType != null) {
+    stopCondition = (tileId) => tiles.get(tileId).type == targetType;
+  } else {
+    throw new Error("You must put a target !");
+  }
+
+  while (tilesToExplore.size > 0) {
+    const tileId = Array.from(tilesToExplore.keys(tilesToExplore))[0];
+    tilesExplored.set(tileId, tilesToExplore.get(tileId));
+    tilesToExplore.delete(tileId);
+
+    if (stopCondition(tileId)) {
+      const path = [tileId];
+      let key = tileId;
+      while (key != null) {
+        path.unshift(tilesExplored.get(key));
+        key = tilesExplored.get(key);
+      }
+      return path;
+    }
+
+    const neighbours = tiles.get(tileId).neighbours(tiles);
+    for (let i = 0; i < neighbours.length; i++) {
+      if (
+        tilesExplored.has(neighbours[i].id) ||
+        tilesToExplore.has(neighbours[i].id) ||
+        neighbours[i].isObstacle()
+      ) {
+        continue;
+      } else {
+        tilesToExplore.set(neighbours[i].id, tileId);
+      }
+    }
+  }
+
+  return [];
+}
+
+module.exports = findPath;
+
+},{}],10:[function(require,module,exports){
 function displaySliders() {
   for (let i = 2; i < 5; i++) {
     document.getElementById(`player${i}`).classList.remove("hidden");
