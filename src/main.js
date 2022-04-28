@@ -4,19 +4,19 @@ const fetchData = require("./utils/fetchData.js");
 const GameEngine = require("./components/gameEngine.js");
 
 changeListener();
-const playersData = fetchData();
-const players = playersData.map(
-  (data) =>
-    new Player(
-      data.species,
-      data.reproducibility,
-      data.strength,
-      data.movespeed,
-      data.perception
-    )
-);
 
-function launch() {
+function startGame() {
+  const playersData = fetchData();
+  const players = playersData.map(
+    (data) =>
+      new Player(
+        data.species,
+        data.reproducibility,
+        data.strength,
+        data.movespeed,
+        data.perception
+      )
+  );
   const gameEngine = new GameEngine();
   gameEngine.setPlayers(players);
   gameEngine.start();
@@ -24,7 +24,8 @@ function launch() {
 
 document.getElementById("inputs").addEventListener("submit", function (event) {
   event.preventDefault();
-  launch();
+  document.getElementById("inputs").classList.add("non_display");
+  startGame();
 });
 
 /*function gameEnginehl() {

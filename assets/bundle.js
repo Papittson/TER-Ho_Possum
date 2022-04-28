@@ -34,7 +34,7 @@ class Creature {
       .attr("cx", this.x * this.hole.height + this.hole.height / 2)
       .attr("cy", this.y * this.hole.height + this.hole.height / 2)
       .attr("r", this.hole.height / 2 - 3)
-      .attr("fill", "color")
+      .attr("fill", this.color)
       .attr("class", "top")
       .attr("id", this.id);
   }
@@ -212,9 +212,9 @@ const { TILE_TYPES } = require("../utils/constants.js");
 const Tile = require("./tile.js");
 
 class Grid {
-  constructor(players, tileHeight = 15) {
+  constructor(players, tileHeight = 20) {
     this.players = players;
-    this.height = players.length < 3 ? 450 : 750;
+    this.height = players.length < 3 ? 500 : 700;
     this.tileHeight = tileHeight;
     this.tilesPerSide = Math.trunc(this.height / tileHeight);
     this.nbOfTiles = Math.pow(this.tilesPerSide, 2);
@@ -435,7 +435,6 @@ class Tile {
       .attr("height", height)
       .attr("x", this.x * height)
       .attr("y", this.y * height)
-      .attr("stroke", "black")
       //.on("click", console.log(this.tileType))
       .attr("fill", this.type.color);
   }
@@ -489,19 +488,19 @@ const fetchData = require("./utils/fetchData.js");
 const GameEngine = require("./components/gameEngine.js");
 
 changeListener();
-const playersData = fetchData();
-const players = playersData.map(
-  (data) =>
-    new Player(
-      data.species,
-      data.reproducibility,
-      data.strength,
-      data.movespeed,
-      data.perception
-    )
-);
 
-function launch() {
+function startGame() {
+  const playersData = fetchData();
+  const players = playersData.map(
+    (data) =>
+      new Player(
+        data.species,
+        data.reproducibility,
+        data.strength,
+        data.movespeed,
+        data.perception
+      )
+  );
   const gameEngine = new GameEngine();
   gameEngine.setPlayers(players);
   gameEngine.start();
@@ -509,7 +508,8 @@ function launch() {
 
 document.getElementById("inputs").addEventListener("submit", function (event) {
   event.preventDefault();
-  launch();
+  document.getElementById("inputs").classList.add("non_display");
+  startGame();
 });
 
 /*function gameEnginehl() {

@@ -1,3 +1,6 @@
+const { NEEDS, TILE_TYPES } = require("../utils/constants.js");
+const findPath = require("../utils/shortestPathAlgo.js");
+
 class Creature {
   constructor(
     x,
@@ -22,7 +25,11 @@ class Creature {
     this.y = y;
     this.color = color;
     this.id = species + creatures.length;
-    this.needsLevel = { hunger: 50, thirst: 50, energy: 50 };
+    this.needs = {
+      HUNGER: NEEDS.HUNGER.default,
+      THIRST: NEEDS.THIRST.default,
+      SLEEP: NEEDS.SLEEP.default,
+    };
     this.draw();
   }
 
@@ -33,115 +40,93 @@ class Creature {
       .attr("cx", this.x * this.hole.height + this.hole.height / 2)
       .attr("cy", this.y * this.hole.height + this.hole.height / 2)
       .attr("r", this.hole.height / 2 - 3)
-      .attr("fill", "color")
+      .attr("fill", this.color)
       .attr("class", "top")
       .attr("id", this.id);
-  }
-
-  currentTile(tiles) {
-    return tiles.get(`${this.x};${this.y}`);
-  }
-
-  goToTileByNeed(need) {
-    for (let tile in this.scanArea()) {
-      if (need == "thirst" && tile.tileType == "water") {
-        this.move(tile.x, tile.y);
-      } else if (need == "hunger" && tile.TileType == "grass") {
-        this.move(tile.x, tile.y);
-      }
-    }
   }
 
   move(x, y) {
     this.x = x;
     this.y = y;
     // eslint-disable-next-line no-undef
-    d3.select("#" + this.id)
+    d3.select(`#${this.id}`)
       .attr("cx", x * this.hole.height + this.hole.height / 2)
       .attr("cy", y * this.hole.height + this.hole.height / 2);
   }
 
-  //actions sur les besoins
-  increaseNeedsLevel(need, rate) {
-    if (rate < 0) {
-      throw new RangeError();
-    }
-    this.needsLevel[need] += rate;
-  }
-
-  decreaseNeedsLevel(need, rate) {
-    if (rate < 0) {
-      throw new RangeError();
-    }
-    this.needsLevel[need] -= rate;
-  }
-  satisfyNeeds(tileType) {
-    switch (tileType) {
-      case "water":
-        this.needsLevel.thirst = 1.75 * this.needsLevel.thirst;
-        break;
-      case "grass":
-        this.needsLevel.hunger = 1.35 * this.needsLevel.hunger;
-        break;
-      case "forest":
-        this.needsLevel.hunger = 1.05 * this.needsLevel.hunger;
-        break;
-      case "hole":
-        this.needsLevel.energy = 100;
-        break;
+  decreaseNeeds() {
+    for (const need of Object.keys(this.needs)) {
+      const decreaseAmount = this.needs[need] - NEEDS[need].decreaseAmount;
+      this.needs[need] = Math.max(0, decreaseAmount);
     }
   }
 
-  searchTile(tileType, listTile, heightMap) {
-    let i = 0;
-    let environment = this.scanArea(listTile, heightMap);
-    while (i < environment.length && environment[i].tileType != tileType) {
-      i++;
+  increaseNeed(need) {
+    if (need != null) {
+      const increaseAmount = this.needs[need] + NEEDS[need].increaseAmount;
+      this.needs[need] = Math.min(100, increaseAmount);
     }
-    if (i != environment.length) {
-      return environment[i];
+  }
+
+  getCriticalNeed() {
+    const sortedNeeds = Object.keys(this.needs);
+    sortedNeeds.sort((a, b) => NEEDS[a].priority - NEEDS[b].priority);
+    for (const need of sortedNeeds) {
+      if (this.needs[need] < NEEDS[need].critical) {
+        return need;
+      }
+    }
+    return null;
+  }
+
+  doAction(tilesInArea) {
+    const criticalNeed = this.getCriticalNeed();
+    let targetType;
+    switch (criticalNeed) {
+      case "THIRST":
+        targetType = TILE_TYPES.WATER;
+        break;
+    }
+    const tilesToExplore = new Map();
+    tilesToExplore.set(`${this.x};${this.y}`, null);
+    const path = findPath(
+      new Map(),
+      tilesToExplore,
+      tilesInArea,
+      undefined,
+      targetType
+    );
+    if (path.length === 0) {
+      // TODO Direction au hasard
+      const currentTile = tilesInArea.get(`${this.x};${this.y}`);
+      for (let step = 0; step < this.movespeed; step++) {
+        let neighbours;
+        // TODO Continuer ici
+      }
+      return true;
     } else {
-      return null; //à voir
-    }
-  }
-
-  scanArea(listTile, heightMap) {
-    const radius = this.perception < 3 ? 2 : this.perception > 3 ? 6 : 4;
-    const tilesSorted = [];
-    let minX = Math.max(this.x - radius, 0);
-    let maxX = Math.min(this.x + radius, heightMap);
-    let minY = Math.max(this.y - radius, 0);
-    let maxY = Math.min(this.y + radius, heightMap);
-    let distanceToTile = {};
-    for (let i = 0; i < listTile.length; i++) {
-      if (
-        listTile[i].x >= minX &&
-        listTile[i].x <= maxX &&
-        listTile[i].y >= minY &&
-        listTile[i].y <= maxY
-      ) {
-        distanceToTile[i] =
-          Math.abs(listTile[i].x - this.x) + Math.abs(listTile[i].y - this.y);
-        listTile[i].draw.attr("fill", "red");
+      // Prevent creature from stepping into water (no drowning)
+      if (criticalNeed == "THIRST") {
+        path.pop();
+      }
+      for (let step = 0; step < this.movespeed; step++) {
+        // TODO Utiliser setTimeout avec await
+        const nextStep = path.shift();
+        if (nextStep == null) {
+          break;
+        }
+        const { x, y } = tilesInArea.get(nextStep);
+        this.move(x, y);
+      }
+      // The creature arrived to its goal
+      if (path.length === 0) {
+        this.increaseNeed(criticalNeed);
+        return true;
       }
     }
 
-    var listKeyDistance = Object.keys(distanceToTile).map((key) => {
-      return [key, distanceToTile[key]];
-    });
-
-    listKeyDistance.sort((first, second) => {
-      return first[1] - second[1];
-    });
-
-    var listeTileSortedIndex = listKeyDistance.map((e) => {
-      return e[0];
-    });
-
-    for (let index of listeTileSortedIndex) {
-      tilesSorted.push(listTile[index]);
-    }
-    return tilesSorted;
+    return false;
   }
 }
+
 module.exports = Creature;

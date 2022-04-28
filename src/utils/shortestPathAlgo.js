@@ -1,33 +1,48 @@
-//il faut lier les cases à leur parent, récuperer le chemin le plus court
+// When you call this function, you can either pass a targetId (String) OR a targetType (TILE_TYPES)
+function findPath(tilesExplored, tilesToExplore, tiles, targetId, targetType) {
+  let stopCondition;
+  if (targetId != null) {
+    stopCondition = (tileId) => tileId == targetId;
+    if (tiles.get(targetId).isObstacle()) {
+      console.error("The target tile is an obstacle...");
+      return [];
+    }
+  } else if (targetType != null) {
+    stopCondition = (tileId) => tiles.get(tileId).type == targetType;
+  } else {
+    throw new Error("You must put a target !");
+  }
 
-// eslint-disable-next-line no-unused-vars
-function path(tilesExplored, tilesToExplore, targetedTile, tiles) {
-  if (!tiles.get(targetedTile).isObstacle()) {
-    while (tilesToExplore.size > 0) {
-      const tile = Array.from(tilesToExplore.keys(tilesToExplore))[0];
-      tilesExplored.set(tile, tilesToExplore.get(tile));
-      tilesToExplore.delete(tile);
+  while (tilesToExplore.size > 0) {
+    const tileId = Array.from(tilesToExplore.keys(tilesToExplore))[0];
+    tilesExplored.set(tileId, tilesToExplore.get(tileId));
+    tilesToExplore.delete(tileId);
 
-      if (tile == targetedTile) {
-        return tilesExplored;
+    if (stopCondition(tileId)) {
+      const path = [tileId];
+      let key = tileId;
+      while (key != null) {
+        path.unshift(tilesExplored.get(key));
+        key = tilesExplored.get(key);
       }
+      return path;
+    }
 
-      const neighbours = tiles.get(tile).neighbours(tiles);
-      for (let i = 0; i < neighbours.length; i++) {
-        if (
-          tilesExplored.has(neighbours[i].id) ||
-          tilesToExplore.has(neighbours[i].id) ||
-          neighbours[i].isObstacle()
-        ) {
-          continue;
-        } else {
-          tilesToExplore.set(neighbours[i].id, tile);
-        }
+    const neighbours = tiles.get(tileId).neighbours(tiles);
+    for (let i = 0; i < neighbours.length; i++) {
+      if (
+        tilesExplored.has(neighbours[i].id) ||
+        tilesToExplore.has(neighbours[i].id) ||
+        neighbours[i].isObstacle()
+      ) {
+        continue;
+      } else {
+        tilesToExplore.set(neighbours[i].id, tileId);
       }
     }
-    return [];
-  } else {
-    console.log("Erreur la case cible est un obstacle");
   }
+
+  return [];
 }
-module.exports = path;
+
+module.exports = findPath;

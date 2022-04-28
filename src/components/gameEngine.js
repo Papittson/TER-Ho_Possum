@@ -26,6 +26,22 @@ class GameEngine {
       player.addCreature(new Creature(x, y, player));
       player.addCreature(new Creature(x, y, player));
     }
+
+    setInterval(this.startRound, 3000);
+  }
+
+  startRound() {
+    // Grow dirt to grass
+    this.grid.grow();
+    // Do creatures' action
+    for (const player of this.players) {
+      for (const creature of player.creatures) {
+        creature.decreaseNeeds();
+        const { x, y, perception } = creature;
+        const tilesInArea = this.grid.getTilesInArea(x, y, perception);
+        creature.doAction(tilesInArea);
+      }
+    }
   }
 }
 

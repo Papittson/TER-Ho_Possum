@@ -2,15 +2,36 @@ const { TILE_TYPES } = require("../utils/constants.js");
 const Tile = require("./tile.js");
 
 class Grid {
-  constructor(players, tileHeight = 15) {
+  constructor(players, tileHeight = 20) {
     this.players = players;
-    this.height = players.length < 3 ? 450 : 750;
+    this.height = players.length < 3 ? 500 : 700;
     this.tileHeight = tileHeight;
     this.tilesPerSide = Math.trunc(this.height / tileHeight);
     this.nbOfTiles = Math.pow(this.tilesPerSide, 2);
     this.tiles = new Map();
     this.draw();
     this.createTiles();
+  }
+
+  getTilesInArea(posX, posY, radius) {
+    const minX = Math.max(posX - radius, 0);
+    const maxX = Math.min(posX + radius, this.tilesPerSide - 1);
+    const minY = Math.max(posY - radius, 0);
+    const maxY = Math.min(posY + radius, this.tilesPerSide - 1);
+    const tiles = new Map();
+    for (let x = minX; x <= maxX; x++) {
+      for (let y = minY; y <= maxY; y++) {
+        if (!this.tiles.has(`${x};${y}`)) {
+          throw Error(`The tile ${x};${y} doesn't exist!`);
+        }
+        tiles.set(`${x};${y}`, this.tiles.get(`${x};${y}`));
+      }
+    }
+    return tiles;
+  }
+
+  grow() {
+    this.tiles.forEach((tile) => tile.grow());
   }
 
   draw() {
