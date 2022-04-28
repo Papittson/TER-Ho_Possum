@@ -26,7 +26,7 @@ class Tile {
       .attr("height", height)
       .attr("x", this.x * height)
       .attr("y", this.y * height)
-      //.on("click", console.log(this.tileType))
+      //.on("click", console.log(this.type.name))
       .attr("fill", this.type.color);
   }
 
@@ -46,11 +46,7 @@ class Tile {
   }
 
   isObstacle() {
-    return this.type == TILE_TYPES.ROCK;
-  }
-
-  isSteppable() {
-    return this.type != TILE_TYPES.WATER && !this.isObstacle();
+    return this.type == TILE_TYPES.ROCK || this.type == TILE_TYPES.WATER;
   }
 
   neighbours(tiles) {

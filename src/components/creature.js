@@ -61,16 +61,17 @@ class Creature {
     }
   }
 
-  increaseNeed(need) {
+  increaseNeed(need, tileType) {
     if (need != null) {
-      const increaseAmount = this.needs[need] + NEEDS[need].increaseAmount;
+      const increaseAmount = this.needs[need] + tileType[need];
       this.needs[need] = Math.min(100, increaseAmount);
     }
   }
 
   getCriticalNeed() {
     const sortedNeeds = Object.keys(this.needs);
-    sortedNeeds.sort((a, b) => NEEDS[a].priority - NEEDS[b].priority);
+    sortedNeeds.sort((a, b) => NEEDS[b].priority - NEEDS[a].priority);
+    console.log("besoin rangé" + sortedNeeds);
     for (const need of sortedNeeds) {
       if (this.needs[need] < NEEDS[need].critical) {
         return need;
@@ -81,12 +82,14 @@ class Creature {
 
   doAction(tilesInArea) {
     const criticalNeed = this.getCriticalNeed();
+    console.log("criticalneed " + criticalNeed);
     let targetType;
     switch (criticalNeed) {
       case "THIRST":
-        targetType = TILE_TYPES.WATER;
+        targetType = TILE_TYPES.SAND;
         break;
     }
+    console.log("targettype " + targetType);
     const tilesToExplore = new Map();
     tilesToExplore.set(`${this.x};${this.y}`, null);
     const path = findPath(
@@ -96,31 +99,37 @@ class Creature {
       undefined,
       targetType
     );
+    console.log("cheminvers eau :" + path);
     if (path.length === 0) {
       // TODO Direction au hasard
-      const currentTile = tilesInArea.get(`${this.x};${this.y}`);
+      let currentTile = tilesInArea.get(`${this.x};${this.y}`);
       for (let step = 0; step < this.movespeed; step++) {
-        let neighbours;
         // TODO Continuer ici
+        let neighbours = currentTile.neighbours(tilesInArea);
+        neighbours = neighbours.filter((tile) => !tile.isObstacle());
+        currentTile = neighbours[Math.floor(Math.random() * neighbours.length)];
       }
+      this.move(currentTile.x, currentTile.y);
       return true;
     } else {
-      // Prevent creature from stepping into water (no drowning)
-      if (criticalNeed == "THIRST") {
-        path.pop();
-      }
+      path.shift();
       for (let step = 0; step < this.movespeed; step++) {
+        console.log("step " + step);
         // TODO Utiliser setTimeout avec await
         const nextStep = path.shift();
+        console.log("nextStep " + nextStep);
         if (nextStep == null) {
           break;
         }
         const { x, y } = tilesInArea.get(nextStep);
+        console.log("doit aller à :" + x + "," + y);
         this.move(x, y);
       }
       // The creature arrived to its goal
       if (path.length === 0) {
-        this.increaseNeed(criticalNeed);
+        console.log("soif de creature avant gloup:" + this.needs.THIRST);
+        this.increaseNeed(criticalNeed, targetType);
+        console.log("soif de creature apers gloup :" + this.needs.THIRST);
         return true;
       }
     }

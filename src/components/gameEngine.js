@@ -27,10 +27,12 @@ class GameEngine {
       player.addCreature(new Creature(x, y, player));
     }
 
-    setInterval(this.startRound, 3000);
+    let intervalId = setInterval(() => this.startRound(), 3000);
+    // clearInterval(intervalId);
   }
 
   startRound() {
+    console.log(this.constructor.name);
     // Grow dirt to grass
     this.grid.grow();
     // Do creatures' action

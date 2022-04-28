@@ -19,10 +19,10 @@ function findPath(tilesExplored, tilesToExplore, tiles, targetId, targetType) {
     tilesToExplore.delete(tileId);
 
     if (stopCondition(tileId)) {
-      const path = [tileId];
+      const path = [];
       let key = tileId;
       while (key != null) {
-        path.unshift(tilesExplored.get(key));
+        path.unshift(key);
         key = tilesExplored.get(key);
       }
       return path;

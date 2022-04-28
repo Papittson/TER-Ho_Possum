@@ -4,7 +4,7 @@ const Tile = require("./tile.js");
 class Grid {
   constructor(players, tileHeight = 20) {
     this.players = players;
-    this.height = players.length < 3 ? 500 : 700;
+    this.height = players.length < 3 ? 700 : 800;
     this.tileHeight = tileHeight;
     this.tilesPerSide = Math.trunc(this.height / tileHeight);
     this.nbOfTiles = Math.pow(this.tilesPerSide, 2);
@@ -73,10 +73,20 @@ class Grid {
         cpt++;
         tile.setType(type);
         if (type == TILE_TYPES.WATER) {
+          tile
+            .neighbours(this.tiles)
+            .filter((tile) => tile?.type != TILE_TYPES.WATER)
+            .forEach((tile) => tile?.setType(TILE_TYPES.SAND));
           const remainingWaterSize = nbOfTilesToCreate - cpt;
           const waterTiles = this.getWaterShape(tile, remainingWaterSize);
           waterTiles.forEach((tile) => tile?.setType(type));
           cpt += waterTiles.length;
+          waterTiles.forEach((tile) =>
+            tile
+              ?.neighbours(this.tiles)
+              .filter((tile) => tile?.type != TILE_TYPES.WATER)
+              .forEach((tile) => tile?.setType(TILE_TYPES.SAND))
+          );
         }
       }
     }
