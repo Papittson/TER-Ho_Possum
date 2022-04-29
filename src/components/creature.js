@@ -47,14 +47,16 @@ class Creature {
    * Draw the creature on the grid.
    */
   draw() {
+    const height = this.hole.height;
     this.creature = D3.select("#grid")
-      .append("circle")
-      .attr("cx", this.x * this.hole.height + this.hole.height / 2)
-      .attr("cy", this.y * this.hole.height + this.hole.height / 2)
-      .attr("r", this.hole.height / 2 - 3)
-      .attr("fill", this.color)
+      .append("svg:image")
+      .attr("width", height)
+      .attr("height", height)
+      .attr("x", this.x * height)
+      .attr("y", this.y * height)
       .attr("class", "top")
-      .attr("id", this.id);
+      .attr("id", this.id)
+      .attr("xlink:href", "./images/CREATURE.png");
   }
 
   /**
@@ -65,9 +67,8 @@ class Creature {
   move(x, y) {
     this.x = x;
     this.y = y;
-    this.creature
-      .attr("cx", x * this.hole.height + this.hole.height / 2)
-      .attr("cy", y * this.hole.height + this.hole.height / 2);
+    const height = this.hole.height;
+    this.creature.attr("x", x * height).attr("y", y * height);
   }
 
   decreaseNeeds() {

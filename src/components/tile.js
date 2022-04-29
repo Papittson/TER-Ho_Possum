@@ -19,16 +19,19 @@ class Tile {
 
   draw(height) {
     this.tile = D3.select("#grid")
-      .append("rect")
-      //.append("svg:image")
+      //.append("rect")
+      .append("svg:image")
       .attr("id", this.id)
       .attr("width", height)
       .attr("height", height)
       .attr("x", this.x * height)
       .attr("y", this.y * height)
-      //.attr("xlink:href", this.type.image);
-      //.on("click", console.log(this.type.name))
-      .attr("fill", this.type.color);
+      .attr(
+        "xlink:href",
+        this.type.images[Math.floor(Math.random() * this.type.images.length)]
+      );
+    //.on("click", console.log(this.type.name))
+    //.attr("fill", this.type.color);
   }
 
   grow() {
@@ -64,7 +67,10 @@ class Tile {
 
   setType(type) {
     this.type = type;
-    this.tile.attr("fill", this.type.color);
+    this.tile.attr(
+      "xlink:href",
+      this.type.images[Math.floor(Math.random() * this.type.images.length)]
+    );
   }
 
   toHole(species) {
