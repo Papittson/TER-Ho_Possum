@@ -1,6 +1,7 @@
 const Grid = require("./grid.js");
 const { COLORS } = require("../utils/constants.js");
 const Creature = require("./creature.js");
+const Logger = require("../utils/logger.js");
 
 class GameEngine {
   setPlayers(players) {
@@ -27,23 +28,36 @@ class GameEngine {
       player.addCreature(new Creature(x, y, player));
     }
 
-    let intervalId = setInterval(() => this.startRound(), 3000);
-    // clearInterval(intervalId);
+    setInterval(() => this.startRound(), 1000);
   }
 
   startRound() {
-    console.log(this.constructor.name);
+    Logger.log("ROUND", "Un tour de jeu commence.", "#0c852c");
     // Grow dirt to grass
     this.grid.grow();
     // Do creatures' action
-    for (const player of this.players) {
-      for (const creature of player.creatures) {
-        creature.decreaseNeeds();
+    this.players.forEach((player) => {
+      player.creatures.forEach((creature) => {
         const { x, y, perception } = creature;
-        const tilesInArea = this.grid.getTilesInArea(x, y, perception);
-        creature.doAction(tilesInArea);
-      }
-    }
+        creature.decreaseNeeds();
+
+        if (!creature.isAlive()) {
+          player.addDeadCreature(creature);
+          return;
+        }
+
+        const sendAllTiles = creature.getCriticalNeed() == "SLEEP";
+        const tilesToSend = sendAllTiles
+          ? this.grid.tiles
+          : this.grid.getTilesInArea(x, y, perception);
+
+        const isActionDone = creature.doAction(tilesToSend);
+        if (isActionDone) {
+          this.grid.degrow(creature.x, creature.y);
+        }
+      });
+    });
+    Logger.log("ROUND", "Fin du tour de jeu.", "#0c852c");
   }
 }
 

@@ -1,5 +1,5 @@
-// When you call this function, you can either pass a targetId (String) OR a targetType (TILE_TYPES)
-function findPath(tilesExplored, tilesToExplore, tiles, targetId, targetType) {
+// When you call this function, you can either pass a targetId (String) OR a targetTypes (array of TILE_TYPES)
+function findPath(tilesExplored, tilesToExplore, tiles, targetId, targetTypes) {
   let stopCondition;
   if (targetId != null) {
     stopCondition = (tileId) => tileId == targetId;
@@ -7,8 +7,8 @@ function findPath(tilesExplored, tilesToExplore, tiles, targetId, targetType) {
       console.error("The target tile is an obstacle...");
       return [];
     }
-  } else if (targetType != null) {
-    stopCondition = (tileId) => tiles.get(tileId).type == targetType;
+  } else if (targetTypes != null) {
+    stopCondition = (tileId) => targetTypes.includes(tiles.get(tileId).type);
   } else {
     throw new Error("You must put a target !");
   }

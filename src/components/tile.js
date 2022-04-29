@@ -1,4 +1,6 @@
 const { TILE_TYPES } = require("../utils/constants.js");
+const D3 = require("../utils/d3.js");
+const Logger = require("../utils/logger.js");
 
 class Tile {
   constructor(x, y, height, type, species) {
@@ -9,7 +11,6 @@ class Tile {
     this.type = type;
     this.species = species;
     this.draw(height);
-    this.ticks = 0;
   }
 
   setBorder(color) {
@@ -17,28 +18,30 @@ class Tile {
   }
 
   draw(height) {
-    // eslint-disable-next-line no-undef
-    this.tile = d3
-      .select("#grid")
+    this.tile = D3.select("#grid")
       .append("rect")
+      //.append("svg:image")
       .attr("id", this.id)
       .attr("width", height)
       .attr("height", height)
       .attr("x", this.x * height)
       .attr("y", this.y * height)
+      //.attr("xlink:href", this.type.image);
       //.on("click", console.log(this.type.name))
       .attr("fill", this.type.color);
   }
 
   grow() {
-    if (!this.isGrowable()) {
-      return;
-    }
-    if (this.ticks > 1) {
+    if (this.isGrowable() && Math.random() <= 0.1) {
       this.setType(TILE_TYPES.GRASS);
-      this.ticks = 0;
     }
-    this.ticks++;
+  }
+
+  degrow() {
+    if (this.type == TILE_TYPES.GRASS) {
+      Logger.log("TILE", `La tuile ${this.id} a degrow.`, this.type.color);
+      this.setType(TILE_TYPES.DIRT);
+    }
   }
 
   isGrowable() {

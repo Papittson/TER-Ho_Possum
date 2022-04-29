@@ -1,5 +1,6 @@
 const { TILE_TYPES } = require("../utils/constants.js");
 const Tile = require("./tile.js");
+const D3 = require("../utils/d3.js");
 
 class Grid {
   constructor(players, tileHeight = 20) {
@@ -34,9 +35,12 @@ class Grid {
     this.tiles.forEach((tile) => tile.grow());
   }
 
+  degrow(x, y) {
+    this.tiles.get(`${x};${y}`).degrow();
+  }
+
   draw() {
-    // eslint-disable-next-line no-undef
-    d3.select("#map")
+    D3.select("#map")
       .append("svg")
       .attr("width", this.height)
       .attr("height", this.height)

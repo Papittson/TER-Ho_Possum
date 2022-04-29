@@ -12,11 +12,11 @@ const TILE_TYPES = Object.freeze({
     freq: 0.22,
     HUNGER: 20,
   },
-  ROCK: { name: "ROCHER", color: "#8a8a8a", freq: 0.1 },
+  ROCK: { name: "ROCHER", color: "#8a8a8a", freq: 0.12 },
   WATER: {
     name: "EAU",
     color: "#3184a8",
-    freq: 0.05,
+    freq: 0.08,
   },
   SAND: {
     name: "SABLE",
@@ -36,20 +36,20 @@ const COLORS = ["#fcba03", "#cc0000", "#b83f18", "#7a2d9c"];
 
 const NEEDS = Object.freeze({
   HUNGER: {
-    default: 50,
-    decreaseAmount: 10,
+    default: 100,
+    decreaseAmount: 5,
     critical: 30,
     priority: 50,
   },
   THIRST: {
-    default: 50,
-    decreaseAmount: 10,
+    default: 100,
+    decreaseAmount: 5,
     critical: 35,
     priority: 100,
   },
   SLEEP: {
-    default: 50,
-    decreaseAmount: 10,
+    default: 100,
+    decreaseAmount: 5,
     critical: 20,
     priority: 20,
   },
