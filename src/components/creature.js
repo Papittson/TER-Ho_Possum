@@ -16,7 +16,7 @@ class Creature {
     y,
     {
       species,
-      creatures,
+      creatureCounter,
       reproducibility,
       strength,
       movespeed,
@@ -29,16 +29,18 @@ class Creature {
     this.reproducibility = reproducibility;
     this.strength = strength;
     this.movespeed = movespeed;
+    this.species = species;
     this.perception = perception;
     this.hole = hole;
     this.x = x;
     this.y = y;
     this.color = color;
-    this.id = species + creatures.length;
+    this.id = `${species}-${creatureCounter}`;
     this.needs = {
       HUNGER: NEEDS.HUNGER.default,
       THIRST: NEEDS.THIRST.default,
       SLEEP: NEEDS.SLEEP.default,
+      MATING: NEEDS.MATING.default - reproducibility,
     };
     this.draw();
   }
@@ -75,7 +77,7 @@ class Creature {
     Object.keys(this.needs).forEach((need) => {
       const decreaseAmount = this.needs[need] - NEEDS[need].decreaseAmount;
       this.needs[need] = Math.max(0, decreaseAmount);
-      if (need != "SLEEP" && this.needs[need] === 0) {
+      if (need != "SLEEP" && need != "MATING" && this.needs[need] === 0) {
         this.die();
         return;
       }
@@ -83,9 +85,16 @@ class Creature {
   }
 
   increaseNeed(need, tileType) {
-    const increaseAmount = this.needs[need] + tileType[need];
+    let increaseAmount = this.needs[need] + tileType[need];
+    if (need == "MATING") {
+      increaseAmount -= this.reproducibility;
+    }
     this.needs[need] = Math.min(100, increaseAmount);
-    Logger.log("CREATURE", `Mon/ma ${need} = ${this.needs[need]}.`, this.color);
+    Logger.log(
+      this.species,
+      `Mon/ma ${need} = ${this.needs[need]}.`,
+      this.color
+    );
   }
 
   getCriticalNeed() {
@@ -100,26 +109,31 @@ class Creature {
     let targetTypes;
 
     Logger.log(
-      "CREATURE",
+      this.species,
       `Position de ${this.id} : ${this.x};${this.y}.`,
       this.color
     );
+    Logger.log(this.species, JSON.stringify(this.needs, null, 4), this.color);
 
     switch (criticalNeed) {
       case "THIRST":
-        Logger.log("CREATURE", `J'ai soif.`, this.color);
+        Logger.log(this.species, `J'ai soif.`, this.color);
         targetTypes = [TILE_TYPES.SAND];
         break;
       case "HUNGER":
-        Logger.log("CREATURE", `J'ai faim.`, this.color);
+        Logger.log(this.species, `J'ai faim.`, this.color);
         targetTypes = [TILE_TYPES.GRASS, TILE_TYPES.FOREST];
         break;
       case "SLEEP":
-        Logger.log("CREATURE", `J'ai sommeil.`, this.color);
+        Logger.log(this.species, `J'ai sommeil.`, this.color);
+        targetId = this.hole.id;
+        break;
+      case "MATING":
+        Logger.log(this.species, `J'aimerais agrandir ma famille.`, this.color);
         targetId = this.hole.id;
         break;
       default:
-        Logger.log("CREATURE", `J'erre.`, this.color);
+        Logger.log(this.species, `J'erre.`, this.color);
         this.wander(tiles);
         return false;
     }
@@ -128,23 +142,23 @@ class Creature {
     const path = findPath(new Map(), toExplore, tiles, targetId, targetTypes);
 
     if (path.length === 0) {
-      Logger.log("CREATURE", `Pas de chemin trouvé, j'erre.`, this.color);
+      Logger.log(this.species, `Pas de chemin trouvé, j'erre.`, this.color);
       this.wander(tiles);
       return false;
     }
 
     const targetTile = tiles.get(path[path.length - 1]);
-    Logger.log("CREATURE", `Go tuile ${targetTile.id}.`, this.color);
+    Logger.log(this.species, `Go tuile ${targetTile.id}.`, this.color);
     this.walk(path, tiles);
 
     // The creature arrived to its goal
     if (path.length === 0) {
-      Logger.log("CREATURE", `Arrivée à destination ! :3`, this.color);
+      Logger.log(this.species, `Arrivée à destination ! :3`, this.color);
       this.increaseNeed(criticalNeed, targetTile.type);
       return true;
     }
 
-    Logger.log("CREATURE", `Ouf, encore du chemin à faire...`, this.color);
+    Logger.log(this.species, `Ouf, encore du chemin à faire...`, this.color);
 
     return false;
   }

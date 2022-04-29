@@ -1,6 +1,5 @@
 const Grid = require("./grid.js");
 const { COLORS } = require("../utils/constants.js");
-const Creature = require("./creature.js");
 const Logger = require("../utils/logger.js");
 
 class GameEngine {
@@ -23,12 +22,11 @@ class GameEngine {
     this.grid = new Grid(this.players);
 
     for (let player of this.players) {
-      const { x, y } = player.hole;
-      player.addCreature(new Creature(x, y, player));
-      player.addCreature(new Creature(x, y, player));
+      player.addCreature();
+      player.addCreature();
     }
 
-    setInterval(() => this.startRound(), 1000);
+    setInterval(() => this.startRound(), 500);
   }
 
   startRound() {
@@ -37,6 +35,7 @@ class GameEngine {
     this.grid.grow();
     // Do creatures' action
     this.players.forEach((player) => {
+      let hasReproduced = false;
       player.creatures.forEach((creature) => {
         const { x, y, perception } = creature;
         creature.decreaseNeeds();
@@ -46,7 +45,9 @@ class GameEngine {
           return;
         }
 
-        const sendAllTiles = creature.getCriticalNeed() == "SLEEP";
+        const criticalNeed = creature.getCriticalNeed();
+        const sendAllTiles =
+          criticalNeed == "SLEEP" || criticalNeed == "MATING";
         const tilesToSend = sendAllTiles
           ? this.grid.tiles
           : this.grid.getTilesInArea(x, y, perception);
@@ -54,6 +55,19 @@ class GameEngine {
         const isActionDone = creature.doAction(tilesToSend);
         if (isActionDone) {
           this.grid.degrow(creature.x, creature.y);
+          if (criticalNeed == "MATING" && !hasReproduced) {
+            const mate = player.creatures.find(
+              (entity) =>
+                entity != creature &&
+                entity.x === creature.x &&
+                entity.y === creature.y &&
+                entity.getCriticalNeed() == "MATING"
+            );
+            if (mate != null) {
+              player.addCreature();
+              hasReproduced = true;
+            }
+          }
         }
       });
     });
