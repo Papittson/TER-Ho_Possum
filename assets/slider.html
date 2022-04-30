@@ -10,30 +10,30 @@
     <main>
         <!-- Joueur1 -->
         <div class="slider">
-            <table class="Joueur">
+            <table id="player1" class="Joueur">
                 <tr>
                     <th>Joueur1</th>
                 </tr>
                 <tr>
                     <td>
-                        <p>Vitesse</p>
+                        <p>MoveSpeed</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span class="selected">1</span>
-                        <input type="range" name="vitesse" id="slider-input" min="1" max="5" value="1">
+                        <span class="selected" id="selected_m1">1</span>
+                        <input type="range" name="moveSpeed" id="moveSpeed1" min="1" max="5" value="1">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <p>Reproduction</p>
+                        <p>Reproducibility</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span class="selected">1</span>
-                        <input type="range" name="reproduction" id="slider-input" min="1" max="5" value="1">
+                        <span class="selected" id="selected_r1">1</span>
+                        <input type="range" name="reproducibility" id="reproducibility1" min="1" max="5" value="1">
                     </td>
                 </tr>
                 <tr>
@@ -43,19 +43,19 @@
                 </tr>
                 <tr>
                     <td>
-                        <span class="selected">1</span>
-                        <input type="range" name="perception" id="slider-input" min="1" max="5" value="1">
+                        <span class="selected" id="selected_p1">1</span>
+                        <input type="range" name="perception" id="perception1" min="1" max="5" value="1">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <p>Force</p>
+                        <p>Strength</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span class="selected">1</span>
-                        <input type="range" name="force" id="slider-input" min="1" max="5" value="1">
+                        <span class="selected" id="selected_s1">1</span>
+                        <input type="range" name="strength" id="strength1" min="1" max="5" value="1">
                     </td>
                 </tr>
             </table>
@@ -63,30 +63,30 @@
 
         <!-- Joueur2 -->
         <div class="slider">
-            <table class="Joueur">
+            <table id="player2" class="hidden">
                 <tr>
                     <th>Joueur2</th>
                 </tr>
                 <tr>
                     <td>
-                        <p>Vitesse</p>
+                        <p>MoveSpeed</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span class="selected">1</span>
-                        <input type="range" name="vitesse" id="slider-input" min="1" max="5" value="1">
+                        <span class="selected" id="selected_m2">1</span>
+                        <input type="range" name="moveSpeed" id="moveSpeed2" min="1" max="5" value="1">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <p>Reproduction</p>
+                        <p>Reproducibility</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span class="selected">1</span>
-                        <input type="range" name="reproduction" id="slider-input" min="1" max="5" value="1">
+                        <span class="selected" id="selected_r2">1</span>
+                        <input type="range" name="reproducibility" id="reproducibility2" min="1" max="5" value="1">
                     </td>
                 </tr>
                 <tr>
@@ -96,19 +96,19 @@
                 </tr>
                 <tr>
                     <td>
-                        <span class="selected">1</span>
-                        <input type="range" name="perception" id="slider-input" min="1" max="5" value="1">
+                        <span class="selected" id="selected_p2">1</span>
+                        <input type="range" name="perception" id="perception2" min="1" max="5" value="1">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <p>Force</p>
+                        <p>Strength</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span class="selected">1</span>
-                        <input type="range" name="force" id="slider-input" min="1" max="5" value="1">
+                        <span class="selected" id="selected_s2">1</span>
+                        <input type="range" name="strength" id="strength2" min="1" max="5" value="1">
                     </td>
                 </tr>
             </table>
@@ -116,30 +116,30 @@
 
         <!-- Joueur3 -->
         <div class="slider">
-            <table class="Joueur">
+            <table id="player2" class="hidden">
                 <tr>
                     <th>Joueur3</th>
                 </tr>
                 <tr>
                     <td>
-                        <p>Vitesse</p>
+                        <p>MoveSpeed</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span class="selected">1</span>
-                        <input type="range" name="vitesse" id="slider-input" min="1" max="5" value="1">
+                        <input type="range" name="moveSpeed" id="moveSpeed3" min="1" max="5" value="1">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <p>Reproduction</p>
+                        <p>Reproducibility</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span class="selected">1</span>
-                        <input type="range" name="reproduction" id="slider-input" min="1" max="5" value="1">
+                        <input type="range" name="reproducibility" id="reproducibility3" min="1" max="5" value="1">
                     </td>
                 </tr>
                 <tr>
@@ -150,18 +150,18 @@
                 <tr>
                     <td>
                         <span class="selected">1</span>
-                        <input type="range" name="perception" id="slider-input" min="1" max="5" value="1">
+                        <input type="range" name="perception" id="perception3" min="1" max="5" value="1">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <p>Force</p>
+                        <p>Strength</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span class="selected">1</span>
-                        <input type="range" name="force" id="slider-input" min="1" max="5" value="1">
+                        <input type="range" name="strength" id="strength3" min="1" max="5" value="1">
                     </td>
                 </tr>
             </table>
@@ -169,30 +169,30 @@
 
         <!-- Joueur4 -->
         <div class="slider">
-            <table class="Joueur">
+            <table id="player2" class="hidden">
                 <tr>
                     <th>Joueur4</th>
                 </tr>
                 <tr>
                     <td>
-                        <p>Vitesse</p>
+                        <p>MoveSpeed</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span class="selected">1</span>
-                        <input type="range" name="vitesse" id="slider-input" min="1" max="5" value="1">
+                        <input type="range" name="moveSpeed" id="moveSpeed4" min="1" max="5" value="1">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <p>Reproduction</p>
+                        <p>Reproducibility</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span class="selected">1</span>
-                        <input type="range" name="reproduction" id="slider-input" min="1" max="5" value="1">
+                        <input type="range" name="reproducibility" id="reproducibility4" min="1" max="5" value="1">
                     </td>
                 </tr>
                 <tr>
@@ -203,18 +203,18 @@
                 <tr>
                     <td>
                         <span class="selected">1</span>
-                        <input type="range" name="perception" id="slider-input" min="1" max="5" value="1">
+                        <input type="range" name="perception" id="perception4" min="1" max="5" value="1">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <p>Force</p>
+                        <p>Strength</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <span class="selected">1</span>
-                        <input type="range" name="force" id="slider-input" min="1" max="5" value="1">
+                        <input type="range" name="strength" id="strength4" min="1" max="5" value="1">
                     </td>
                 </tr>
             </table>
