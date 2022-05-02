@@ -1,7 +1,6 @@
 const { NEEDS, TILE_TYPES } = require("../utils/constants.js");
 const findPath = require("../utils/shortestPathAlgo.js");
 const D3 = require("../utils/d3.js");
-const Logger = require("../utils/logger.js");
 
 class Creature {
   /**
@@ -58,7 +57,7 @@ class Creature {
       .attr("y", this.y * height)
       .attr("class", "top")
       .attr("id", this.id)
-      .attr("xlink:href", "./images/CREATURE.png");
+      .attr("xlink:href", this.species);
   }
 
   /**
@@ -90,11 +89,6 @@ class Creature {
       increaseAmount -= this.reproducibility;
     }
     this.needs[need] = Math.min(100, increaseAmount);
-    Logger.log(
-      this.species,
-      `Mon/ma ${need} = ${this.needs[need]}.`,
-      this.color
-    );
   }
 
   getCriticalNeed() {
@@ -108,32 +102,20 @@ class Creature {
     let targetId;
     let targetTypes;
 
-    Logger.log(
-      this.species,
-      `Position de ${this.id} : ${this.x};${this.y}.`,
-      this.color
-    );
-    Logger.log(this.species, JSON.stringify(this.needs, null, 4), this.color);
-
     switch (criticalNeed) {
       case "THIRST":
-        Logger.log(this.species, `J'ai soif.`, this.color);
         targetTypes = [TILE_TYPES.SAND];
         break;
       case "HUNGER":
-        Logger.log(this.species, `J'ai faim.`, this.color);
         targetTypes = [TILE_TYPES.GRASS, TILE_TYPES.FOREST];
         break;
       case "SLEEP":
-        Logger.log(this.species, `J'ai sommeil.`, this.color);
         targetId = this.hole.id;
         break;
       case "MATING":
-        Logger.log(this.species, `J'aimerais agrandir ma famille.`, this.color);
         targetId = this.hole.id;
         break;
       default:
-        Logger.log(this.species, `J'erre.`, this.color);
         this.wander(tiles);
         return false;
     }
@@ -142,23 +124,18 @@ class Creature {
     const path = findPath(new Map(), toExplore, tiles, targetId, targetTypes);
 
     if (path.length === 0) {
-      Logger.log(this.species, `Pas de chemin trouvé, j'erre.`, this.color);
       this.wander(tiles);
       return false;
     }
 
     const targetTile = tiles.get(path[path.length - 1]);
-    Logger.log(this.species, `Go tuile ${targetTile.id}.`, this.color);
     this.walk(path, tiles);
 
     // The creature arrived to its goal
     if (path.length === 0) {
-      Logger.log(this.species, `Arrivée à destination ! :3`, this.color);
       this.increaseNeed(criticalNeed, targetTile.type);
       return true;
     }
-
-    Logger.log(this.species, `Ouf, encore du chemin à faire...`, this.color);
 
     return false;
   }
@@ -168,11 +145,6 @@ class Creature {
   }
 
   die() {
-    Logger.log(
-      "CREATURE",
-      `Je ne me sens pas très bien Mr. STARK 💨`,
-      this.color
-    );
     this.isDead = true;
     this.creature.remove();
   }

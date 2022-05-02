@@ -19,7 +19,7 @@ function startGame() {
   );
   const gameEngine = new GameEngine();
   gameEngine.setPlayers(players);
-  gameEngine.start();
+  gameEngine.stop(gameEngine.start());
 }
 
 document.getElementById("inputs").addEventListener("submit", function (event) {

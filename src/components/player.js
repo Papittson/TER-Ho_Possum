@@ -19,7 +19,7 @@ class Player {
 
   setHole(hole) {
     this.hole = hole;
-    hole.setBorder(this.color);
+    hole.setImage(this.color);
   }
 
   setColor(color) {

@@ -19,13 +19,20 @@
       />
       <div id="sliders">
         <div id="player1" class="">
-          <input
+          <!-- <input
             type="text"
             id="speciePlayer1"
             name="speciePlayer2"
             value="🐰"
             placeholder="Espèce du joueur 1"
-          />
+          /> -->
+          <select name="speciePlayer" id="speciePlayer1">
+            <option selected>--Choisissez votre espèce--</option>
+            <option value="./images/RABBIT01.png">🐰 Lapin</option>
+            <option value="./images/HAMSTER01.png">🐹 Hamster</option>
+            <option value="./images/RAT01.png">🐭 RAT</option>
+            <option value="./images/RACCOON01.png">🦝 RATON</option>
+          </select>
           <label for="moveSpeed">Vitesse de déplacement</label>
           <input
             type="number"
@@ -67,13 +74,20 @@
 
         <!--INPUTS PLAYER 2-->
         <div id="player2" class="hidden">
-          <input
+          <select name="speciePlayer" id="speciePlayer2">
+            <option selected>--Choisissez votre espèce--</option>
+            <option value="./images/RABBIT01.png">🐰 Lapin</option>
+            <option value="./images/HAMSTER01.png">🐹 Hamster</option>
+            <option value="./images/RAT01.png">🐭 RAT</option>
+            <option value="./images/RACCOON01.png">🦝 RATON</option>
+          </select>
+          <!--<input
             type="text"
             id="speciePlayer2"
             name="speciePlayer2"
             value="🐭"
             placeholder="Espèce du joueur 2"
-          /><label for="moveSpeed">Vitesse de déplacement</label
+          />--><label for="moveSpeed">Vitesse de déplacement</label
           ><input
             type="number"
             id="moveSpeed2"
@@ -114,13 +128,19 @@
 
         <!--INPUTS PLAYER 3-->
         <div id="player3" class="hidden">
-          <input
+          <!--<input
             type="text"
             id="speciePlayer3"
             name="speciePlayer3"
             value="🐹"
             placeholder="Espèce du joueur 3"
-          /><label for="moveSpeed">Vitesse de déplacement</label
+          />--><select name="speciePlayer" id="speciePlayer3">
+            <option selected>--Choisissez votre espèce--</option>
+            <option value="./images/RABBIT01.png">🐰 Lapin</option>
+            <option value="./images/HAMSTER01.png">🐹 Hamster</option>
+            <option value="./images/RAT01.png">🐭 RAT</option>
+            <option value="./images/RACCOON01.png">🦝 RATON</option></select
+          ><label for="moveSpeed">Vitesse de déplacement</label
           ><input
             type="number"
             id="moveSpeed3"
@@ -161,13 +181,19 @@
 
         <!--INPUT PLAYER 4-->
         <div id="player4" class="hidden">
-          <input
+          <!--<input
             type="text"
             id="speciePlayer4"
             name="speciePlayer4"
             value="🦝"
             placeholder="Espèce du joueur 4"
-          /><label for="moveSpeed">Vitesse de déplacement</label
+          />--><select name="speciePlayer" id="speciePlayer4">
+            <option selected>--Choisissez votre espèce--</option>
+            <option value="./images/RABBIT01.png">🐰 Lapin</option>
+            <option value="./images/HAMSTER01.png">🐹 Hamster</option>
+            <option value="./images/RAT01.png">🐭 RAT</option>
+            <option value="./images/RACCOON01.png">🦝 RATON</option></select
+          ><label for="moveSpeed">Vitesse de déplacement</label
           ><input
             type="number"
             id="moveSpeed4"

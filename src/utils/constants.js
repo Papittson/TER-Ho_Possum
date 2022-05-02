@@ -73,11 +73,18 @@ const TILE_TYPES = Object.freeze({
     images: ["./images/HOLE01.png"],
   },
 });
+const COLORS = ["#fcba03", "#cc0000", "#22229f", "#7a2d9c"];
 
-const COLORS = ["#fcba03", "#cc0000", "#b83f18", "#7a2d9c"];
+const HOLES_IMG = {
+  [COLORS[0]]: "./images/HOLE01.png",
+  [COLORS[1]]: "./images/HOLE02.png",
+  [COLORS[2]]: "./images/HOLE03.png",
+  [COLORS[3]]: "./images/HOLE04.png",
+};
 
 module.exports = {
   TILE_TYPES,
   COLORS,
   NEEDS,
+  HOLES_IMG,
 };

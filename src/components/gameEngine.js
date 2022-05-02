@@ -25,11 +25,20 @@ class GameEngine {
       player.addCreature();
       player.addCreature();
     }
+    this.roundCount = 0;
+    let intervalId = setInterval(() => this.startRound(), 500);
+    return intervalId;
+  }
 
-    setInterval(() => this.startRound(), 500);
+  stop(intervalId) {
+    if (this.roundCount == 100) {
+      clearInterval(intervalId);
+    }
+    intervalId = null;
   }
 
   startRound() {
+    this.roundCount++;
     Logger.log("ROUND", "Un tour de jeu commence.", "#0c852c");
     // Grow dirt to grass
     this.grid.grow();

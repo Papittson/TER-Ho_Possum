@@ -1,4 +1,4 @@
-const { TILE_TYPES } = require("../utils/constants.js");
+const { TILE_TYPES, HOLES_IMG } = require("../utils/constants.js");
 const D3 = require("../utils/d3.js");
 
 class Tile {
@@ -12,8 +12,8 @@ class Tile {
     this.draw(height);
   }
 
-  setBorder(color) {
-    this.tile.attr("stroke", color);
+  setImage(color) {
+    this.tile.attr("xlink:href", HOLES_IMG[color]);
   }
 
   draw(height) {
