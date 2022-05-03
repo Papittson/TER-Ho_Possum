@@ -1,99 +1,116 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="slider.css">
     <title>Jeu de la vie</title>
 </head>
+
 <body>
+    <form id="nbP">
+        <label for="nomber">Nombre de joueurs :</label>
+        <select id="player">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+    </form>
+    <form id="inputs">
+        <div id="player1">
+            <p style="font-size: 25px; text-align:center;">Joueur 1</p>
+            <label for="moveSpeed">Vitesse</label>
+            <input id="moveSpeed1" type="range" name="moveSpeed" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="moveSpeed1">1</output>
+            <div style="padding-bottom:5px;"></div>
+            <label for="reproductibility">Reproductivité</label>
+            <input id="reproducibility1" type="range" name="reproductibility" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="reproducibility1">1</output>
+            <div style="padding-bottom:5px;"></div>
+            <label for="perception">Perception</label>
+            <input id="perception1" type="range" name="perception" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="perception1">1</output>
+            <div style="padding-bottom:5px;"></div>
+            <label for="strength">Force</label>
+            <input id="strength1" type="range" name="strength" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="strength1">1</output>
+        </div>
+        <div id="player2">
+            <p style="font-size: 25px; text-align:center;">Joueur 2</p>
+            <label for="moveSpeed">Vitesse</label>
+            <input id="moveSpeed2" type="range" name="moveSpeed" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="moveSpeed2">1</output>
+            <div style="padding-bottom:5px;"></div>
+            <label for="reproductibility">Reproductivité</label>
+            <input id="reproducibility2" type="range" name="reproductibility" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="reproducibility2">1</output>
+            <div style="padding-bottom:5px;"></div>
+            <label for="perception">Perception</label>
+            <input id="perception2" type="range" name="perception" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="perception2">1</output>
+            <div style="padding-bottom:5px;"></div>
+            <label for="strength">Force</label>
+            <input id="strength2" type="range" name="strength" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="strength2">1</output>
+        </div>
+        <div id="player3">
+            <p style="font-size: 25px; text-align:center;">Joueur 3</p>
+            <label for="moveSpeed">Vitesse</label>
+            <input id="moveSpeed3" type="range" name="moveSpeed" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="moveSpeed3">1</output>
+            <div style="padding-bottom:5px;"></div>
+            <label for="reproductibility">Reproductivité</label>
+            <input id="reproducibility3" type="range" name="reproductibility" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="reproducibility3">1</output>
+            <div style="padding-bottom:5px;"></div>
+            <label for="perception">Perception</label>
+            <input id="perception3" type="range" name="perception" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="perception3">1</output>
+            <div style="padding-bottom:5px;"></div>
+            <label for="strength">Force</label>
+            <input id="strength3" type="range" name="strength" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="strength3">1</output>
+        </div>
+        <div id="player4">
+            <p style="font-size: 25px; text-align:center;">Joueur 4</p>
+            <label for="moveSpeed">Vitesse</label>
+            <input id="moveSpeed4" type="range" name="moveSpeed" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="moveSpeed4">1</output>
+            <div style="padding-bottom:5px;"></div>
+            <label for="reproductibility">Reproductivité</label>
+            <input id="reproducibility4" type="range" name="reproductibility" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="reproducibility4">1</output>
+            <div style="padding-bottom:5px;"></div>
+            <label for="perception">Perception</label>
+            <input id="perception4" type="range" name="perception" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="perception4">1</output>
+            <div style="padding-bottom:5px;"></div>
+            <label for="strength">Force</label>
+            <input id="strength4" type="range" name="strength" min="1" step="1" max="5" value="1"
+                oninput="this.nextElementSibling.value = this.value">
+            <output for="strength4">1</output>
+        </div>
+        <button id="startButton" type="submit">START</button>
+    </form>
 
-<form id="nbP">
-    <label for="moveSpeed">Nombre de joueurs :</label>
-    <select name="players">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-    </select>
-    <button id="enter" type="submit">OK</button>
-</form>
-<form id="inputs">
-    <div id="player1">
-        <p style="font-size: 25px; text-align:center;">Joueur 1</p>
-        <label for="moveSpeed">Vitesse</label>
-        <input id="moveSpeed1" type="range" name="moveSpeed" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="moveSpeed1">1</output>
-        <div style="padding-bottom:5px;"></div>
-        <label for="reproductibility">Reproductivité</label>
-        <input id="reproducibility1" type="range" name="reproductibility" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="reproducibility1">1</output>
-        <div style="padding-bottom:5px;"></div>
-        <label for="perception">Perception</label>
-        <input id="perception1" type="range" name="perception" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="perception1">1</output>
-        <div style="padding-bottom:5px;"></div>
-        <label for="strength">Force</label>
-        <input id="strength1" type="range" name="strength" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="strength1">1</output>
-    </div>
-    <div id="player2">
-        <p style="font-size: 25px; text-align:center;">Joueur 2</p>
-        <label for="moveSpeed">Vitesse</label>
-        <input id="moveSpeed2" type="range" name="moveSpeed" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="moveSpeed2">1</output>
-        <div style="padding-bottom:5px;"></div>
-        <label for="reproductibility">Reproductivité</label>
-        <input id="reproducibility2" type="range" name="reproductibility" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="reproducibility2">1</output>
-        <div style="padding-bottom:5px;"></div>
-        <label for="perception">Perception</label>
-        <input id="perception2" type="range" name="perception" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="perception2">1</output>
-        <div style="padding-bottom:5px;"></div>
-        <label for="strength">Force</label>
-        <input id="strength2" type="range" name="strength" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="strength2">1</output>
-    </div>
-    <div id="player3">
-        <p style="font-size: 25px; text-align:center;">Joueur 3</p>
-        <label for="moveSpeed">Vitesse</label>
-        <input id="moveSpeed3" type="range" name="moveSpeed" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="moveSpeed3">1</output>
-        <div style="padding-bottom:5px;"></div>
-        <label for="reproductibility">Reproductivité</label>
-        <input id="reproducibility3" type="range" name="reproductibility" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="reproducibility3">1</output>
-        <div style="padding-bottom:5px;"></div>
-        <label for="perception">Perception</label>
-        <input id="perception3" type="range" name="perception" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="perception3">1</output>
-        <div style="padding-bottom:5px;"></div>
-        <label for="strength">Force</label>
-        <input id="strength3" type="range" name="strength" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="strength3">1</output>
-    </div>
-    <div id="player4">
-        <p style="font-size: 25px; text-align:center;">Joueur 4</p>
-        <label for="moveSpeed">Vitesse</label>
-        <input id="moveSpeed4" type="range" name="moveSpeed" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="moveSpeed4">1</output>
-        <div style="padding-bottom:5px;"></div>
-        <label for="reproductibility">Reproductivité</label>
-        <input id="reproducibility4" type="range" name="reproductibility" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="reproducibility4">1</output>
-        <div style="padding-bottom:5px;"></div>
-        <label for="perception">Perception</label>
-        <input id="perception4" type="range" name="perception" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="perception4">1</output>
-        <div style="padding-bottom:5px;"></div>
-        <label for="strength">Force</label>
-        <input id="strength4" type="range" name="strength" min="1" step="1" max="5" value="1" oninput="this.nextElementSibling.value = this.value">
-        <output for="strength4">1</output>
-    </div>
-    <button id="startButton" type="submit">START</button>
-  </form>
-
-  <script src="slider.js"></script>
-  <div id="map"></div>
+    <script src="slider.js"></script>
+    <div id="map"></div>
 </body>
+
 </html>
