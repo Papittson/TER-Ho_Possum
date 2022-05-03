@@ -1,6 +1,5 @@
-const { TILE_TYPES } = require("../utils/constants.js");
+const { TILE_TYPES, HOLES_IMG } = require("../utils/constants.js");
 const D3 = require("../utils/d3.js");
-const Logger = require("../utils/logger.js");
 
 class Tile {
   constructor(x, y, height, type, species) {
@@ -13,8 +12,8 @@ class Tile {
     this.draw(height);
   }
 
-  setBorder(color) {
-    this.tile.attr("stroke", color);
+  setImage(color) {
+    this.tile.attr("xlink:href", HOLES_IMG[color]);
   }
 
   draw(height) {
@@ -42,7 +41,6 @@ class Tile {
 
   degrow() {
     if (this.type == TILE_TYPES.GRASS) {
-      Logger.log("TILE", `La tuile ${this.id} a degrow.`, this.type.color);
       this.setType(TILE_TYPES.DIRT);
     }
   }

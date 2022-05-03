@@ -1,6 +1,6 @@
 class Logger {
   format(type, message) {
-    return `${new Date().toLocaleString("fr")} [${type}] ${message}`;
+    return `[${type}] ${message}`;
   }
 
   info(message) {

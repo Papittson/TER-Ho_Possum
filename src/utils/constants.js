@@ -1,3 +1,30 @@
+const NEEDS = Object.freeze({
+  HUNGER: {
+    default: 100,
+    decreaseAmount: 5,
+    critical: 30,
+    priority: 50,
+  },
+  THIRST: {
+    default: 100,
+    decreaseAmount: 5,
+    critical: 35,
+    priority: 100,
+  },
+  SLEEP: {
+    default: 100,
+    decreaseAmount: 5,
+    critical: 20,
+    priority: 20,
+  },
+  MATING: {
+    default: 7,
+    decreaseAmount: 1,
+    critical: 1,
+    priority: 10,
+  },
+});
+
 const TILE_TYPES = Object.freeze({
   DIRT: {
     color: "#45302b",
@@ -40,37 +67,24 @@ const TILE_TYPES = Object.freeze({
     name: "TERRIER",
     color: "#000000",
     SLEEP: 100,
+    MATING: NEEDS.MATING.default,
     obstacle: false,
     growable: false,
     images: ["./images/HOLE01.png"],
   },
 });
+const COLORS = ["#fcba03", "#cc0000", "#22229f", "#7a2d9c"];
 
-const COLORS = ["#fcba03", "#cc0000", "#b83f18", "#7a2d9c"];
-
-const NEEDS = Object.freeze({
-  HUNGER: {
-    default: 100,
-    decreaseAmount: 5,
-    critical: 30,
-    priority: 50,
-  },
-  THIRST: {
-    default: 100,
-    decreaseAmount: 5,
-    critical: 35,
-    priority: 100,
-  },
-  SLEEP: {
-    default: 100,
-    decreaseAmount: 5,
-    critical: 20,
-    priority: 20,
-  },
-});
+const HOLES_IMG = {
+  [COLORS[0]]: "./images/HOLE01.png",
+  [COLORS[1]]: "./images/HOLE02.png",
+  [COLORS[2]]: "./images/HOLE03.png",
+  [COLORS[3]]: "./images/HOLE04.png",
+};
 
 module.exports = {
   TILE_TYPES,
   COLORS,
   NEEDS,
+  HOLES_IMG,
 };

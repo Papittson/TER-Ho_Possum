@@ -1,3 +1,5 @@
+const Creature = require("./creature");
+
 class Player {
   constructor(species, reproducibility, strength, movespeed, perception) {
     this.species = species;
@@ -7,6 +9,7 @@ class Player {
     this.strength = strength;
     this.movespeed = movespeed;
     this.perception = perception;
+    this.creatureCounter = 0;
   }
 
   addDeadCreature(creature) {
@@ -16,15 +19,16 @@ class Player {
 
   setHole(hole) {
     this.hole = hole;
-    hole.setBorder(this.color);
+    hole.setImage(this.color);
   }
 
   setColor(color) {
     this.color = color;
   }
 
-  addCreature(creature) {
-    this.creatures.push(creature);
+  addCreature() {
+    this.creatures.push(new Creature(this.hole.x, this.hole.y, this));
+    this.creatureCounter++;
   }
 }
 module.exports = Player;
