@@ -1,28 +1,38 @@
-var nbPlayers = document.getElementById('nbP').selected;
-
-//ne marche pas avec "else"
-//affiche tous les nbPlayers si pas de "else"
-
-//pareil avec .values;
-
-
-if (nbPlayers == "1") {
-    console.log("one");
+function player(option) {
+    if (option === "") {
+        document.getElementById('player1').style.display = "none";
+        document.getElementById('player2').style.display = "none";
+        document.getElementById('player3').style.display = "none";
+        document.getElementById('player4').style.display = "none";
+    }
+    if (option === "1") {
+        document.getElementById('player1').style.display = "block";
+        document.getElementById('player2').style.display = "none";
+        document.getElementById('player3').style.display = "none";
+        document.getElementById('player4').style.display = "none";
+    }
+    if (option === "2") {
+        document.getElementById('player1').style.display = "none";
+        document.getElementById('player2').style.display = "block";
+        document.getElementById('player3').style.display = "none";
+        document.getElementById('player4').style.display = "none";
+    }
+    if (option === "3") {
+        document.getElementById('player1').style.display = "none";
+        document.getElementById('player2').style.display = "none";
+        document.getElementById('player3').style.display = "block";
+        document.getElementById('player4').style.display = "none";
+    }
+    if (option === "4") {
+        document.getElementById('player1').style.display = "none";
+        document.getElementById('player2').style.display = "none";
+        document.getElementById('player3').style.display = "none";
+        document.getElementById('player4').style.display = "block";
+    }
 }
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("player").addEventListener('change', function (evt) {
+        player(evt.target.value);
+    });
 
-else if (nbPlayers == "2") {
-    console.log("two");
-    document.getElementById("player2").style.display = "inline-block";
-}
-
-else if (nbPlayers == "3") {
-    console.log("three");
-    document.getElementById("player3").style.display = "inline-block";
-}
-
-else if (nbPlayers == "4") {
-    console.log("four");
-    document.getElementById("player4").style.display = "inline-block";
-}
-
-
+});
