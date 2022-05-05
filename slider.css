@@ -2,10 +2,18 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+}
+
+#playerTitle {
+    font-family:'Press Start 2P', cursive;
+    font-size: 25px;
+    text-align:center;
 }
 
 #player1{
+    font-family: 'VT323', monospace;
     display: inline-block;
     margin: auto 20px auto 20px;
     width:200px;
@@ -37,12 +45,19 @@
 }
 
 #startButton {
-    /*display: flex; ALL PLAYERS*/
-    display: flex;
+    display: block;
     margin: 3% auto auto auto;
     background-color:  #e7e17b;
     color: #374b35;
     border-radius: 4px;
+}
+
+#bigTitle {
+    display: block;
+    font-family:'Press Start 2P', cursive;
+    font-size: 40px;
+    position:absolute;
+    margin-bottom: 40%;
 }
 
 
