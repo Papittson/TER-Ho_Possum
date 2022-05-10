@@ -88,7 +88,7 @@ body {
 
 input[type="range"]{
     -webkit-appearance: none;
-    background: linear-gradient(30deg, #82c177, #e7e17b);
+    background: linear-gradient(30deg, #e7e17b, #82c177);
     border-radius: 4px;
     width: 100%;
     height: 8px;
