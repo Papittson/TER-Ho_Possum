@@ -54,7 +54,7 @@ const TILE_TYPES = Object.freeze({
   WATER: {
     name: "EAU",
     color: "#3184a8",
-    freq: 0.08,
+    freq: 0.03,
     images: ["./images/WATER01.png"],
   },
   SAND: {
@@ -70,7 +70,7 @@ const TILE_TYPES = Object.freeze({
     MATING: NEEDS.MATING.default,
     obstacle: false,
     growable: false,
-    images: ["./images/HOLE01.png"],
+    images: [],
   },
 });
 const COLORS = ["#fcba03", "#cc0000", "#22229f", "#7a2d9c"];

@@ -1,5 +1,5 @@
 const Player = require("./components/player.js");
-const { changeListener } = require("./views/menu.js");
+const { changeListener, displayInfo } = require("./views/menu.js");
 const fetchData = require("./utils/fetchData.js");
 const GameEngine = require("./components/gameEngine.js");
 
@@ -19,7 +19,8 @@ function startGame() {
   );
   const gameEngine = new GameEngine();
   gameEngine.setPlayers(players);
-  gameEngine.stop(gameEngine.start());
+  displayInfo(players);
+  gameEngine.start();
 }
 
 document.getElementById("inputs").addEventListener("submit", function (event) {

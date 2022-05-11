@@ -1,7 +1,8 @@
-const Creature = require("./creature");
+const { v4: uuidv4 } = require("uuid");
 
 class Player {
   constructor(species, reproducibility, strength, movespeed, perception) {
+    this.id = uuidv4();
     this.species = species;
     this.creatures = [];
     this.deadCreatures = [];
@@ -9,7 +10,6 @@ class Player {
     this.strength = strength;
     this.movespeed = movespeed;
     this.perception = perception;
-    this.creatureCounter = 0;
   }
 
   addDeadCreature(creature) {
@@ -19,16 +19,15 @@ class Player {
 
   setHole(hole) {
     this.hole = hole;
-    hole.setImage(this.color);
+    hole.toHole(this.color);
   }
 
   setColor(color) {
     this.color = color;
   }
 
-  addCreature() {
-    this.creatures.push(new Creature(this.hole.x, this.hole.y, this));
-    this.creatureCounter++;
+  addCreature(creature) {
+    this.creatures.push(creature);
   }
 }
 module.exports = Player;

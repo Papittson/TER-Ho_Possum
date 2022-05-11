@@ -1,6 +1,8 @@
 const Grid = require("./grid.js");
 const { COLORS } = require("../utils/constants.js");
 const Logger = require("../utils/logger.js");
+const { updateInfo } = require("../views/menu.js");
+const Creature = require("./creature.js");
 
 class GameEngine {
   setPlayers(players) {
@@ -19,27 +21,33 @@ class GameEngine {
       throw new Error("Vous devez mettre une liste de 1 à 4 joueurs !!!");
     }
 
+    this.creatures = new Map();
+
     this.grid = new Grid(this.players);
 
     for (let player of this.players) {
-      player.addCreature();
-      player.addCreature();
+      this.createCreature(player);
+      this.createCreature(player);
     }
     this.roundCount = 0;
-    let intervalId = setInterval(() => this.startRound(), 500);
-    return intervalId;
+
+    let intervalId;
+    intervalId = setInterval(() => this.startRound(intervalId), 500);
   }
 
-  stop(intervalId) {
-    if (this.roundCount == 100) {
+  startRound(intervalId) {
+    if (this.roundCount == 50) {
       clearInterval(intervalId);
+      return;
     }
-    intervalId = null;
-  }
 
-  startRound() {
+    updateInfo(this.players);
     this.roundCount++;
-    Logger.log("ROUND", "Un tour de jeu commence.", "#0c852c");
+    Logger.log(
+      "ROUND",
+      `Un tour de jeu n° ${this.roundCount} commence.`,
+      "#0c852c"
+    );
     // Grow dirt to grass
     this.grid.grow();
     // Do creatures' action
@@ -51,6 +59,7 @@ class GameEngine {
 
         if (!creature.isAlive()) {
           player.addDeadCreature(creature);
+          this.creatures.delete(creature.id);
           return;
         }
 
@@ -61,7 +70,7 @@ class GameEngine {
           ? this.grid.tiles
           : this.grid.getTilesInArea(x, y, perception);
 
-        const isActionDone = creature.doAction(tilesToSend);
+        const isActionDone = creature.doAction(tilesToSend, this.creatures);
         if (isActionDone) {
           this.grid.degrow(creature.x, creature.y);
           if (criticalNeed == "MATING" && !hasReproduced) {
@@ -73,7 +82,11 @@ class GameEngine {
                 entity.getCriticalNeed() == "MATING"
             );
             if (mate != null) {
-              player.addCreature();
+              const nbNewborn = player.reproducibility;
+              for (let i = 0; i < nbNewborn; i++) {
+                this.createCreature(player);
+              }
+
               hasReproduced = true;
             }
           }
@@ -81,6 +94,12 @@ class GameEngine {
       });
     });
     Logger.log("ROUND", "Fin du tour de jeu.", "#0c852c");
+  }
+
+  createCreature(player) {
+    const creature = new Creature(player.hole.x, player.hole.y, player);
+    this.creatures.set(creature.id, creature);
+    player.addCreature(creature);
   }
 }
 

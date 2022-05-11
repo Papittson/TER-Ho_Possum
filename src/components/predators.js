@@ -1,5 +1,5 @@
 const D3 = require("../utils/d3.js");
-const NEEDS = require("../utils/constants.js");
+
 class Predator {
   constructor(x, y) {
     this.x = x;
@@ -8,7 +8,6 @@ class Predator {
     this.moveSpeed = 3;
     this.perception = 3;
     this.draw();
-    this.needs = { HUNGER: NEEDS.HUNGER.default, THIRST: NEEDS.THIRST.default };
   }
 
   draw() {

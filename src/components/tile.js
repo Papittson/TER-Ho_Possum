@@ -2,18 +2,13 @@ const { TILE_TYPES, HOLES_IMG } = require("../utils/constants.js");
 const D3 = require("../utils/d3.js");
 
 class Tile {
-  constructor(x, y, height, type, species) {
+  constructor(x, y, height, type) {
     this.id = `${x};${y}`;
     this.x = x;
     this.y = y;
     this.height = height;
     this.type = type;
-    this.species = species;
     this.draw(height);
-  }
-
-  setImage(color) {
-    this.tile.attr("xlink:href", HOLES_IMG[color]);
   }
 
   draw(height) {
@@ -34,7 +29,7 @@ class Tile {
   }
 
   grow() {
-    if (this.isGrowable() && Math.random() <= 0.1) {
+    if (this.isGrowable() && Math.random() <= 0.05) {
       this.setType(TILE_TYPES.GRASS);
     }
   }
@@ -71,9 +66,11 @@ class Tile {
     );
   }
 
-  toHole(species) {
+  toHole(color) {
     this.setType(TILE_TYPES.HOLE);
-    this.species = species;
+
+    console.log(HOLES_IMG[color]);
+    this.tile.attr("xlink:href", HOLES_IMG[color]);
   }
 }
 

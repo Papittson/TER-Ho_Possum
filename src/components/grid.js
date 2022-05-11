@@ -5,7 +5,7 @@ const D3 = require("../utils/d3.js");
 class Grid {
   constructor(players, tileHeight = 20) {
     this.players = players;
-    this.height = players.length < 3 ? 700 : 800;
+    this.height = players.length < 3 ? 500 : 600;
     this.tileHeight = tileHeight;
     this.tilesPerSide = Math.trunc(this.height / tileHeight);
     this.nbOfTiles = Math.pow(this.tilesPerSide, 2);
@@ -49,11 +49,11 @@ class Grid {
 
   createTiles() {
     this.createDirtTiles();
+    this.createHoles();
     this.createTilesByType(TILE_TYPES.WATER);
     this.createTilesByType(TILE_TYPES.GRASS);
     this.createTilesByType(TILE_TYPES.FOREST);
     this.createTilesByType(TILE_TYPES.ROCK);
-    this.createHoles();
   }
 
   createDirtTiles() {
@@ -79,16 +79,28 @@ class Grid {
         if (type == TILE_TYPES.WATER) {
           tile
             .neighbours(this.tiles)
-            .filter((tile) => tile?.type != TILE_TYPES.WATER)
+            .filter(
+              (tile) =>
+                tile?.type != TILE_TYPES.WATER && tile?.type != TILE_TYPES.HOLE
+            )
             .forEach((tile) => tile?.setType(TILE_TYPES.SAND));
           const remainingWaterSize = nbOfTilesToCreate - cpt;
           const waterTiles = this.getWaterShape(tile, remainingWaterSize);
-          waterTiles.forEach((tile) => tile?.setType(type));
+          waterTiles
+            .filter(
+              (tile) =>
+                tile?.type != TILE_TYPES.WATER && tile?.type != TILE_TYPES.HOLE
+            )
+            .forEach((tile) => tile?.setType(type));
           cpt += waterTiles.length;
           waterTiles.forEach((tile) =>
             tile
               ?.neighbours(this.tiles)
-              .filter((tile) => tile?.type != TILE_TYPES.WATER)
+              .filter(
+                (tile) =>
+                  tile?.type != TILE_TYPES.WATER &&
+                  tile?.type != TILE_TYPES.HOLE
+              )
               .forEach((tile) => tile?.setType(TILE_TYPES.SAND))
           );
         }
@@ -154,9 +166,6 @@ class Grid {
         break;
       default:
         throw Error("You need to have 1 to 4 players!");
-    }
-    for (let i = 0; i < this.players.length; i++) {
-      holes[i].toHole(this.players[i].species);
     }
   }
 

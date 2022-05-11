@@ -1,6 +1,7 @@
 const { NEEDS, TILE_TYPES } = require("../utils/constants.js");
 const findPath = require("../utils/shortestPathAlgo.js");
 const D3 = require("../utils/d3.js");
+const { v4: uuidv4 } = require("uuid");
 
 class Creature {
   /**
@@ -14,8 +15,8 @@ class Creature {
     x,
     y,
     {
+      id,
       species,
-      creatureCounter,
       reproducibility,
       strength,
       movespeed,
@@ -27,14 +28,15 @@ class Creature {
     this.isDead = false;
     this.reproducibility = reproducibility;
     this.strength = strength;
-    this.movespeed = movespeed;
+    this.movespeed = movespeed + 2;
     this.species = species;
-    this.perception = perception;
+    this.playerId = id;
+    this.perception = perception < 3 ? perception * 2 : perception + 2;
     this.hole = hole;
     this.x = x;
     this.y = y;
     this.color = color;
-    this.id = `${species}-${creatureCounter}`;
+    this.id = uuidv4();
     this.needs = {
       HUNGER: NEEDS.HUNGER.default,
       THIRST: NEEDS.THIRST.default,
@@ -97,7 +99,7 @@ class Creature {
       .find((need) => this.needs[need] < NEEDS[need].critical);
   }
 
-  doAction(tiles) {
+  doAction(tiles, creatures) {
     const criticalNeed = this.getCriticalNeed();
     let targetId;
     let targetTypes;
@@ -129,7 +131,7 @@ class Creature {
     }
 
     const targetTile = tiles.get(path[path.length - 1]);
-    this.walk(path, tiles);
+    this.walk(path, tiles, creatures);
 
     // The creature arrived to its goal
     if (path.length === 0) {
@@ -149,7 +151,7 @@ class Creature {
     this.creature.remove();
   }
 
-  walk(path, tiles) {
+  walk(path, tiles, creatures) {
     path.shift(); // Remove current tile from path.
     for (let step = 0; step < this.movespeed; step++) {
       const nextStep = path.shift();
@@ -157,7 +159,22 @@ class Creature {
         break;
       }
       const { x, y } = tiles.get(nextStep);
-      this.move(x, y);
+      const occupant = Array.from(creatures.values()).find(
+        (creature) =>
+          creature.playerId != this.playerId &&
+          creature.x == x &&
+          creature.y == y
+      );
+      if (occupant != null) {
+        if (occupant.strength > this.strength) {
+          break;
+        } else {
+          occupant.move(this.x, this.y);
+          this.move(x, y);
+        }
+      } else {
+        this.move(x, y);
+      }
     }
   }
 

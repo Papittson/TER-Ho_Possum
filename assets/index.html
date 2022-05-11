@@ -26,8 +26,8 @@
             value="🐰"
             placeholder="Espèce du joueur 1"
           /> -->
-          <select name="speciePlayer" id="speciePlayer1">
-            <option selected>--Choisissez votre espèce--</option>
+          <select name="speciePlayer" id="speciePlayer1" required="required">
+            <option selected value="">--Choisissez votre espèce--</option>
             <option value="./images/RABBIT01.png">🐰 Lapin</option>
             <option value="./images/HAMSTER01.png">🐹 Hamster</option>
             <option value="./images/RAT01.png">🐭 Rat</option>
@@ -75,7 +75,7 @@
         <!--INPUTS PLAYER 2-->
         <div id="player2" class="hidden">
           <select name="speciePlayer" id="speciePlayer2">
-            <option selected>--Choisissez votre espèce--</option>
+            <option selected value="">--Choisissez votre espèce--</option>
             <option value="./images/RABBIT01.png">🐰 Lapin</option>
             <option value="./images/HAMSTER01.png">🐹 Hamster</option>
             <option value="./images/RAT01.png">🐭 Rat</option>
@@ -134,8 +134,9 @@
             name="speciePlayer3"
             value="🐹"
             placeholder="Espèce du joueur 3"
-          />--><select name="speciePlayer" id="speciePlayer3">
-            <option selected>--Choisissez votre espèce--</option>
+          />-->
+          <select name="speciePlayer" id="speciePlayer3">
+            <option selected value="">--Choisissez votre espèce--</option>
             <option value="./images/RABBIT01.png">🐰 Lapin</option>
             <option value="./images/HAMSTER01.png">🐹 Hamster</option>
             <option value="./images/RAT01.png">🐭 Rat</option>
@@ -188,7 +189,7 @@
             value="🦝"
             placeholder="Espèce du joueur 4"
           />--><select name="speciePlayer" id="speciePlayer4">
-            <option selected>--Choisissez votre espèce--</option>
+            <option selected value="">--Choisissez votre espèce--</option>
             <option value="./images/RABBIT01.png">🐰 Lapin</option>
             <option value="./images/HAMSTER01.png">🐹 Hamster</option>
             <option value="./images/RAT01.png">🐭 Rat</option>
@@ -234,6 +235,15 @@
       </div>
       <button id="startButton" type="submit">START</button>
     </form>
-    <div id="map"></div>
+
+    <div class="container">
+      <div id="map" class="box1"></div>
+      <div id="playersInfo" class="box1">
+        <div id="infoPlayer1" class="hidden">Joueur 1 possède bloubli</div>
+        <div id="infoPlayer2" class="hidden"></div>
+        <div id="infoPlayer3" class="hidden"></div>
+        <div id="infoPlayer4" class="hidden"></div>
+      </div>
+    </div>
   </body>
 </html>

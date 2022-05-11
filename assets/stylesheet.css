@@ -19,3 +19,19 @@ body {
 .non_display {
   display: none;
 }
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+.box1 {
+  padding-right: 20px;
+}
+.icon {
+  display: inline;
+}
+#playersInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
