@@ -48,7 +48,7 @@ const TILE_TYPES = Object.freeze({
   ROCK: {
     name: "ROCHER",
     color: "#8a8a8a",
-    freq: 0.12,
+    freq: 0.08,
     images: ["./images/ROCK01.png"],
   },
   WATER: {

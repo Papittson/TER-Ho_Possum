@@ -39,7 +39,7 @@ function displayInfo(players) {
       players[i - 1].species
     }"/>: <br/> Vitesse de déplacement : ${players[i - 1].movespeed}
     <br/> Reproduction : ${players[i - 1].reproducibility}
-    <br/> Perception : ${players[i - 1].perception}
+    <br/> Perception : ${players[i - 1].perception} cases
     <br/> Force : ${players[i - 1].strength} <br/>`);
     div.append("span").attr("id", `totalCreaturesPlayer${i}`)
       .html(` Nombre de créatures créées : ${players[i - 1].creatures.length}
