@@ -28,16 +28,3 @@ document.getElementById("inputs").addEventListener("submit", function (event) {
   document.getElementById("inputs").classList.add("non_display");
   startGame();
 });
-
-/*function gameEnginehl() {
-  const grid = new Grid(players);
-  const tiles = grid.tiles;
-  document.getElementById("inputs").classList.add("non_display");
-}
-
-document.getElementById("inputs").addEventListener("submit", function (event) {
-  event.preventDefault();
-  gameEngine();
-});
-const Grid = require("./grid.js");
-*/
