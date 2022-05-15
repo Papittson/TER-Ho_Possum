@@ -18,25 +18,19 @@
         value="1"
       />
       <div id="sliders">
-        <div id="player1" class="">
-          <!-- <input
-            type="text"
-            id="speciePlayer1"
-            name="speciePlayer2"
-            value="🐰"
-            placeholder="Espèce du joueur 1"
-          /> -->
-          <select name="speciePlayer" id="speciePlayer1" required="required">
+        <!--INPUTS PLAYER 1-->
+        <div id="player_0" class="">
+          <select name="speciePlayer" id="speciePlayer_0" required="required">
             <option selected value="">--Choisissez votre espèce--</option>
-            <option value="./images/RABBIT01.png">🐰 Lapin</option>
-            <option value="./images/HAMSTER01.png">🐹 Hamster</option>
-            <option value="./images/RAT01.png">🐭 Rat</option>
-            <option value="./images/RACCOON01.png">🦝 Raton</option>
+            <option value="./images/CREATURE_0.png">🐰 Lapin</option>
+            <option value="./images/CREATURE_1.png">🐹 Hamster</option>
+            <option value="./images/CREATURE_2">🐭 Rat</option>
+            <option value="./images/CREATURE_3.png">🦝 Raton</option>
           </select>
           <label for="moveSpeed">Vitesse de déplacement</label>
           <input
             type="number"
-            id="moveSpeed1"
+            id="moveSpeed_0"
             name="moveSpeed"
             step="1"
             min="1"
@@ -45,7 +39,7 @@
           /><label for="reproducibility">Reproduction</label
           ><input
             type="number"
-            id="reproducibility1"
+            id="reproducibility_0"
             name="reproducibility"
             step="1"
             min="1"
@@ -54,7 +48,7 @@
           /><label for="perception">Perception</label>
           <input
             type="number"
-            id="perception1"
+            id="perception_0"
             name="perception"
             step="1"
             min="1"
@@ -63,7 +57,7 @@
           /><label for="strength">Force</label>
           <input
             type="number"
-            id="strength1"
+            id="strength_0"
             name="strength"
             step="1"
             min="1"
@@ -73,24 +67,18 @@
         </div>
 
         <!--INPUTS PLAYER 2-->
-        <div id="player2" class="hidden">
-          <select name="speciePlayer" id="speciePlayer2">
+        <div id="player_1" class="hidden">
+          <select name="speciePlayer" id="speciePlayer_1">
             <option selected value="">--Choisissez votre espèce--</option>
             <option value="./images/RABBIT01.png">🐰 Lapin</option>
             <option value="./images/HAMSTER01.png">🐹 Hamster</option>
             <option value="./images/RAT01.png">🐭 Rat</option>
             <option value="./images/RACCOON01.png">🦝 Raton</option>
           </select>
-          <!--<input
-            type="text"
-            id="speciePlayer2"
-            name="speciePlayer2"
-            value="🐭"
-            placeholder="Espèce du joueur 2"
-          />--><label for="moveSpeed">Vitesse de déplacement</label
+          <label for="moveSpeed">Vitesse de déplacement</label
           ><input
             type="number"
-            id="moveSpeed2"
+            id="moveSpeed_1"
             name="moveSpeed"
             step="1"
             min="1"
@@ -99,7 +87,7 @@
           /><label for="reproducibility">Reproduction</label
           ><input
             type="number"
-            id="reproducibility2"
+            id="reproducibility_1"
             name="reproducibility"
             step="1"
             min="1"
@@ -108,7 +96,7 @@
           /><label for="perception">Perception</label>
           <input
             type="number"
-            id="perception2"
+            id="perception_1"
             name="perception"
             step="1"
             min="1"
@@ -117,7 +105,7 @@
           /><label for="strength">Force</label>
           <input
             type="number"
-            id="strength2"
+            id="strength_1"
             name="strength"
             step="1"
             min="1"
@@ -127,15 +115,8 @@
         </div>
 
         <!--INPUTS PLAYER 3-->
-        <div id="player3" class="hidden">
-          <!--<input
-            type="text"
-            id="speciePlayer3"
-            name="speciePlayer3"
-            value="🐹"
-            placeholder="Espèce du joueur 3"
-          />-->
-          <select name="speciePlayer" id="speciePlayer3">
+        <div id="player_2" class="hidden">
+          <select name="speciePlayer" id="speciePlayer_2">
             <option selected value="">--Choisissez votre espèce--</option>
             <option value="./images/RABBIT01.png">🐰 Lapin</option>
             <option value="./images/HAMSTER01.png">🐹 Hamster</option>
@@ -144,7 +125,7 @@
           ><label for="moveSpeed">Vitesse de déplacement</label
           ><input
             type="number"
-            id="moveSpeed3"
+            id="moveSpeed_2"
             name="moveSpeed"
             step="1"
             min="1"
@@ -153,7 +134,7 @@
           /><label for="reproducibility">Reproduction</label
           ><input
             type="number"
-            id="reproducibility3"
+            id="reproducibility_2"
             name="reproducibility"
             step="1"
             min="1"
@@ -162,7 +143,7 @@
           /><label for="perception">Perception</label>
           <input
             type="number"
-            id="perception3"
+            id="perception_2"
             name="perception"
             step="1"
             min="1"
@@ -171,7 +152,7 @@
           /><label for="strength">Force</label>
           <input
             type="number"
-            id="strength3"
+            id="strength_2"
             name="strength"
             step="1"
             min="1"
@@ -181,14 +162,8 @@
         </div>
 
         <!--INPUT PLAYER 4-->
-        <div id="player4" class="hidden">
-          <!--<input
-            type="text"
-            id="speciePlayer4"
-            name="speciePlayer4"
-            value="🦝"
-            placeholder="Espèce du joueur 4"
-          />--><select name="speciePlayer" id="speciePlayer4">
+        <div id="player_3" class="hidden">
+          <select name="speciePlayer" id="speciePlayer_3">
             <option selected value="">--Choisissez votre espèce--</option>
             <option value="./images/RABBIT01.png">🐰 Lapin</option>
             <option value="./images/HAMSTER01.png">🐹 Hamster</option>
@@ -197,7 +172,7 @@
           ><label for="moveSpeed">Vitesse de déplacement</label
           ><input
             type="number"
-            id="moveSpeed4"
+            id="moveSpeed_3"
             name="moveSpeed"
             step="1"
             min="1"
@@ -206,7 +181,7 @@
           /><label for="reproducibility">Reproduction</label
           ><input
             type="number"
-            id="reproducibility4"
+            id="reproducibility_3"
             name="reproducibility"
             step="1"
             min="1"
@@ -215,7 +190,7 @@
           /><label for="perception">Perception</label>
           <input
             type="number"
-            id="perception4"
+            id="perception_3"
             name="perception"
             step="1"
             min="1"
@@ -224,7 +199,7 @@
           /><label for="strength">Force</label>
           <input
             type="number"
-            id="strength4"
+            id="strength_3"
             name="strength"
             step="1"
             min="1"
@@ -239,10 +214,10 @@
     <div class="container">
       <div id="map" class="box1"></div>
       <div id="playersInfo" class="box1">
-        <div id="infoPlayer1" class="hidden">Joueur 1 possède bloubli</div>
-        <div id="infoPlayer2" class="hidden"></div>
-        <div id="infoPlayer3" class="hidden"></div>
-        <div id="infoPlayer4" class="hidden"></div>
+        <div id="infoPlayer_0" class="hidden"></div>
+        <div id="infoPlayer_1" class="hidden"></div>
+        <div id="infoPlayer_2" class="hidden"></div>
+        <div id="infoPlayer_3" class="hidden"></div>
       </div>
     </div>
   </body>

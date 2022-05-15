@@ -69,7 +69,6 @@ class Tile {
   toHole(color) {
     this.setType(TILE_TYPES.HOLE);
 
-    console.log(HOLES_IMG[color]);
     this.tile.attr("xlink:href", HOLES_IMG[color]);
   }
 }

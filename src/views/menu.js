@@ -1,15 +1,15 @@
 const D3 = require("../utils/d3.js");
 function displaySliders() {
-  for (let i = 2; i < 5; i++) {
-    document.getElementById(`player${i}`).classList.remove("hidden");
+  for (let i = 1; i < 4; i++) {
+    document.getElementById(`player_${i}`).classList.remove("hidden");
     document
-      .getElementById(`speciePlayer${i}`)
+      .getElementById(`speciePlayer_${i}`)
       .setAttribute("required", "required");
   }
   const nbOfPlayer = document.getElementById("nbOfPlayer").value;
-  for (let i = 4; i > nbOfPlayer; i--) {
-    document.getElementById(`player${i}`).setAttribute("class", "hidden");
-    document.getElementById(`speciePlayer${i}`).removeAttribute("required");
+  for (let i = 3; i > nbOfPlayer; i--) {
+    document.getElementById(`player_${i}`).setAttribute("class", "hidden");
+    document.getElementById(`speciePlayer_${i}`).removeAttribute("required");
   }
 }
 function changeListener() {
@@ -20,36 +20,33 @@ function changeListener() {
 
 function updateInfo(players) {
   for (let i = 1; i <= players.length; i++) {
-    D3.select(`#totalCreaturesPlayer${i}`)
-      .html(` Nombre de créatures créées : ${players[i - 1].creatures.length}
+    D3.select(`#totalCreaturesPlayer_${i + 1}`)
+      .html(` Nombre de créatures créées : ${players[i].creatures.length}
       <br/>`);
-    D3.select(`#totalDeadCreaturesPlayer${i}`).html(
-      `Nombre de créatures mortes : ${players[i - 1].deadCreatures.length}`
+    D3.select(`#totalDeadCreaturesPlayer_${i + 1}`).html(
+      `Nombre de créatures mortes : ${players[i].deadCreatures.length}`
     );
   }
 }
 
 function displayInfo(players) {
-  for (let i = 1; i <= players.length; i++) {
-    console.log(`infoPlayer${i}`);
-    const div = D3.select(`#infoPlayer${i}`);
-    console.log(div);
+  for (let i = 0; i < players.length; i++) {
+    const div = D3.select(`#infoPlayer_${i}`);
+
     div.classed("hidden", false); //delete the hidden class
-    div.html(`Joueur ${i} <img class="icon" src="${
-      players[i - 1].species
-    }"/>: <br/> Vitesse de déplacement : ${players[i - 1].movespeed}
-    <br/> Reproduction : ${players[i - 1].reproducibility}
-    <br/> Perception : ${players[i - 1].perception} cases
-    <br/> Force : ${players[i - 1].strength} <br/>`);
-    div.append("span").attr("id", `totalCreaturesPlayer${i}`)
-      .html(` Nombre de créatures créées : ${players[i - 1].creatures.length}
+    div.html(`Joueur ${i + 1} <img class="icon" src="${
+      players[i].species
+    }"/>: <br/> Vitesse de déplacement : ${players[i].movespeed}
+    <br/> Reproduction : ${players[i].reproducibility}
+    <br/> Perception : ${players[i].perception} cases
+    <br/> Force : ${players[i].strength} <br/>`);
+    div.append("span").attr("id", `totalCreaturesPlayer_${i}`)
+      .html(` Nombre de créatures créées : ${players[i].creatures.length}
       <br/>`);
     div
       .append("span")
-      .attr("id", `totalDeadCreaturesPlayer${i}`)
-      .html(
-        `Nombre de créatures mortes : ${players[i - 1].deadCreatures.length}`
-      );
+      .attr("id", `totalDeadCreaturesPlayer_${i}`)
+      .html(`Nombre de créatures mortes : ${players[i].deadCreatures.length}`);
   }
 }
 
