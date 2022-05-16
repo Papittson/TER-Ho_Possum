@@ -1,30 +1,22 @@
+const D3 = require("./utils/d3");
+const GameEngine = require("./components/gameEngine.js");
 const Player = require("./components/player.js");
 const { changeListener, displayInfo } = require("./views/menu.js");
-const fetchData = require("./utils/fetchData.js");
-const GameEngine = require("./components/gameEngine.js");
-
-changeListener();
+const { fetchFormData } = require("./utils/functions.js");
 
 function startGame() {
-  const playersData = fetchData();
-  const players = playersData.map(
-    (data) =>
-      new Player(
-        data.species,
-        data.reproducibility,
-        data.strength,
-        data.movespeed,
-        data.perception
-      )
-  );
-  const gameEngine = new GameEngine();
-  gameEngine.setPlayers(players);
+  const data = fetchFormData();
+  const maxRounds = data.maxRounds;
+  const players = data.players.map((playerData) => new Player(playerData));
+  const gameEngine = new GameEngine(players, maxRounds);
   displayInfo(players);
   gameEngine.start();
 }
 
-document.getElementById("inputs").addEventListener("submit", function (event) {
+changeListener();
+
+D3.select("#inputs").on("submit", (event) => {
   event.preventDefault();
-  document.getElementById("inputs").classList.add("non_display");
+  D3.select("#inputs").classed("non_display", true);
   startGame();
 });

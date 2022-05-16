@@ -1,24 +1,44 @@
-// When you call this function, you can either pass a targetId (String) OR a targetTypes (array of TILE_TYPES)
-function findPath(tilesExplored, tilesToExplore, tiles, targetId, targetTypes) {
-  let stopCondition;
-  if (targetId != null) {
-    stopCondition = (tileId) => tileId == targetId;
-    if (tiles.get(targetId).isObstacle()) {
-      console.error("The target tile is an obstacle...");
-      return [];
-    }
-  } else if (targetTypes != null) {
-    stopCondition = (tileId) => targetTypes.includes(tiles.get(tileId).type);
-  } else {
-    throw new Error("You must put a target !");
-  }
+/**
+ * Find a path from an entity to a specific goal.
+ * @param {(Creature | Predator)} entity - Entity where the path goes from.
+ * @param {(string | TILE_TYPES[])} goal - Goal to find (tile id/types or "creature").
+ * @param {Map<string, Tile>} tiles - Tiles to find from.
+ * @param {Creature[]} [creatures] - Creatures to find from (optional).
+ * @returns {string[]} Array of tile ids.
+ */
+function findPath(entity, goal, tiles, creatures) {
+  const tilesExplored = new Map();
+  const tilesToExplore = new Map().set(`${entity.x};${entity.y}`, null);
+  const isTarget =
+    typeof goal === "string"
+      ? goal == "creature"
+        ? (tileId) =>
+            creatures.some(
+              (creature) =>
+                creature.x == tiles.get(tileId).x &&
+                creature.y == tiles.get(tileId).y
+            )
+        : (tileId) => tileId == goal
+      : (tileId) => goal.includes(tiles.get(tileId).type);
 
+  return shortestPath(tilesExplored, tilesToExplore, isTarget, tiles);
+}
+
+/**
+ * Shortest path algorithm.
+ * @param {Map<string, Tile>} tilesExplored - Tiles explored during search.
+ * @param {Map<string, Tile>} tilesToExplore - Tiles to explore during search.
+ * @param {Function} isTarget - Function that returns true if target is found.
+ * @param {Map<string, Tile>} tiles - Tiles to find from.
+ * @returns {string[]} Array of tile ids.
+ */
+function shortestPath(tilesExplored, tilesToExplore, isTarget, tiles) {
   while (tilesToExplore.size > 0) {
     const tileId = Array.from(tilesToExplore.keys(tilesToExplore))[0];
     tilesExplored.set(tileId, tilesToExplore.get(tileId));
     tilesToExplore.delete(tileId);
 
-    if (stopCondition(tileId)) {
+    if (isTarget(tileId)) {
       const path = [];
       let key = tileId;
       while (key != null) {

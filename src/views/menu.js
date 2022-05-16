@@ -1,30 +1,56 @@
-const D3 = require("../utils/d3.js");
+const D3 = require("../utils/d3");
+
 function displaySliders() {
-  for (let i = 1; i < 4; i++) {
-    document.getElementById(`player_${i}`).classList.remove("hidden");
-    document
-      .getElementById(`speciePlayer_${i}`)
-      .setAttribute("required", "required");
+  for (let i = 0; i < 4; i++) {
+    D3.select(`#player_${i}`).classed("hidden", false);
+    D3.select(`#playerSpecies_${i}`).attr("required", "required");
   }
-  const nbOfPlayer = document.getElementById("nbOfPlayer").value;
-  for (let i = 3; i > nbOfPlayer; i--) {
-    document.getElementById(`player_${i}`).setAttribute("class", "hidden");
-    document.getElementById(`speciePlayer_${i}`).removeAttribute("required");
+  const nbOfPlayers = D3.select("#nbOfPlayers").property("value");
+  for (let i = 3; i > nbOfPlayers - 1; i--) {
+    D3.select(`#player_${i}`).attr("class", "hidden");
+    D3.select(`#playerSpecies_${i}`).attr("required", null);
   }
 }
+
 function changeListener() {
-  document
-    .getElementById("nbOfPlayer")
-    .addEventListener("change", displaySliders);
+  D3.select("#nbOfPlayers").on("change", displaySliders);
+  for (let i = 0; i < 4; i++) {
+    const select = D3.select(`#playerSpecies_${i}`);
+    const currentValue = select.property("value");
+    select.datum(currentValue);
+    select.on("change", () => updateSelect(i));
+  }
+}
+
+function updateSelect(selectNum) {
+  const select = D3.select(`#playerSpecies_${selectNum}`);
+  const oldValue = select.datum();
+  const selectValue = select.property("value");
+  for (let i = 0; i < 4; i++) {
+    const options = D3.select(`#playerSpecies_${i}`).selectChildren("option");
+    options.each(function () {
+      const option = D3.select(this);
+      if (option.property("value") == oldValue) {
+        option.attr("hidden", undefined);
+      }
+      if (
+        option.property("value") == selectValue &&
+        option.property("value") != ""
+      ) {
+        option.attr("hidden", true);
+      }
+    });
+  }
+  select.datum(selectValue);
 }
 
 function updateInfo(players) {
-  for (let i = 1; i <= players.length; i++) {
-    D3.select(`#totalCreaturesPlayer_${i + 1}`)
+  for (let i = 0; i < players.length; i++) {
+    D3.select(`#totalCreaturesPlayer_${i}`)
       .html(` Nombre de créatures créées : ${players[i].creatures.length}
       <br/>`);
-    D3.select(`#totalDeadCreaturesPlayer_${i + 1}`).html(
-      `Nombre de créatures mortes : ${players[i].deadCreatures.length}`
+    D3.select(`#totalDeadCreaturesPlayer_${i}`).html(
+      `Nombre de créatures vivantes : ${players[i].getCreatures().length}`
     );
   }
 }
@@ -32,11 +58,10 @@ function updateInfo(players) {
 function displayInfo(players) {
   for (let i = 0; i < players.length; i++) {
     const div = D3.select(`#infoPlayer_${i}`);
-
     div.classed("hidden", false); //delete the hidden class
     div.html(`Joueur ${i + 1} <img class="icon" src="${
-      players[i].species
-    }"/>: <br/> Vitesse de déplacement : ${players[i].movespeed}
+      players[i].img
+    }"/>: <br/> Vitesse de déplacement : ${players[i].moveSpeed}
     <br/> Reproduction : ${players[i].reproducibility}
     <br/> Perception : ${players[i].perception} cases
     <br/> Force : ${players[i].strength} <br/>`);
@@ -46,7 +71,9 @@ function displayInfo(players) {
     div
       .append("span")
       .attr("id", `totalDeadCreaturesPlayer_${i}`)
-      .html(`Nombre de créatures mortes : ${players[i].deadCreatures.length}`);
+      .html(
+        `Nombre de créatures vivantes : ${players[i].getCreatures().length}`
+      );
   }
 }
 

@@ -1,33 +1,52 @@
 const { v4: uuidv4 } = require("uuid");
+const { TILE_TYPES } = require("../utils/constants.js");
+const Creature = require("./entities/creature.js");
 
 class Player {
-  constructor(species, reproducibility, strength, movespeed, perception) {
+  /**
+   * Represents a player.
+   * @constructor
+   * @param {string} img - URL to the player's species image.
+   * @param {Object} attributes - Attribute levels selected by the player.
+   */
+  constructor(attributes) {
+    const { img, reproducibility, strength, moveSpeed, perception } =
+      attributes;
     this.id = uuidv4();
-    this.species = species;
+    this.img = img;
     this.creatures = [];
-    this.deadCreatures = [];
     this.reproducibility = reproducibility;
     this.strength = strength;
-    this.movespeed = movespeed;
-    this.perception = perception;
+    this.moveSpeed = moveSpeed + 2;
+    this.perception = perception < 3 ? perception * 2 : perception + 2;
   }
 
-  addDeadCreature(creature) {
-    this.deadCreatures.push(creature);
-    this.creatures = this.creatures.filter((entity) => entity != creature);
+  /**
+   * Assign a hole to the player.
+   * @param {Tile} tile - The tile to set as player's hole.
+   */
+  setHole(tile) {
+    this.hole = tile;
+    tile.setType(TILE_TYPES.HOLE, this.img);
   }
 
-  setHole(hole) {
-    this.hole = hole;
-    hole.toHole(this.color);
-  }
-
-  setColor(color) {
-    this.color = color;
-  }
-
-  addCreature(creature) {
+  /**
+   * Add a new creature to player's creatures.
+   */
+  addCreature() {
+    const { x, y } = this.hole;
+    const creature = new Creature(x, y, this);
     this.creatures.push(creature);
+    return creature;
+  }
+
+  /**
+   * Get player's alive creatures.
+   * @returns {Creature[]}
+   */
+  getCreatures() {
+    return this.creatures.filter((creature) => creature.isAlive);
   }
 }
+
 module.exports = Player;

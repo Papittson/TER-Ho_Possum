@@ -2,34 +2,54 @@
   box-sizing: border-box;
 }
 
-.top {
-  z-index: 100;
+html {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 body {
   background-color: #1b1b1b;
   color: #ffffff;
 }
+
+.entity {
+  z-index: 100;
+  transition: x 100ms, y 100ms;
+}
+
+.dead {
+  z-index: 50;
+  opacity: 0;
+  transition: opacity 5s;
+}
+
 .visible {
   visibility: visible;
 }
+
 .hidden {
   visibility: hidden;
 }
+
 .non_display {
   display: none;
 }
+
 .container {
   display: flex;
   justify-content: center;
   flex-direction: row;
 }
+
 .box1 {
   padding-right: 20px;
 }
+
 .icon {
   display: inline;
 }
+
 #playersInfo {
   display: flex;
   flex-direction: column;

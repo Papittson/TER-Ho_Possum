@@ -7,24 +7,33 @@
   </head>
   <body>
     <form id="inputs">
-      <label for="nbOfPlayer">Nombre de Joueurs</label
+      <label for="nbOfPlayers">Nombre de Joueurs</label
       ><input
         type="number"
-        id="nbOfPlayer"
-        name="nbOfPlayer"
+        id="nbOfPlayers"
+        name="nbOfPlayers"
         step="1"
         min="1"
         max="4"
         value="1"
       />
+      <label for="nbOfRounds">Nombre de tours</label
+      ><input
+        type="number"
+        id="nbOfRounds"
+        name="nbOfRounds"
+        step="10"
+        min="0"
+        value="50"
+      />
       <div id="sliders">
         <!--INPUTS PLAYER 1-->
         <div id="player_0" class="">
-          <select name="speciePlayer" id="speciePlayer_0" required="required">
+          <select name="playerSpecies" id="playerSpecies_0" required="required">
             <option selected value="">--Choisissez votre espèce--</option>
             <option value="./images/CREATURE_0.png">🐰 Lapin</option>
             <option value="./images/CREATURE_1.png">🐹 Hamster</option>
-            <option value="./images/CREATURE_2">🐭 Rat</option>
+            <option value="./images/CREATURE_2.png">🐭 Rat</option>
             <option value="./images/CREATURE_3.png">🦝 Raton</option>
           </select>
           <label for="moveSpeed">Vitesse de déplacement</label>
@@ -68,12 +77,12 @@
 
         <!--INPUTS PLAYER 2-->
         <div id="player_1" class="hidden">
-          <select name="speciePlayer" id="speciePlayer_1">
+          <select name="playerSpecies" id="playerSpecies_1">
             <option selected value="">--Choisissez votre espèce--</option>
-            <option value="./images/RABBIT01.png">🐰 Lapin</option>
-            <option value="./images/HAMSTER01.png">🐹 Hamster</option>
-            <option value="./images/RAT01.png">🐭 Rat</option>
-            <option value="./images/RACCOON01.png">🦝 Raton</option>
+            <option value="./images/CREATURE_0.png">🐰 Lapin</option>
+            <option value="./images/CREATURE_1.png">🐹 Hamster</option>
+            <option value="./images/CREATURE_2.png">🐭 Rat</option>
+            <option value="./images/CREATURE_3.png">🦝 Raton</option>
           </select>
           <label for="moveSpeed">Vitesse de déplacement</label
           ><input
@@ -116,12 +125,12 @@
 
         <!--INPUTS PLAYER 3-->
         <div id="player_2" class="hidden">
-          <select name="speciePlayer" id="speciePlayer_2">
+          <select name="playerSpecies" id="playerSpecies_2">
             <option selected value="">--Choisissez votre espèce--</option>
-            <option value="./images/RABBIT01.png">🐰 Lapin</option>
-            <option value="./images/HAMSTER01.png">🐹 Hamster</option>
-            <option value="./images/RAT01.png">🐭 Rat</option>
-            <option value="./images/RACCOON01.png">🦝 Raton</option></select
+            <option value="./images/CREATURE_0.png">🐰 Lapin</option>
+            <option value="./images/CREATURE_1.png">🐹 Hamster</option>
+            <option value="./images/CREATURE_2.png">🐭 Rat</option>
+            <option value="./images/CREATURE_3.png">🦝 Raton</option></select
           ><label for="moveSpeed">Vitesse de déplacement</label
           ><input
             type="number"
@@ -163,12 +172,12 @@
 
         <!--INPUT PLAYER 4-->
         <div id="player_3" class="hidden">
-          <select name="speciePlayer" id="speciePlayer_3">
+          <select name="playerSpecies" id="playerSpecies_3">
             <option selected value="">--Choisissez votre espèce--</option>
-            <option value="./images/RABBIT01.png">🐰 Lapin</option>
-            <option value="./images/HAMSTER01.png">🐹 Hamster</option>
-            <option value="./images/RAT01.png">🐭 Rat</option>
-            <option value="./images/RACCOON01.png">🦝 Raton</option></select
+            <option value="./images/CREATURE_0.png">🐰 Lapin</option>
+            <option value="./images/CREATURE_1.png">🐹 Hamster</option>
+            <option value="./images/CREATURE_2.png">🐭 Rat</option>
+            <option value="./images/CREATURE_3.png">🦝 Raton</option></select
           ><label for="moveSpeed">Vitesse de déplacement</label
           ><input
             type="number"

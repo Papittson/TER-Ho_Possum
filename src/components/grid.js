@@ -1,19 +1,44 @@
+const D3 = require("../utils/d3");
 const { TILE_TYPES } = require("../utils/constants.js");
+const { SAND, ROCK, WATER, DIRT, GRASS, FOREST, HOLE } = TILE_TYPES;
 const Tile = require("./tile.js");
-const D3 = require("../utils/d3.js");
+const _ = require("../utils/functions.js");
 
 class Grid {
-  constructor(players, tileHeight = 20) {
+  /**
+   * Represents a grid.
+   * @constructor
+   * @param {Player[]} players - Array of players.
+   * @param {number} tileSize - Tile size.
+   */
+  constructor(players, tileSize) {
     this.players = players;
-    this.height = players.length < 3 ? 500 : 600;
-    this.tileHeight = tileHeight;
-    this.tilesPerSide = Math.trunc(this.height / tileHeight);
+    this.size = players.length < 3 ? 500 : 600;
+    this.tileSize = tileSize;
+    this.tilesPerSide = Math.trunc(this.size / tileSize);
     this.nbOfTiles = Math.pow(this.tilesPerSide, 2);
     this.tiles = new Map();
-    this.draw();
+    this.render();
     this.createTiles();
   }
 
+  /**
+   * Render the HTML element associated with the grid.
+   */
+  render() {
+    D3.select("#map")
+      .append("svg")
+      .attr("width", this.size)
+      .attr("height", this.size)
+      .attr("id", "grid");
+  }
+
+  /**
+   * Get area of tiles around a center position.
+   * @param {number} posX - Position X of the location.
+   * @param {number} posY - Position Y of the location.
+   * @param {number} radius - Radius of the area.
+   */
   getTilesInArea(posX, posY, radius) {
     const minX = Math.max(posX - radius, 0);
     const maxX = Math.min(posX + radius, this.tilesPerSide - 1);
@@ -31,96 +56,126 @@ class Grid {
     return tiles;
   }
 
+  /**
+   * Get area of creatures around a center position.
+   * @param {number} posX - Position X of the location.
+   * @param {number} posY - Position Y of the location.
+   * @param {number} radius - Radius of the area.
+   */
+  getCreaturesInArea(creatures, posX, posY, radius) {
+    const minX = Math.max(posX - radius, 0);
+    const maxX = Math.min(posX + radius, this.tilesPerSide - 1);
+    const minY = Math.max(posY - radius, 0);
+    const maxY = Math.min(posY + radius, this.tilesPerSide - 1);
+    let creaturesInArea = [];
+    for (let x = minX; x <= maxX; x++) {
+      for (let y = minY; y <= maxY; y++) {
+        const creaturesAtPosition = creatures.filter(
+          (creature) => creature.x === x && creature.y === y
+        );
+        creaturesInArea = creaturesInArea.concat(creaturesAtPosition);
+      }
+    }
+    return creaturesInArea;
+  }
+
+  /**
+   * Grow all tiles (growable tiles only).
+   */
   grow() {
     this.tiles.forEach((tile) => tile.grow());
   }
 
+  /**
+   * Degrow a tile at specific position, if growable.
+   * @param {number} x - Position X of the location.
+   * @param {number} y - Position Y of the location.
+   */
   degrow(x, y) {
     this.tiles.get(`${x};${y}`).degrow();
   }
 
-  draw() {
-    D3.select("#map")
-      .append("svg")
-      .attr("width", this.height)
-      .attr("height", this.height)
-      .attr("id", "grid");
-  }
-
+  /**
+   * Generate and render tiles on the grid.
+   */
   createTiles() {
     this.createDirtTiles();
     this.createHoles();
-    this.createTilesByType(TILE_TYPES.WATER);
-    this.createTilesByType(TILE_TYPES.GRASS);
-    this.createTilesByType(TILE_TYPES.FOREST);
-    this.createTilesByType(TILE_TYPES.ROCK);
+    this.createTilesByType(WATER);
+    this.createTilesByType(GRASS);
+    this.createTilesByType(FOREST);
+    this.createTilesByType(ROCK);
+    this.predatorSpawn.setType(GRASS);
   }
 
+  /**
+   * Generate and render dirt tiles on the grid.
+   */
   createDirtTiles() {
     for (let x = 0; x < this.tilesPerSide; x++) {
       for (let y = 0; y < this.tilesPerSide; y++) {
-        this.tiles.set(
-          `${x};${y}`,
-          new Tile(x, y, this.tileHeight, TILE_TYPES.DIRT)
-        );
+        this.tiles.set(`${x};${y}`, new Tile(x, y, this.tileSize, DIRT));
       }
     }
   }
 
+  /**
+   * Generate and render tiles by type on the grid.
+   * @param {TILE_TYPES} type - Type of tile to generate.
+   */
   createTilesByType(type) {
     const nbOfTilesToCreate = this.getNumberOfTiles(type);
     const tiles = Array.from(this.tiles.values());
     let cpt = 0;
     while (cpt < nbOfTilesToCreate) {
-      const tile = tiles[Math.floor(Math.random() * tiles.length)];
-      if (tile.type == TILE_TYPES.DIRT) {
+      const tile = _.random(tiles);
+      if (tile.type == DIRT) {
         cpt++;
         tile.setType(type);
-        if (type == TILE_TYPES.WATER) {
+        if (type == WATER) {
           tile
             .neighbours(this.tiles)
-            .filter(
-              (tile) =>
-                tile?.type != TILE_TYPES.WATER && tile?.type != TILE_TYPES.HOLE
-            )
-            .forEach((tile) => tile?.setType(TILE_TYPES.SAND));
+            .filter((tile) => tile.type != WATER && tile.type != HOLE)
+            .forEach((tile) => tile.setType(SAND));
           const remainingWaterSize = nbOfTilesToCreate - cpt;
           const waterTiles = this.getWaterShape(tile, remainingWaterSize);
           waterTiles
-            .filter(
-              (tile) =>
-                tile?.type != TILE_TYPES.WATER && tile?.type != TILE_TYPES.HOLE
-            )
-            .forEach((tile) => tile?.setType(type));
+            .filter((tile) => tile.type != WATER && tile.type != HOLE)
+            .forEach((tile) => tile.setType(type));
           cpt += waterTiles.length;
           waterTiles.forEach((tile) =>
             tile
-              ?.neighbours(this.tiles)
-              .filter(
-                (tile) =>
-                  tile?.type != TILE_TYPES.WATER &&
-                  tile?.type != TILE_TYPES.HOLE
-              )
-              .forEach((tile) => tile?.setType(TILE_TYPES.SAND))
+              .neighbours(this.tiles)
+              .filter((tile) => tile.type != WATER && tile.type != HOLE)
+              .forEach((tile) => tile.setType(SAND))
           );
         }
       }
     }
   }
 
+  /**
+   * Get the number of tiles by type.
+   * @param {TILE_TYPES} type - Type of tile to get.
+   */
   getNumberOfTiles(type) {
     return Math.trunc(type.freq * this.nbOfTiles);
   }
 
+  /**
+   * Generate and render creature's holes on the grid.
+   */
   createHoles() {
     const holes = [];
     const quarter = Math.trunc(this.tilesPerSide / 4);
     const threeQuarter = Math.trunc((3 * this.tilesPerSide) / 4);
+    const middle = Math.trunc(this.tilesPerSide / 2);
+    this.predatorSpawn = this.tiles.get(`${middle};${middle}`);
+    this.predatorSpawn.setType(HOLE, "");
     switch (this.players.length) {
       case 1:
         {
-          const middle = Math.trunc(this.tilesPerSide / 2);
-          const tile = this.tiles.get(`${middle};${middle}`);
+          const tile = this.tiles.get(`${quarter};${quarter}`);
           holes.push(tile);
           this.players[0].setHole(tile);
         }
@@ -169,6 +224,11 @@ class Grid {
     }
   }
 
+  /**
+   * Get a random water shape.
+   * @param {Tile} tile - Base tile to generate water shape from.
+   * @param {number} remainingWaterSize - Water generation limit.
+   */
   getWaterShape(tile, remainingWaterSize) {
     const shapes = [
       [`${tile.x - 1};${tile.y}`, `${tile.x + 1};${tile.y}`], // Shape 1
@@ -183,33 +243,12 @@ class Grid {
         `${tile.x};${tile.y + 1}`,
       ], // Shape 7
     ];
-    const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
+    const randomShape = _.random(shapes);
     const tiles = randomShape.map((id) => this.tiles.get(id));
     tiles.length = Math.min(remainingWaterSize, tiles.length);
 
-    return tiles;
+    return tiles.filter((tile) => tile != null);
   }
 }
 
 module.exports = Grid;
-
-/*
-function shareItem(list1, list2) {
-  for (let item of list1) {
-    if (list2.includes(item)) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function isInjective(list) {
-  temp = [];
-  i = 0;
-  do {
-    temp.push(list[i]);
-    i++;
-  } while (!temp.includes(list[i]) && i < list.length);
-  return temp.length == list.length;
-}
-*/
