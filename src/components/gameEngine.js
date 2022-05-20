@@ -33,13 +33,16 @@ class GameEngine {
       this.creatures.push(creature);
       creature = player.addCreature();
       this.creatures.push(creature);
+    });
+    const nbOfPredators = this.players.length > 2 ? 2 : 1;
+    for (let i = 0; i < nbOfPredators; i++) {
       const predator = new Predator(
         this.grid.predatorSpawn.x,
         this.grid.predatorSpawn.y,
         this.tileSize
       );
       this.predators.push(predator);
-    });
+    }
 
     const gameId = setInterval(() => this.startRound(gameId), 500);
   }

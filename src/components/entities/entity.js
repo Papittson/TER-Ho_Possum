@@ -67,7 +67,7 @@ class Entity {
     this.isAlive = false;
     this.htmlElement
       .classed("dead", true)
-      .attr("xlink:href", "./images/holePos.png");
+      .attr("xlink:href", "./images/DEAD_CREATURE.png");
   }
 }
 

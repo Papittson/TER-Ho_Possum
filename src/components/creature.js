@@ -14,16 +14,7 @@ class Creature {
   constructor(
     x,
     y,
-    {
-      id,
-      species,
-      reproducibility,
-      strength,
-      movespeed,
-      perception,
-      hole,
-      color,
-    }
+    { id, species, reproducibility, strength, movespeed, perception, hole }
   ) {
     this.isDead = false;
     this.reproducibility = reproducibility;
@@ -35,7 +26,6 @@ class Creature {
     this.hole = hole;
     this.x = x;
     this.y = y;
-    this.color = color;
     this.id = uuidv4();
     this.needs = {
       HUNGER: NEEDS.HUNGER.default,

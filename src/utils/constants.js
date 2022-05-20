@@ -1,7 +1,7 @@
 const PREDATOR_SETTINGS = Object.freeze({
-  PERCEPTION: 1000,
-  MOVE_SPEED: 6,
-  STRENGTH: 10,
+  PERCEPTION: 2,
+  MOVE_SPEED: 3,
+  STRENGTH: 9,
   IMG: "./images/PREDATOR.png",
 });
 

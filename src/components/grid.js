@@ -13,7 +13,7 @@ class Grid {
    */
   constructor(players, tileSize) {
     this.players = players;
-    this.size = players.length < 3 ? 500 : 600;
+    this.size = players.length < 3 ? 500 : 700;
     this.tileSize = tileSize;
     this.tilesPerSide = Math.trunc(this.size / tileSize);
     this.nbOfTiles = Math.pow(this.tilesPerSide, 2);
@@ -102,6 +102,7 @@ class Grid {
     this.createDirtTiles();
     this.createHoles();
     this.createTilesByType(WATER);
+    this.createTilesByType(SAND);
     this.createTilesByType(GRASS);
     this.createTilesByType(FOREST);
     this.createTilesByType(ROCK);
@@ -133,24 +134,27 @@ class Grid {
         cpt++;
         tile.setType(type);
         if (type == WATER) {
-          tile
-            .neighbours(this.tiles)
-            .filter((tile) => tile.type != WATER && tile.type != HOLE)
-            .forEach((tile) => tile.setType(SAND));
           const remainingWaterSize = nbOfTilesToCreate - cpt;
           const waterTiles = this.getWaterShape(tile, remainingWaterSize);
           waterTiles
             .filter((tile) => tile.type != WATER && tile.type != HOLE)
             .forEach((tile) => tile.setType(type));
           cpt += waterTiles.length;
-          waterTiles.forEach((tile) =>
-            tile
-              .neighbours(this.tiles)
-              .filter((tile) => tile.type != WATER && tile.type != HOLE)
-              .forEach((tile) => tile.setType(SAND))
-          );
         }
       }
+    }
+    if (type == SAND) {
+      console.log("pouet");
+      tiles
+        .filter((tile) => tile.type == WATER)
+        .forEach((tile) => {
+          tile
+            .neighbours(this.tiles)
+            .filter(
+              (neighbour) => neighbour.type != WATER && neighbour.type != HOLE
+            )
+            .forEach((neighbour) => neighbour.setType(type));
+        });
     }
   }
 
