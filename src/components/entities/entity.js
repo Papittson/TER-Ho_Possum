@@ -1,6 +1,7 @@
 const { v4: uuidv4 } = require("uuid");
 const D3 = require("../../utils/d3");
 const _ = require("../../utils/functions.js");
+const Logger = require("../../utils/logger");
 
 class Entity {
   /**
@@ -62,12 +63,18 @@ class Entity {
 
   /**
    * Make the entity die.
+   * @param {String} deathCause - Cause of the death.
    */
-  die() {
+  die(deathCause) {
+    if (!this.isAlive) {
+      return;
+    }
+    this.deathCause = deathCause.toLowerCase();
     this.isAlive = false;
     this.htmlElement
       .classed("dead", true)
       .attr("xlink:href", "./images/DEAD_CREATURE.png");
+    Logger.info(`💀 [${this.id}] est mort de "${this.deathCause}".`);
   }
 }
 

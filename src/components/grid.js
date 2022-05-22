@@ -3,6 +3,7 @@ const { TILE_TYPES } = require("../utils/constants.js");
 const { SAND, ROCK, WATER, DIRT, GRASS, FOREST, HOLE } = TILE_TYPES;
 const Tile = require("./tile.js");
 const _ = require("../utils/functions.js");
+const findPath = require("../utils/shortestPathAlgo.js");
 
 class Grid {
   /**
@@ -26,11 +27,20 @@ class Grid {
    * Render the HTML element associated with the grid.
    */
   render() {
+    D3.select("main").classed("removed", false);
     D3.select("#map")
       .append("svg")
       .attr("width", this.size)
       .attr("height", this.size)
       .attr("id", "grid");
+  }
+
+  /**
+   * Remove the tiles associated with the grid.
+   */
+  remove() {
+    this.tiles.forEach((tile) => tile.remove());
+    this.tiles = new Map();
   }
 
   /**
@@ -99,14 +109,46 @@ class Grid {
    * Generate and render tiles on the grid.
    */
   createTiles() {
-    this.createDirtTiles();
-    this.createHoles();
-    this.createTilesByType(WATER);
-    this.createTilesByType(SAND);
-    this.createTilesByType(GRASS);
-    this.createTilesByType(FOREST);
-    this.createTilesByType(ROCK);
-    this.predatorSpawn.setType(GRASS);
+    let holes = [];
+    do {
+      this.remove();
+      this.createDirtTiles();
+      holes = this.createHoles();
+      this.createTilesByType(WATER);
+      this.createTilesByType(SAND);
+      this.createTilesByType(GRASS);
+      this.createTilesByType(FOREST);
+      this.createTilesByType(ROCK);
+      const neighbours = this.predatorSpawn.neighbours(this.tiles);
+      let spawnType = GRASS;
+      if (neighbours.find((neighbour) => neighbour.type == WATER)) {
+        spawnType = SAND;
+      }
+      this.predatorSpawn.setType(spawnType);
+    } while (!this.verifyTiles(holes));
+  }
+
+  /**
+   * Verify that there is a path to every need.
+   * @param {Tile[]} holes - Generated holes.
+   * @returns {boolean} True if the map is verified, false otherwise.
+   */
+  verifyTiles(holes) {
+    for (let hole of holes) {
+      const pathToWater = findPath(hole, [SAND], this.tiles);
+      if (pathToWater.length === 0) {
+        return false;
+      }
+      const pathToFood = findPath(hole, [GRASS, FOREST, DIRT], this.tiles);
+      if (pathToFood.length === 0) {
+        return false;
+      }
+      const pathToPredator = findPath(hole, this.predatorSpawn.id, this.tiles);
+      if (pathToPredator.length === 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
@@ -144,7 +186,6 @@ class Grid {
       }
     }
     if (type == SAND) {
-      console.log("pouet");
       tiles
         .filter((tile) => tile.type == WATER)
         .forEach((tile) => {
@@ -168,6 +209,7 @@ class Grid {
 
   /**
    * Generate and render creature's holes on the grid.
+   * @returns {Tile[]}
    */
   createHoles() {
     const holes = [];
@@ -226,6 +268,7 @@ class Grid {
       default:
         throw Error("You need to have 1 to 4 players!");
     }
+    return holes;
   }
 
   /**

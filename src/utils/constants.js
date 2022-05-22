@@ -1,5 +1,11 @@
+const SETTINGS = Object.freeze({
+  MAX_PLAYERS: 4,
+  MAX_POINTS: 15,
+  MAX_NEED: 5,
+});
+
 const PREDATOR_SETTINGS = Object.freeze({
-  PERCEPTION: 2,
+  PERCEPTION: 3,
   MOVE_SPEED: 3,
   STRENGTH: 9,
   IMG: "./images/PREDATOR.png",
@@ -8,24 +14,24 @@ const PREDATOR_SETTINGS = Object.freeze({
 const NEEDS = Object.freeze({
   HUNGER: {
     default: 100,
-    decreaseAmount: 5,
-    critical: 30,
+    decreaseAmount: 3,
+    critical: 40,
     priority: 50,
   },
   THIRST: {
     default: 100,
     decreaseAmount: 5,
-    critical: 35,
+    critical: 50,
     priority: 100,
   },
   SLEEP: {
     default: 100,
-    decreaseAmount: 5,
+    decreaseAmount: 4,
     critical: 20,
     priority: 20,
   },
   MATING: {
-    default: 7,
+    default: 15,
     decreaseAmount: 1,
     critical: 1,
     priority: 10,
@@ -44,7 +50,7 @@ const TILE_TYPES = Object.freeze({
   },
   FOREST: {
     freq: 0.22,
-    HUNGER: 20,
+    HUNGER: 12,
     images: ["./images/FOREST01.png"],
   },
   ROCK: {
@@ -70,4 +76,5 @@ module.exports = {
   PREDATOR_SETTINGS,
   TILE_TYPES,
   NEEDS,
+  SETTINGS,
 };

@@ -3,7 +3,7 @@ const { STRENGTH, PERCEPTION, MOVE_SPEED, IMG } = PREDATOR_SETTINGS;
 const Entity = require("./entity.js");
 const findPath = require("../../utils/shortestPathAlgo.js");
 const _ = require("../../utils/functions.js");
-const Logger = require("../../utils/logger.js");
+const Logger = require("../../utils/logger");
 
 class Predator extends Entity {
   /**
@@ -35,7 +35,6 @@ class Predator extends Entity {
     );
 
     if (crowdStrength > this.strength) {
-      Logger.info("La solidarité l'emporte");
       this.wander(tiles);
       return false;
     }
@@ -43,7 +42,6 @@ class Predator extends Entity {
     const path = findPath(this, "creature", tiles, creatures);
 
     if (path.length === 0) {
-      Logger.info("Predateur erre car pas de chemin");
       this.wander(tiles);
       return false;
     }
@@ -52,12 +50,10 @@ class Predator extends Entity {
 
     // The predator arrived to its goal
     if (path.length === 0) {
-      Logger.info("Predateur a trouvé la creature");
       this.eat(creatures);
       return true;
     }
 
-    Logger.info("Predateur en chemin");
     return false;
   }
 
@@ -83,12 +79,14 @@ class Predator extends Entity {
    * @param {Creature[]} creatures - Creatures in the predator's perception.
    */
   eat(creatures) {
-    Logger.info("Le prédateur mange");
     const edibleCreatures = creatures.filter(
       ({ x, y }) => this.x === x && this.y === y
     );
     const creature = _.random(edibleCreatures);
-    creature?.die();
+    if (creature != null) {
+      Logger.info(`🩸 [${this.id}] a mangé une créature.`);
+      creature.die("PREDATOR");
+    }
   }
 }
 

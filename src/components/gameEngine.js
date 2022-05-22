@@ -1,7 +1,8 @@
 const Logger = require("../utils/logger.js");
 const Grid = require("./grid.js");
 const Predator = require("./entities/predator.js");
-const { updateInfo } = require("../views/menu.js");
+const { updateDetails } = require("../views/game.js");
+const Creature = require("./entities/creature.js");
 
 class GameEngine {
   /**
@@ -54,55 +55,45 @@ class GameEngine {
   startRound(gameId) {
     if (this.rounds == this.maxRounds) {
       clearInterval(gameId);
+      updateDetails(this.players);
       return;
     }
     this.rounds++;
-    updateInfo(this.players);
-    Logger.info(`Le tour de jeu n° ${this.rounds} commence.`);
+    updateDetails(this.players);
+    Logger.startRoundLog(this.rounds);
     // Grow dirt to grass
     this.grid.grow();
     // Do creatures' action
     this.players.forEach((player) => {
-      let hasReproduced = false;
+      Creature.resetReproduction();
       player.getCreatures().forEach((creature) => {
         const { x, y, perception } = creature;
         creature.decreaseNeeds();
-        const criticalNeed = creature.getCriticalNeed();
-        const sendAllTiles =
-          criticalNeed == "SLEEP" || criticalNeed == "MATING";
-        const tilesToSend = sendAllTiles
-          ? this.grid.tiles
-          : this.grid.getTilesInArea(x, y, perception);
-        const creatures = this.grid.getCreaturesInArea(
-          this.creatures,
-          x,
-          y,
-          perception
-        );
-        const isActionDone = creature.doAction(tilesToSend, creatures);
-        if (isActionDone) {
-          this.grid.degrow(x, y);
-          if (criticalNeed == "MATING" && !hasReproduced) {
-            const mate = player
-              .getCreatures()
-              .find(
-                (entity) =>
-                  entity != creature &&
-                  entity.x === x &&
-                  entity.y === y &&
-                  entity.getCriticalNeed() == "MATING"
-              );
-            if (mate != null) {
-              const nbNewborn = player.reproducibility;
-              for (let i = 0; i < nbNewborn; i++) {
-                const newborn = player.addCreature();
-                this.creatures.push(newborn);
-              }
-
-              hasReproduced = true;
-            }
+        if (creature.isAlive) {
+          const criticalNeed = creature.getCriticalNeed();
+          const sendAllTiles =
+            criticalNeed == "SLEEP" || criticalNeed == "MATING";
+          const tilesToSend = sendAllTiles
+            ? this.grid.tiles
+            : this.grid.getTilesInArea(x, y, perception);
+          const creatures = this.grid.getCreaturesInArea(
+            this.creatures,
+            x,
+            y,
+            perception
+          );
+          const isActionDone = creature.doAction(tilesToSend, creatures);
+          if (isActionDone) {
+            this.grid.degrow(x, y);
           }
         }
+
+        player.getCreatures().forEach((creature) => {
+          const creatureExists = this.creatures.indexOf(creature) !== -1;
+          if (!creatureExists) {
+            this.creatures.push(creature);
+          }
+        });
         this.creatures = this.creatures.filter((creature) => creature.isAlive);
       });
     });
@@ -119,8 +110,7 @@ class GameEngine {
       predator.doAction(tiles, creatures);
       this.creatures = this.creatures.filter((creature) => creature.isAlive);
     });
-
-    Logger.info("Fin du tour de jeu.");
+    Logger.endRoundLog();
   }
 }
 

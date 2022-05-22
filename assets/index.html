@@ -1,233 +1,62 @@
-<html>
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="./images/CREATURE_0.png" />
+    <title>Life simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="stylesheet.css" />
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script async defer src="bundle.js"></script>
   </head>
   <body>
-    <form id="inputs">
-      <label for="nbOfPlayers">Nombre de Joueurs</label
-      ><input
-        type="number"
-        id="nbOfPlayers"
-        name="nbOfPlayers"
-        step="1"
-        min="1"
-        max="4"
-        value="1"
-      />
-      <label for="nbOfRounds">Nombre de tours</label
-      ><input
-        type="number"
-        id="nbOfRounds"
-        name="nbOfRounds"
-        step="10"
-        min="0"
-        value="50"
-      />
-      <div id="sliders">
-        <!--INPUTS PLAYER 1-->
-        <div id="player_0" class="">
-          <select name="playerSpecies" id="playerSpecies_0" required="required">
-            <option selected value="">--Choisissez votre espèce--</option>
-            <option value="./images/CREATURE_0.png">🐰 Lapin</option>
-            <option value="./images/CREATURE_1.png">🐹 Hamster</option>
-            <option value="./images/CREATURE_2.png">🐭 Rat</option>
-            <option value="./images/CREATURE_3.png">🦝 Raton</option>
-          </select>
-          <label for="moveSpeed">Vitesse de déplacement</label>
-          <input
-            type="number"
-            id="moveSpeed_0"
-            name="moveSpeed"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          /><label for="reproducibility">Reproduction</label
-          ><input
-            type="number"
-            id="reproducibility_0"
-            name="reproducibility"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          /><label for="perception">Perception</label>
-          <input
-            type="number"
-            id="perception_0"
-            name="perception"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          /><label for="strength">Force</label>
-          <input
-            type="number"
-            id="strength_0"
-            name="strength"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          />
-        </div>
-
-        <!--INPUTS PLAYER 2-->
-        <div id="player_1" class="hidden">
-          <select name="playerSpecies" id="playerSpecies_1">
-            <option selected value="">--Choisissez votre espèce--</option>
-            <option value="./images/CREATURE_0.png">🐰 Lapin</option>
-            <option value="./images/CREATURE_1.png">🐹 Hamster</option>
-            <option value="./images/CREATURE_2.png">🐭 Rat</option>
-            <option value="./images/CREATURE_3.png">🦝 Raton</option>
-          </select>
-          <label for="moveSpeed">Vitesse de déplacement</label
-          ><input
-            type="number"
-            id="moveSpeed_1"
-            name="moveSpeed"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          /><label for="reproducibility">Reproduction</label
-          ><input
-            type="number"
-            id="reproducibility_1"
-            name="reproducibility"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          /><label for="perception">Perception</label>
-          <input
-            type="number"
-            id="perception_1"
-            name="perception"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          /><label for="strength">Force</label>
-          <input
-            type="number"
-            id="strength_1"
-            name="strength"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          />
-        </div>
-
-        <!--INPUTS PLAYER 3-->
-        <div id="player_2" class="hidden">
-          <select name="playerSpecies" id="playerSpecies_2">
-            <option selected value="">--Choisissez votre espèce--</option>
-            <option value="./images/CREATURE_0.png">🐰 Lapin</option>
-            <option value="./images/CREATURE_1.png">🐹 Hamster</option>
-            <option value="./images/CREATURE_2.png">🐭 Rat</option>
-            <option value="./images/CREATURE_3.png">🦝 Raton</option></select
-          ><label for="moveSpeed">Vitesse de déplacement</label
-          ><input
-            type="number"
-            id="moveSpeed_2"
-            name="moveSpeed"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          /><label for="reproducibility">Reproduction</label
-          ><input
-            type="number"
-            id="reproducibility_2"
-            name="reproducibility"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          /><label for="perception">Perception</label>
-          <input
-            type="number"
-            id="perception_2"
-            name="perception"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          /><label for="strength">Force</label>
-          <input
-            type="number"
-            id="strength_2"
-            name="strength"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          />
-        </div>
-
-        <!--INPUT PLAYER 4-->
-        <div id="player_3" class="hidden">
-          <select name="playerSpecies" id="playerSpecies_3">
-            <option selected value="">--Choisissez votre espèce--</option>
-            <option value="./images/CREATURE_0.png">🐰 Lapin</option>
-            <option value="./images/CREATURE_1.png">🐹 Hamster</option>
-            <option value="./images/CREATURE_2.png">🐭 Rat</option>
-            <option value="./images/CREATURE_3.png">🦝 Raton</option></select
-          ><label for="moveSpeed">Vitesse de déplacement</label
-          ><input
-            type="number"
-            id="moveSpeed_3"
-            name="moveSpeed"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          /><label for="reproducibility">Reproduction</label
-          ><input
-            type="number"
-            id="reproducibility_3"
-            name="reproducibility"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          /><label for="perception">Perception</label>
-          <input
-            type="number"
-            id="perception_3"
-            name="perception"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          /><label for="strength">Force</label>
-          <input
-            type="number"
-            id="strength_3"
-            name="strength"
-            step="1"
-            min="1"
-            max="5"
-            value="1"
-          />
+    <div class="pane"></div>
+    <img id="cloud-0" class="cloud" src="images/CLOUD_0.png" alt="A cloud" />
+    <img id="cloud-1" class="cloud" src="images/CLOUD_1.png" alt="A cloud" />
+    <img id="cloud-2" class="cloud" src="images/CLOUD_2.png" alt="A cloud" />
+    <h1>🍃 Life simulator</h1>
+    <form id="form">
+      <div class="container-sb">
+        <h2>Nombre de joueurs</h2>
+        <div class="input-number">
+          <button id="minus_0" type="button" class="left-button">-</button>
+          <span id="input_0" class="output-text">?</span>
+          <button id="plus_0" type="button" class="right-button">+</button>
         </div>
       </div>
-      <button id="startButton" type="submit">START</button>
+      <div class="container-sb">
+        <h2>Nombre de tours</h2>
+        <div class="input-number">
+          <button id="minus_1" type="button">-</button>
+          <span id="input_1" class="output-text">?</span>
+          <button id="plus_1" type="button">+</button>
+        </div>
+      </div>
+      <div class="container">
+        <div id="container_0" class="inner-container"></div>
+        <div id="container_1" class="inner-container"></div>
+        <div id="container_2" class="inner-container"></div>
+        <div id="container_3" class="inner-container"></div>
+      </div>
+      <button id="submit-form" type="submit">Lancer la simulation</button>
     </form>
 
-    <div class="container">
-      <div id="map" class="box1"></div>
-      <div id="playersInfo" class="box1">
-        <div id="infoPlayer_0" class="hidden"></div>
-        <div id="infoPlayer_1" class="hidden"></div>
-        <div id="infoPlayer_2" class="hidden"></div>
-        <div id="infoPlayer_3" class="hidden"></div>
+    <main class="flex-container removed">
+      <div id="map"></div>
+      <div class="inner-container">
+        <div id="details_0"></div>
+        <div id="details_1"></div>
+        <div id="details_2"></div>
+        <div id="details_3"></div>
       </div>
-    </div>
+    </main>
   </body>
 </html>

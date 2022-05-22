@@ -10,14 +10,13 @@ class Player {
    * @param {Object} attributes - Attribute levels selected by the player.
    */
   constructor(attributes) {
-    const { img, reproducibility, strength, moveSpeed, perception } =
-      attributes;
+    const { img, reproduction, strength, mobility, perception } = attributes;
     this.id = uuidv4();
     this.img = img;
     this.creatures = [];
-    this.reproducibility = reproducibility;
+    this.reproducibility = reproduction;
     this.strength = strength;
-    this.moveSpeed = moveSpeed + 2;
+    this.moveSpeed = mobility + 2;
     this.perception = perception < 3 ? perception * 2 : perception + 2;
   }
 

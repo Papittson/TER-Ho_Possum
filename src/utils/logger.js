@@ -1,6 +1,7 @@
 class Logger {
-  info(message) {
-    console.log(`[INFO] ${message}`);
+  info(message, color) {
+    const options = color ? `background: #202124; color: ${color}` : undefined;
+    console.info(`%c${message}`, options);
   }
 
   warn(message) {
@@ -9,6 +10,17 @@ class Logger {
 
   error(message) {
     console.error(`[ERROR] ${message}`);
+  }
+
+  startRoundLog(roundNumber) {
+    console.group(
+      `%cTour de jeu n° ${roundNumber}.`,
+      `background: #202124; color: #0eebd1`
+    );
+  }
+
+  endRoundLog() {
+    console.groupEnd();
   }
 }
 

@@ -22,7 +22,7 @@ class Tile {
   }
 
   /**
-   * Render the HTML element associated with the grid.
+   * Render the HTML element associated with the tile.
    */
   render() {
     this.htmlElement = D3.select("#grid")
@@ -33,6 +33,13 @@ class Tile {
       .attr("x", this.x * this.size)
       .attr("y", this.y * this.size)
       .attr("xlink:href", _.random(this.type.images));
+  }
+
+  /**
+   * Remove the HTML element associated with the tile.
+   */
+  remove() {
+    this.htmlElement.remove();
   }
 
   /**

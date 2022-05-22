@@ -1,16 +1,245 @@
-* {
-  box-sizing: border-box;
+@font-face {
+  font-family: PixelFont;
+  src: url("PixelFont.ttf");
 }
 
-html {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: PixelFont, monospace;
+  /* Variables de couleur */
+  --primary-color: white;
+  --secondary-color: #143f6b;
+  --bg-color-start: #5dc3ff;
+  --bg-color-end: #dbf9f7;
 }
 
 body {
-  background-color: #1b1b1b;
-  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  color: var(--primary-color);
+  background: linear-gradient(var(--bg-color-start), var(--bg-color-end));
+  min-height: 100vh;
+  font-size: 1.2rem;
+}
+
+h1 {
+  font-family: "Press Start 2P", monospace;
+  font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+.center {
+  text-align: center;
+}
+
+.container {
+  margin: 3rem auto 3rem auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+  width: 80%;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3rem;
+}
+
+.inner-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.slider-container {
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.container-sb {
+  margin: 1rem auto 1rem auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  width: 25%;
+}
+
+.removed {
+  display: none;
+}
+
+.icon {
+  display: inline;
+}
+
+summary {
+  font-weight: bold;
+  cursor: pointer;
+  /* Empêche la sélection du texte du summary */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+details {
+  padding: 0.8rem;
+  border-radius: 5px;
+  background-color: var(--primary-color);
+  color: black;
+  width: fit-content;
+}
+
+summary img {
+  vertical-align: middle;
+}
+
+details p {
+  margin-left: 1rem;
+}
+
+details ul {
+  margin: 0.5rem 0 0.5rem 2rem;
+}
+
+/* ---------------- FORM ---------------- */
+
+#form {
+  width: 100%;
+  margin-top: 3rem;
+}
+
+#submit-form {
+  display: block;
+  font-size: 1.3rem;
+  padding: 0.8rem;
+  margin: auto;
+}
+
+.input-number {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  height: 2.3rem;
+  width: 10rem;
+}
+
+.input-number > * {
+  width: 100%;
+}
+
+button {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  border-radius: 5px;
+  background-color: var(--secondary-color);
+  border: none;
+  cursor: pointer;
+}
+
+.output-text {
+  text-align: center;
+  margin: auto;
+}
+
+select,
+option {
+  border-radius: 5px;
+  padding: 0.6rem;
+  font-size: 1.2rem;
+}
+
+select {
+  width: 100%;
+}
+
+/* ---------------- INPUT SLIDER ---------------- */
+
+input[type="range"] {
+  -webkit-appearance: none;
+  background: linear-gradient(
+    to right,
+    var(--secondary-color),
+    var(--secondary-color)
+  );
+  border-radius: 4px;
+  width: 100%;
+  height: 8px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+  box-shadow: 0 0 0 2px white;
+}
+
+/* ---------------- MENU BACKGROUND ---------------- */
+
+.pane {
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.cloud {
+  z-index: -2;
+  position: absolute;
+}
+
+#cloud-0 {
+  top: 5%;
+  left: 5%;
+}
+
+#cloud-1 {
+  top: 20%;
+  left: 70%;
+}
+
+#cloud-2 {
+  top: 55%;
+  left: 30%;
+}
+
+/* ---------------- GAME RELATED ---------------- */
+
+#map {
+  border: 4px solid var(--secondary-color);
 }
 
 .entity {
@@ -22,36 +251,4 @@ body {
   z-index: 50;
   opacity: 0;
   transition: opacity 5s;
-}
-
-.visible {
-  visibility: visible;
-}
-
-.hidden {
-  visibility: hidden;
-}
-
-.non_display {
-  display: none;
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-}
-
-.box1 {
-  padding-right: 20px;
-}
-
-.icon {
-  display: inline;
-}
-
-#playersInfo {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }

@@ -3,8 +3,10 @@ const { HUNGER, THIRST, SLEEP, MATING } = NEEDS;
 const Entity = require("./entity.js");
 const _ = require("../../utils/functions.js");
 const findPath = require("../../utils/shortestPathAlgo.js");
+const Logger = require("../../utils/logger");
 
 class Creature extends Entity {
+  static hasReproduced = false;
   /**
    * Represents a player's creature.
    * @constructor
@@ -16,8 +18,10 @@ class Creature extends Entity {
     const { id, img, reproducibility, strength, moveSpeed, perception, hole } =
       player;
     super(x, y, hole.size);
+    this.player = player;
     this.playerId = id;
     this.reproducibility = reproducibility;
+    this.reproductionPercentage = reproducibility / 10;
     this.strength = strength;
     this.moveSpeed = moveSpeed;
     this.perception = perception;
@@ -32,6 +36,10 @@ class Creature extends Entity {
     this.render();
   }
 
+  static resetReproduction() {
+    Creature.hasReproduced = false;
+  }
+
   /**
    * Decrease all creature's needs.
    */
@@ -41,7 +49,7 @@ class Creature extends Entity {
       const decreaseAmount = this.needs[need] - NEEDS[need].decreaseAmount;
       this.needs[need] = Math.max(0, decreaseAmount);
       if (need != "SLEEP" && need != "MATING" && this.needs[need] === 0) {
-        this.die();
+        this.die(need);
         return;
       }
     });
@@ -54,10 +62,41 @@ class Creature extends Entity {
    */
   increaseNeed(need, tileType) {
     let increaseAmount = this.needs[need] + tileType[need];
-    if (need == "MATING") {
-      increaseAmount -= this.reproducibility;
+    if (need != "MATING") {
+      this.needs[need] = Math.min(100, increaseAmount);
+      const needStr = need.toLowerCase();
+      Logger.info(`🆙 [${this.id}] augmente son besoin "${needStr}".`);
+      return;
     }
-    this.needs[need] = Math.min(100, increaseAmount);
+
+    if (need == "MATING" && !Creature.hasReproduced) {
+      const player = this.player;
+      const creatures = this.player.getCreatures();
+      const mates = creatures.filter(
+        (mate) => mate.getCriticalNeed() == "MATING"
+      );
+      const mate = mates.find(
+        (entity) =>
+          entity.id != this.id && entity.x === this.x && entity.y === this.y
+      );
+      if (mate != null) {
+        const nbNewborn = Math.ceil(player.reproducibility / 2);
+        let creaturesCreated = 0;
+        for (let i = 0; i < nbNewborn; i++) {
+          if (Math.random() < this.reproductionPercentage) {
+            player.addCreature();
+            creaturesCreated++;
+          }
+        }
+        if (creaturesCreated > 0) {
+          Creature.hasReproduced = true;
+          increaseAmount -= this.reproducibility;
+          this.needs[need] = Math.min(100, increaseAmount);
+          mate.needs[need] = Math.min(100, increaseAmount);
+          Logger.info(`💕 [${this.id}] s'est reproduit.`);
+        }
+      }
+    }
   }
 
   /**
@@ -65,9 +104,10 @@ class Creature extends Entity {
    * @returns {string}
    */
   getCriticalNeed() {
-    return Object.keys(this.needs)
+    const criticalNeed = Object.keys(this.needs)
       .sort((a, b) => NEEDS[b].priority - NEEDS[a].priority)
       .find((need) => this.needs[need] < NEEDS[need].critical);
+    return criticalNeed;
   }
 
   /**
@@ -78,6 +118,10 @@ class Creature extends Entity {
    */
   doAction(tiles, creatures) {
     const criticalNeed = this.getCriticalNeed();
+    if (criticalNeed != null) {
+      const needStr = criticalNeed.toLowerCase();
+      Logger.info(`💫 [${this.id}] a un besoin de "${needStr}".`);
+    }
     let goal;
 
     switch (criticalNeed) {
