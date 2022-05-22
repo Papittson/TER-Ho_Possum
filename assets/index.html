@@ -1,0 +1,62 @@
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="./images/CREATURE_0.png" />
+    <title>Life simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="stylesheet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script async defer src="bundle.js"></script>
+  </head>
+  <body>
+    <div class="pane"></div>
+    <img id="cloud-0" class="cloud" src="images/CLOUD_0.png" alt="A cloud" />
+    <img id="cloud-1" class="cloud" src="images/CLOUD_1.png" alt="A cloud" />
+    <img id="cloud-2" class="cloud" src="images/CLOUD_2.png" alt="A cloud" />
+    <h1>🍃 Life simulator</h1>
+    <form id="form">
+      <div class="container-sb">
+        <h2>Nombre de joueurs</h2>
+        <div class="input-number">
+          <button id="minus_0" type="button" class="left-button">-</button>
+          <span id="input_0" class="output-text">?</span>
+          <button id="plus_0" type="button" class="right-button">+</button>
+        </div>
+      </div>
+      <div class="container-sb">
+        <h2>Nombre de tours</h2>
+        <div class="input-number">
+          <button id="minus_1" type="button">-</button>
+          <span id="input_1" class="output-text">?</span>
+          <button id="plus_1" type="button">+</button>
+        </div>
+      </div>
+      <div class="container">
+        <div id="container_0" class="inner-container"></div>
+        <div id="container_1" class="inner-container"></div>
+        <div id="container_2" class="inner-container"></div>
+        <div id="container_3" class="inner-container"></div>
+      </div>
+      <button id="submit-form" type="submit">Lancer la simulation</button>
+    </form>
+
+    <main class="flex-container removed">
+      <div id="map"></div>
+      <div class="inner-container">
+        <div id="details_0"></div>
+        <div id="details_1"></div>
+        <div id="details_2"></div>
+        <div id="details_3"></div>
+      </div>
+    </main>
+  </body>
+</html>
